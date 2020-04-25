@@ -25,10 +25,10 @@ public class Mariadb {
 
     public void Connection() throws Exception{
         try{
-            Class.forName("org.mariadb.jdbc.Driver");
+            Class.forName(JDBC_DRIVER);
             // Setup the connection with the DB
             conn = DriverManager
-                    .getConnection("jdbc:mariadb://127.0.0.1/db", "root", "new_password");
+                    .getConnection(DB_URL, USER, PASS);
 
             // Statements allow to issue SQL queries to the database
             stmt = conn.createStatement();
@@ -37,36 +37,12 @@ public class Mariadb {
         }
     }
 
-    public void readDB() throws SQLException {
-        resultSet = stmt
-                .executeQuery("select * from db.Client");
-        writeResultSet(resultSet);
-        boolean sexe = false;
-        preparedStatement = conn
-                .prepareStatement("insert into  db.Client values (default, ?, ?, ?, ? , ?,?)");
-        // "myuser, webpage, datum, summary, COMMENTS from feedback.comments");
-        // Parameters start with 1
-        preparedStatement.setString(1, "Beau"); // nom
-        preparedStatement.setString(2, "Corinne");   // prénom
-        preparedStatement.setString(3, "papapa");      // mdp
-        preparedStatement.setString(4, "corinne@gmail.com");      // mail
-        preparedStatement.setString(5, "Internet");      //pub
-        preparedStatement.setBoolean(6, sexe);
-        preparedStatement.executeUpdate();
-
-        preparedStatement = conn
-                .prepareStatement("SELECT Id_client, Nom_client, Prenom_client, mdp, mail, pub,sexe from db.Client");
-        resultSet = preparedStatement.executeQuery();
-        writeResultSet(resultSet);
-    }
-
     public void readDBClient(String nom, String prenom, String mdp, String mail, String pub, boolean sexe) throws SQLException {
         resultSet = stmt
                 .executeQuery("select * from db.Client");
         writeResultSet(resultSet);
         preparedStatement = conn
                 .prepareStatement("insert into  db.Client values (default, ?, ?, ?, ? , ?,?)");
-        // "myuser, webpage, datum, summary, COMMENTS from feedback.comments");
         // Parameters start with 1
         preparedStatement.setString(1, nom); // nom
         preparedStatement.setString(2, prenom);   // prénom
@@ -82,7 +58,62 @@ public class Mariadb {
         writeResultSet(resultSet);
     }
 
+    private void writeResultSet(ResultSet resultSet) throws SQLException {
+        // ResultSet is initially before the first data set
+        while (resultSet.next()) {
+            int Id = resultSet.getInt("Id_Client");
+            String nom = resultSet.getString("Nom_client");
+            String prenom = resultSet.getString("Prenom_client");
+            String mdp = resultSet.getString("mdp");
+            String mail = resultSet.getString("mail");
+            String pub = resultSet.getString("pub");
+            boolean sexe = resultSet.getBoolean("sexe");
+            java.lang.System.out.println("Id: " + Id);
+            java.lang.System.out.println("Nom: " + nom);
+            java.lang.System.out.println("Prenom: " + prenom);
+            java.lang.System.out.println("mdp: " + mdp);
+            java.lang.System.out.println("mail: " + mail);
+            java.lang.System.out.println("pub: " + pub);
+            java.lang.System.out.println("sexe: " + sexe);
 
+        }
+    }
+
+    public void LogDB(String mail, String mdp) throws SQLException {
+        preparedStatement = conn
+                .prepareStatement("select * from db.Client  where mail= ? and mdp =? ");
+        preparedStatement.setString(1, mail); // nom
+        preparedStatement.setString(2, mdp);   // prénom
+        resultSet = preparedStatement.executeQuery();
+        while( resultSet.next()){
+            mySystem.user = new User(resultSet.getInt("Id_Client"),resultSet.getString("Nom_client"),
+                    resultSet.getString("Prenom_client"),resultSet.getString("mdp"),resultSet.getString("mail"),
+                    resultSet.getString("pub"),resultSet.getBoolean("sexe"));
+        }
+    }
+
+    private void close() {
+        try {
+            if (resultSet != null) {
+                resultSet.close();
+            }
+
+            if (stmt != null) {
+                stmt.close();
+            }
+
+            if (stmt != null) {
+                stmt.close();
+            }
+        } catch (Exception e) {
+
+        }
+    }
+    }
+
+
+/*
+EXEMPLE POUR COMPRENDRE
 
 
     public void readDataBase() throws Exception {
@@ -91,7 +122,7 @@ public class Mariadb {
             Class.forName("org.mariadb.jdbc.Driver");
             // Setup the connection with the DB
             conn = DriverManager
-                    .getConnection("jdbc:mariadb://127.0.0.1/db", "root", "new_password");
+                    .getConnection("jdbc:mariadb://127.0.0.1/db", USER, PASS);
 
             // Statements allow to issue SQL queries to the database
             stmt = conn.createStatement();
@@ -136,6 +167,29 @@ public class Mariadb {
         }
     }
 
+        public void readDB() throws SQLException {
+        resultSet = stmt
+                .executeQuery("select * from db.Client");
+        writeResultSet(resultSet);
+        boolean sexe = false;
+        preparedStatement = conn
+                .prepareStatement("insert into  db.Client values (default, ?, ?, ?, ? , ?,?)");
+        // "myuser, webpage, datum, summary, COMMENTS from feedback.comments");
+        // Parameters start with 1
+        preparedStatement.setString(1, "Beau"); // nom
+        preparedStatement.setString(2, "Corinne");   // prénom
+        preparedStatement.setString(3, "papapa");      // mdp
+        preparedStatement.setString(4, "corinne@gmail.com");      // mail
+        preparedStatement.setString(5, "Internet");      //pub
+        preparedStatement.setBoolean(6, sexe);
+        preparedStatement.executeUpdate();
+
+        preparedStatement = conn
+                .prepareStatement("SELECT Id_client, Nom_client, Prenom_client, mdp, mail, pub,sexe from db.Client");
+        resultSet = preparedStatement.executeQuery();
+        writeResultSet(resultSet);
+    }
+
     private void writeMetaData(ResultSet resultSet) throws SQLException {
         //  Now get some metadata from the database
         // Result set get the result of the SQL query
@@ -146,41 +200,4 @@ public class Mariadb {
             System.out.println("Column " +i  + " "+ resultSet.getMetaData().getColumnName(i));
         }
     }
-
-    private void writeResultSet(ResultSet resultSet) throws SQLException {
-        // ResultSet is initially before the first data set
-        System.out.println("ECRIRE LES R2SULTATS");
-        while (resultSet.next()) {
-            String nom = resultSet.getString("Nom_client");
-            String prenom = resultSet.getString("Prenom_client");
-            String mdp = resultSet.getString("mdp");
-            String mail = resultSet.getString("mail");
-            String pub = resultSet.getString("pub");
-            boolean sexe = resultSet.getBoolean("sexe");
-            System.out.println("Nom: " + nom);
-            System.out.println("Prenom: " + prenom);
-            System.out.println("mdp: " + mdp);
-            System.out.println("mail: " + mail);
-            System.out.println("pub: " + pub);
-            System.out.println("sexe: " + sexe);
-
-        }
-    }
-    private void close() {
-        try {
-            if (resultSet != null) {
-                resultSet.close();
-            }
-
-            if (stmt != null) {
-                stmt.close();
-            }
-
-            if (stmt != null) {
-                stmt.close();
-            }
-        } catch (Exception e) {
-
-        }
-    }
-    }
+ */

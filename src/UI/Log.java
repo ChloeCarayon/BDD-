@@ -1,6 +1,5 @@
 package UI;
 
-// SELECTION for Login as CUSTOMERS / TECHNICIANS /MANAGERS
 import java.awt.Button;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -31,12 +30,12 @@ public class Log extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if(e.getSource()==b1){
             /*                                 Log IN                                                     */
-            Main.page1.setVisible(false);
-            new Registration(true);
+            mySystem.page1.setVisible(false);
+            new Registration(false);
 
         } else{
             /*                                   EXIT                                        */
-            Main.page1.dispose();
+            mySystem.page1.dispose();
         }
     }
 }

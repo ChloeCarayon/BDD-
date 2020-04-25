@@ -3,6 +3,16 @@ package UI;
 public class User {
     int Id_User; String Nom; String Prenom; String Email; Boolean Sexe; String Pub; String Password;
 
+    public User(int id_User, String nom, String prenom,String password, String email,String pub, boolean sexe) {
+        Id_User = id_User;
+        Nom = nom;
+        Prenom = prenom;
+        Email = email;
+        Sexe = sexe;
+        Pub = pub;
+        Password = password;
+    }
+
     public User(int id_User, String password) {
         Id_User = id_User;
         Password = password;
