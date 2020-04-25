@@ -111,8 +111,32 @@ public final class Registration extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("REGISTER")) {
             // sql registration
-            CheckLog();
-            System.out.println("SQL registration");
+            if (!LogorRegis){
+                try {
+                    Main.mariaconnexion.readDB();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+                System.out.println("SQL Login");
+            }
+            else {
+                if ( nomTextField.getText().equals("") || passwordField.getText().equals("") || prenomTextField.getText().equals("")
+                        ||   emailText.getText().equals(""))
+                    JOptionPane.showMessageDialog(null, "Please fill all fields.");
+                else {
+                    boolean sexe;
+                    if (SexeComboBox.getSelectedItem().toString().equals("Homme")) sexe = true;
+                    else sexe= false;
+                    try {
+                        String password = new String(passwordField.getPassword());
+                        Main.mariaconnexion.readDBClient(nomTextField.getText(), prenomTextField.getText(),password,
+                                emailText.getText(),PubComboBox.getSelectedItem().toString() ,sexe);
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                }
+
+            }
         }
         if (e.getActionCommand().equals("EXIT")) {
             this.dispose();
@@ -120,28 +144,5 @@ public final class Registration extends JFrame implements ActionListener {
         }
     }
 
-    public void CheckLog(){
-        User patient = new User(Integer.parseInt(IdField.getText()),passwordField.getText());
-        //Connection conn = null;
-       // Statement stmt = null;
-        //stmt = conn.createStatement();
-        //String sql ="Select * from Client where Id_Client = '" + patient.getId_User() +"' and mdp = '" + patient.getPassword()+"'";
-
-       /// stmt.executeUpdate(sql);
-/*
-$usermail = mysqli_real_escape_string($con,$_POST['email']);
-                $password = mysqli_real_escape_string($con,$_POST['password']);
-
-                $sql = "Select * from User where User_Email = '".$usermail."' and User_Password = '".md5($password)."'";
-                $result = mysqli_query($con, $sql);
-
-                if(mysqli_num_rows($result)<=0){
-                    //sql checking for the admin user
-                    $sql = "Select * from User where User_Email = '".$usermail."' and User_Password = '".$password."'";
-                    $result = mysqli_query($con, $sql);
-                    if(mysqli_num_rows($result)<=0){
-                        echo "<script>alert('Wrong username / password !Please Try Again!');</script>";
-                    }
- */
-    }
 }
+//https://www.vogella.com/tutorials/MySQLJava/article.html
