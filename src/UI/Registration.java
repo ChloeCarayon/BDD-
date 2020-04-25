@@ -1,6 +1,7 @@
 package UI;
+import com.sun.tools.javac.comp.Check;
 import oracle.jvm.hotspot.jfr.JFREventWriter;
-
+import java.sql.*;
 import javax.swing.*;
 import java.awt.event.*;
 import java.awt.*;
@@ -110,11 +111,37 @@ public final class Registration extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("REGISTER")) {
             // sql registration
+            CheckLog();
             System.out.println("SQL registration");
         }
         if (e.getActionCommand().equals("EXIT")) {
             this.dispose();
             // sql exit
         }
+    }
+
+    public void CheckLog(){
+        User patient = new User(Integer.parseInt(IdField.getText()),passwordField.getText());
+        //Connection conn = null;
+       // Statement stmt = null;
+        //stmt = conn.createStatement();
+        //String sql ="Select * from Client where Id_Client = '" + patient.getId_User() +"' and mdp = '" + patient.getPassword()+"'";
+
+       /// stmt.executeUpdate(sql);
+/*
+$usermail = mysqli_real_escape_string($con,$_POST['email']);
+                $password = mysqli_real_escape_string($con,$_POST['password']);
+
+                $sql = "Select * from User where User_Email = '".$usermail."' and User_Password = '".md5($password)."'";
+                $result = mysqli_query($con, $sql);
+
+                if(mysqli_num_rows($result)<=0){
+                    //sql checking for the admin user
+                    $sql = "Select * from User where User_Email = '".$usermail."' and User_Password = '".$password."'";
+                    $result = mysqli_query($con, $sql);
+                    if(mysqli_num_rows($result)<=0){
+                        echo "<script>alert('Wrong username / password !Please Try Again!');</script>";
+                    }
+ */
     }
 }

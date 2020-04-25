@@ -32,7 +32,7 @@ public class Log extends JFrame implements ActionListener {
         if(e.getSource()==b1){
             /*                                 Log IN                                                     */
             Main.page1.setVisible(false);
-            new Registration(true);
+            new Registration(false);
 
         } else{
             /*                                   EXIT                                        */
