@@ -116,6 +116,10 @@ public final class Registration extends JFrame implements ActionListener {
                     try {
                         String password = new String(passwordField.getPassword());
                         mySystem.mariaconnexion.LogDB(emailText.getText(),password);
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                    if (mySystem.user != null){
                         if (mySystem.user.getId_User() == 1){
                             this.dispose();
                             new Psy_GUI();
@@ -124,8 +128,8 @@ public final class Registration extends JFrame implements ActionListener {
                             this.dispose();
                             new Patient_GUI();
                         }
-                    } catch (SQLException throwables) {
-                        throwables.printStackTrace(); JOptionPane.showMessageDialog(null, "Erreur mot de passe ou email.");
+                    }else {
+                        JOptionPane.showMessageDialog(null, "Erreur mot de passe ou email.");
                     }
                 }
             }
@@ -141,12 +145,10 @@ public final class Registration extends JFrame implements ActionListener {
                         String password = new String(passwordField.getPassword());
                         mySystem.mariaconnexion.readDBClient(nomTextField.getText(), prenomTextField.getText(),password,
                                 emailText.getText(),PubComboBox.getSelectedItem().toString() ,sexe);
-                    } catch (SQLException throwables) {
-                        throwables.printStackTrace(); JOptionPane.showMessageDialog(null, "Erreur mot de passe ou email.");
-                    }
-                    if (mySystem.user.getId_User() ==1) {
                         this.dispose();
                         new Psy_GUI();
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace(); JOptionPane.showMessageDialog(null, "Erreur mot de passe ou email.");
                     }
                 }
 
