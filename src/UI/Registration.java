@@ -28,6 +28,7 @@ public final class Registration extends JFrame implements ActionListener {
 
     JButton registerButton = new JButton("REGISTER");
     JButton resetButton = new JButton("EXIT");
+    JButton backButton=new JButton("Back");
 
     public Registration(boolean choice) {
         LogorRegis = choice;
@@ -71,6 +72,7 @@ public final class Registration extends JFrame implements ActionListener {
 
             registerButton.setBounds(70, 400, 100, 35);
             resetButton.setBounds(220, 400, 100, 35);
+            backButton.setBounds(200, 450, 100, 35);
 
         } else {
             emailLabel.setBounds(20, 20, 70, 70);
@@ -89,7 +91,8 @@ public final class Registration extends JFrame implements ActionListener {
         this.add(emailText);
         this.add(registerButton);
         this.add(resetButton);
-        // login select technician / customer / manager
+        this.add(backButton); 
+        
         if (LogorRegis) {
             this.add(prenomLabel);
             this.add(nomLabel);
@@ -103,6 +106,7 @@ public final class Registration extends JFrame implements ActionListener {
 
         registerButton.addActionListener(this);
         resetButton.addActionListener(this);
+        backButton.addActionListener(this);
     }
 
     @Override
@@ -149,12 +153,15 @@ public final class Registration extends JFrame implements ActionListener {
                         new Psy_GUI();
                     }
                 }
-
             }
         }
         if (e.getActionCommand().equals("EXIT")) {
             this.dispose();
             // sql exit
+        }
+        if(e.getActionCommand().equals("Back")) {
+        	this.dispose(); 
+        	mySystem.page1.setVisible(true);
         }
     }
 
