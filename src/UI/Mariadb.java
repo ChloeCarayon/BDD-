@@ -1,5 +1,6 @@
 package UI;
 import java.sql.*;
+import java.util.ArrayList;
 
 public class Mariadb {
     // JDBC driver name and database URL
@@ -9,7 +10,7 @@ public class Mariadb {
 
     //  Database credentials
     static final String USER = "root";
-    static final String PASS = "new_password";
+    static final String PASS = "bdd";
 
     private Connection conn = null;
     private Statement stmt = null;
@@ -75,7 +76,6 @@ public class Mariadb {
             java.lang.System.out.println("mail: " + mail);
             java.lang.System.out.println("pub: " + pub);
             java.lang.System.out.println("sexe: " + sexe);
-
         }
     }
 
@@ -90,6 +90,24 @@ public class Mariadb {
                     resultSet.getString("Prenom_client"),resultSet.getString("mdp"),resultSet.getString("mail"),
                     resultSet.getString("pub"),resultSet.getBoolean("sexe"));
         }
+    }
+    
+    public ArrayList<User> getPatient() throws SQLException {
+    	ArrayList<User> list = new ArrayList<>();
+    	
+    	Statement st = conn.createStatement();
+    	 ResultSet rs = st.executeQuery("SELECT*FROM db.Client");
+    	 while(rs.next()) { 
+    	  int id = rs.getInt("Id_Client"); 
+    	  String name= rs.getString("Nom_client");
+    	  String prenom = rs.getString("Prenom_client");
+    	  String mdp = rs.getString("mdp");
+    	  String mail = rs.getString("mail");
+    	  String pub = rs.getString("pub");
+    	  boolean sexe = rs.getBoolean("sexe");
+    	  list.add(new  User(id, name, prenom, mdp, mail, pub, sexe));
+    	 }
+    	 return  list; 
     }
 
     private void close() {
