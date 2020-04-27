@@ -6,9 +6,9 @@ import java.awt.*;
 
 public class Patient_GUI extends JFrame implements ActionListener  {
 
-    JButton HistoButton=new JButton("Historique");
-    JButton RdvButton=new JButton("Rdv à venir");
-    JButton ExitButton=new JButton("EXIT");
+    private JButton HistoButton=new JButton("Historique");
+    private JButton RdvButton=new JButton("Rdv à venir");
+    private JButton ExitButton=new JButton("EXIT");
 
     public Patient_GUI() {
         createWindow();
@@ -16,7 +16,7 @@ public class Patient_GUI extends JFrame implements ActionListener  {
         addComponentsToFrame();
     }
 
-    public void createWindow() {
+    private void createWindow() {
         this.setTitle("Patient Side");
         this.setBounds(500, 100, 380, 200);
         this.getContentPane().setBackground(Color.getHSBColor(269, 100, 95));
@@ -26,13 +26,13 @@ public class Patient_GUI extends JFrame implements ActionListener  {
         this.setResizable(false);
     }
 
-    public void setLocationAndSize() {
+    private void setLocationAndSize() {
         HistoButton.setBounds(10,60,165,23);
         RdvButton.setBounds(210,60,165,23);
         ExitButton.setBounds(110,110,165,23);
     }
 
-    public void addComponentsToFrame() {
+    private void addComponentsToFrame() {
         this.add(HistoButton);
         this.add(RdvButton);
         this.add(ExitButton);

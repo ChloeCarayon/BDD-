@@ -149,6 +149,10 @@ public final class Registration extends JFrame implements ActionListener {
                         String password = new String(passwordField.getPassword());
                         mySystem.mariaconnexion.readDBClient(nomTextField.getText(), prenomTextField.getText(),password,
                                 emailText.getText(),PubComboBox.getSelectedItem().toString() ,sexe);
+                       //Actualise la liste de Patient
+                        mySystem.patients.clear();
+                        mySystem.patients = mySystem.mariaconnexion.getPatient();
+
                         this.dispose();
                         new Psy_GUI();
                     } catch (SQLException throwables) {

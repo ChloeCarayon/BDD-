@@ -8,6 +8,7 @@ public class mySystem {
     public static Mariadb mariaconnexion = new Mariadb();
     public static User user;
     public static ArrayList<User> patients = new ArrayList<>();
+    public static ArrayList<Rdv> rdvListe = new ArrayList<>();
     
     public static void main(String[] args) throws Exception {
         mariaconnexion.Connection();
@@ -15,7 +16,8 @@ public class mySystem {
         page1.setVisible(true);
         
        patients = mariaconnexion.getPatient();
-        new Psy_GUI();
+       rdvListe = mariaconnexion.getRdv();
+       new Psy_GUI();
        
     } 
 }

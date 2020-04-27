@@ -1,40 +1,109 @@
 package UI;
 
-import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.sql.Date;
+import java.sql.Time;
 
-import javax.swing.JFrame;
-
-public class Rdv extends JFrame implements ActionListener{
-
-	 public Rdv() {
-	        createWindow();
-	        setLocationAndSize();
-	        addComponentsToFrame();
-	    }
-
-	    public void createWindow() {
-	    	 this.setTitle("My Rdv");
-	         this.setBounds(400, 150, 400, 500);
-	         this.getContentPane().setBackground(Color.getHSBColor(269, 100, 95));
-	         this.getContentPane().setLayout(null);
-	         this.setVisible(true);
-	         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	         this.setResizable(false);
-	    }
-
-	    public void setLocationAndSize() {
-	       
-	    }
-
-	    public void addComponentsToFrame() {
-	        
-	    }
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		
-		
+public class Rdv {
+	private int id; 
+	private Date date;
+	private Time heure;
+	private float prix; 
+	private String payement;
+	private int client1, client2, client3;
+	private int id_consul;
+	public Rdv(int id, Date date, Time heure, float prix, String payement, int client1, int client2, int client3, int id_consul) {
+		super();
+		this.id = id;
+		this.date = date;
+		this.heure = heure;
+		this.prix = prix;
+		this.payement = payement;
+		this.client1 = client1;
+		this.client2 = client2;
+		this.client3 = client3;
+		this.id_consul = id_consul;
 	}
+
+		
+	public int getId() {
+		return id;
+	}
+
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+
+	public Date getDate() {
+		return date;
+	}
+
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+
+	public Time getHeure() {
+		return heure;
+	}
+
+
+	public void setHeure(Time heure) {
+		this.heure = heure;
+	}
+
+
+	public float getPrix() {
+		return prix;
+	}
+
+
+	public void setPrix(float prix) {
+		this.prix = prix;
+	}
+
+
+	public String getPayement() {
+		return payement;
+	}
+
+
+	public void setPayement(String payement) {
+		this.payement = payement;
+	}
+
+
+	public  int getClient1() {
+		return client1;
+	}
+
+
+	public void setClient1( int client1) {
+		this.client1 = client1;
+	}
+
+
+	public  int getClient2() {
+		return client2;
+	}
+
+
+	public void setClient2( int client2) {
+		this.client2 = client2;
+	}
+
+
+	public int getClient3() {
+		return client3;
+	}
+
+	
+	public void setClient3(int client3) {
+		this.client3 = client3;
+	}
+
+	  
 
 }
