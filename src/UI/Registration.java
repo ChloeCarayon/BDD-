@@ -150,8 +150,8 @@ public final class Registration extends JFrame implements ActionListener {
                         mySystem.mariaconnexion.readDBClient(nomTextField.getText(), prenomTextField.getText(),password,
                                 emailText.getText(),PubComboBox.getSelectedItem().toString() ,sexe);
                        //Actualise la liste de Patient
-                        mySystem.rdvList.clear();
-                        mySystem.rdvList = mySystem.mariaconnexion.getPatient();
+                        mySystem.patient.clear();
+                        mySystem.patient = mySystem.mariaconnexion.getPatient();
 
                         this.dispose();
                         new Psy_GUI();

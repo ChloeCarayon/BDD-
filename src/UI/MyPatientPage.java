@@ -43,13 +43,13 @@ public class MyPatientPage extends JFrame implements ActionListener{
 	    private void setList() {
 	    	String patient;     		
     		try {
-    			for (int i = 0; i<mySystem.rdvList.size(); i ++)  {//commence liste a 1 pour pas avoir la psy dans les clients
-    	    		patient = mySystem.rdvList.get(i).getNom();
+    			for (int i = 0; i<mySystem.patient.size(); i ++)  {//commence liste a 1 pour pas avoir la psy dans les clients
+    	    		patient = mySystem.patient.get(i).getNom();
     	    		patient += "  "; 
-    	    		patient += mySystem.rdvList.get(i).getPrenom();
+    	    		patient += mySystem.patient.get(i).getPrenom();
     	    		list.addElement(patient);
     	    	}	 
-    			if(mySystem.rdvList.size()<1) {
+    			if(mySystem.patient.size()<1) {
     				list.addElement("Vous n'avez pas encore de clients !");
     			}
     		}catch(IndexOutOfBoundsException e) {
@@ -80,13 +80,13 @@ public class MyPatientPage extends JFrame implements ActionListener{
 	    	String infos;
 	    	try {
 	    		infos = "<html> Nom :  "; 
-		    	infos += mySystem.rdvList.get(index).getNom();
+		    	infos += mySystem.patient.get(index).getNom();
 		    	infos += "<br> <br> Prenom  " ;
-		    	infos += mySystem.rdvList.get(index).getPrenom();
+		    	infos += mySystem.patient.get(index).getPrenom();
 		    	infos += "<br> <br>  Email :  " ;
-		    	infos += mySystem.rdvList.get(index).getEmail();
+		    	infos += mySystem.patient.get(index).getEmail();
 		    	
-		    	if( mySystem.rdvList.get(index).getSexe())
+		    	if( mySystem.patient.get(index).getSexe())
 		    		infos +="<br><br>  Sexe :  " +"Homme"+"</html>";  
 		    	else 
 		    		infos += "<br><br>  Sexe :  " +"Femme"+"</html>"; 
