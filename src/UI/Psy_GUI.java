@@ -6,10 +6,10 @@ import java.awt.*;
 
 public class Psy_GUI extends JFrame implements ActionListener  {
 
-    JButton PatientButton=new JButton("Creation Patient");
-    JButton RdvButton=new JButton("Gestion Rdv");
-    JButton ExitButton=new JButton("EXIT");
-    JButton ClientButton=new JButton("Mes patients");
+    private JButton PatientButton=new JButton("Creation Patient");
+    private JButton RdvButton=new JButton("Gestion Rdv");
+    private JButton ExitButton=new JButton("EXIT");
+    private JButton ClientButton=new JButton("Mes patients");
 
     public Psy_GUI() {
         createWindow();
@@ -17,7 +17,7 @@ public class Psy_GUI extends JFrame implements ActionListener  {
         addComponentsToFrame();
     }
 
-    public void createWindow() {
+    private void createWindow() {
         this.setTitle("Psy Side");
         this.setBounds(500, 100, 400, 300);
         this.getContentPane().setBackground(Color.getHSBColor(269, 100, 95));
@@ -27,14 +27,14 @@ public class Psy_GUI extends JFrame implements ActionListener  {
         this.setResizable(false);
     }
 
-    public void setLocationAndSize() {
+    private void setLocationAndSize() {
         PatientButton.setBounds(10,60,165,23);
         RdvButton.setBounds(210,60,165,23);
         ExitButton.setBounds(210,110,165,23);
         ClientButton.setBounds(10,110,165,23);
     }
 
-    public void addComponentsToFrame() {
+    private void addComponentsToFrame() {
         this.add(PatientButton);
         this.add(RdvButton);
         this.add(ExitButton);

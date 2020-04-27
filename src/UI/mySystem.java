@@ -1,13 +1,12 @@
 package UI;
 
-import java.sql.*;
 import java.util.ArrayList;
 
 public class mySystem {
     public static Log page1;
     public static Mariadb mariaconnexion = new Mariadb();
     public static User user;
-    public static ArrayList<User> patients = new ArrayList<>();
+    public static ArrayList<User> rdvList = new ArrayList<>();
     public static ArrayList<Rdv> rdvListe = new ArrayList<>();
     
     public static void main(String[] args) throws Exception {
@@ -15,8 +14,10 @@ public class mySystem {
         page1 = new Log();    
         page1.setVisible(true);
         
-       patients = mariaconnexion.getPatient();
+       rdvList = mariaconnexion.getPatient();
        rdvListe = mariaconnexion.getRdv();
+       new RDVpsy_GUI();
+
        new Psy_GUI();
        
     } 

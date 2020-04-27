@@ -7,18 +7,18 @@ import java.awt.*;
 
 public final class Registration extends JFrame implements ActionListener {
     boolean LogorRegis;
-    JLabel nomLabel = new JLabel("Nom");
-    JLabel prenomLabel = new JLabel("Prénom");
-    JLabel emailLabel = new JLabel("Mail");
-    JLabel passwordLabel = new JLabel("Password");
-    String[] sexe = {"Homme", "Femme"};
-    JLabel sexeLabel = new JLabel("Sexe");
-    String[] pub = {"BaO", "autre patient", "docteur", "Pages Jaunes", "Internet", "autre"};
-    JLabel pubLabel = new JLabel("Pub");
+    private JLabel nomLabel = new JLabel("Nom");
+    private JLabel prenomLabel = new JLabel("Prénom");
+    private JLabel emailLabel = new JLabel("Mail");
+    private JLabel passwordLabel = new JLabel("Password");
+    private String[] sexe = {"Homme", "Femme"};
+    private JLabel sexeLabel = new JLabel("Sexe");
+    private String[] pub = {"BaO", "autre patient", "docteur", "Pages Jaunes", "Internet", "autre"};
+    private JLabel pubLabel = new JLabel("Pub");
 
-    JLabel IdLabel = new JLabel("ID");
+    private JLabel IdLabel = new JLabel("ID");
+
     JTextField IdField = new JTextField();
-
     JTextField nomTextField = new JTextField();
     JTextField prenomTextField = new JTextField();
     JTextField emailText = new JTextField();
@@ -37,7 +37,7 @@ public final class Registration extends JFrame implements ActionListener {
         addComponentsToFrame();
     }
 
-    public void createWindow() {
+    private void createWindow() {
         this.setTitle("Form");
         if (!LogorRegis)
             this.setBounds(500, 100, 380, 250);
@@ -52,7 +52,7 @@ public final class Registration extends JFrame implements ActionListener {
         SexeComboBox = new JComboBox(sexe);
     }
 
-    public void setLocationAndSize() {   // Log in
+    private void setLocationAndSize() {   // Log in
 
         if (LogorRegis) {
             nomLabel.setBounds(20, 20, 70, 70);
@@ -84,7 +84,7 @@ public final class Registration extends JFrame implements ActionListener {
         }
     }
 
-    public void addComponentsToFrame() {   //Adding components to Frame
+    private void addComponentsToFrame() {   //Adding components to Frame
         this.add(passwordLabel);
         this.add(passwordField);
         this.add(emailLabel);
@@ -150,8 +150,8 @@ public final class Registration extends JFrame implements ActionListener {
                         mySystem.mariaconnexion.readDBClient(nomTextField.getText(), prenomTextField.getText(),password,
                                 emailText.getText(),PubComboBox.getSelectedItem().toString() ,sexe);
                        //Actualise la liste de Patient
-                        mySystem.patients.clear();
-                        mySystem.patients = mySystem.mariaconnexion.getPatient();
+                        mySystem.rdvList.clear();
+                        mySystem.rdvList = mySystem.mariaconnexion.getPatient();
 
                         this.dispose();
                         new Psy_GUI();

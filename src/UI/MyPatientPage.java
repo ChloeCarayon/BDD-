@@ -43,13 +43,13 @@ public class MyPatientPage extends JFrame implements ActionListener{
 	    private void setList() {
 	    	String patient;     		
     		try {
-    			for (int i=0; i<mySystem.patients.size();i ++)  {//commence liste a 1 pour pas avoir la psy dans les clients
-    	    		patient = mySystem.patients.get(i).getNom();
+    			for (int i = 0; i<mySystem.rdvList.size(); i ++)  {//commence liste a 1 pour pas avoir la psy dans les clients
+    	    		patient = mySystem.rdvList.get(i).getNom();
     	    		patient += "  "; 
-    	    		patient += mySystem.patients.get(i).getPrenom();
+    	    		patient += mySystem.rdvList.get(i).getPrenom();
     	    		list.addElement(patient);
     	    	}	 
-    			if(mySystem.patients.size()<1) {
+    			if(mySystem.rdvList.size()<1) {
     				list.addElement("Vous n'avez pas encore de clients !");
     			}
     		}catch(IndexOutOfBoundsException e) {
@@ -70,7 +70,7 @@ public class MyPatientPage extends JFrame implements ActionListener{
 	    private void setLocationAndSize() {
 	    	ExitButton.setBounds(300,350,100,23);
 	    	ShowButton.setBounds(100,350,165,23);
-	    	listScroll.setBounds(100,100,100,100); 
+	    	listScroll.setBounds(100,100,150,100);
 	    	profile_title.setBounds(300,50,150,30);
 	    	profile.setBounds(280,80,150,150);
 	    }
@@ -80,19 +80,19 @@ public class MyPatientPage extends JFrame implements ActionListener{
 	    	String infos;
 	    	try {
 	    		infos = "<html> Nom :  "; 
-		    	infos += mySystem.patients.get(index).getNom(); 
-		    	infos += "<br> <br> Prénom  " ;
-		    	infos += mySystem.patients.get(index).getPrenom(); 
+		    	infos += mySystem.rdvList.get(index).getNom();
+		    	infos += "<br> <br> Prenom  " ;
+		    	infos += mySystem.rdvList.get(index).getPrenom();
 		    	infos += "<br> <br>  Email :  " ;
-		    	infos += mySystem.patients.get(index).getEmail();
+		    	infos += mySystem.rdvList.get(index).getEmail();
 		    	
-		    	if( mySystem.patients.get(index).getSexe())
+		    	if( mySystem.rdvList.get(index).getSexe())
 		    		infos +="<br><br>  Sexe :  " +"Homme"+"</html>";  
 		    	else 
 		    		infos += "<br><br>  Sexe :  " +"Femme"+"</html>"; 
 		    	
 	    	}catch(ArrayIndexOutOfBoundsException aiobe) {
-	    		infos = "Aucun profile selectionné !";
+	    		infos = "Aucun profile selectionne !";
 	    	}
 	    	catch(Exception e) {
 	    		infos = "Impossible d'afficher le profile";
@@ -121,7 +121,7 @@ public class MyPatientPage extends JFrame implements ActionListener{
 	        }	
 		
 		if(e.getSource() == ShowButton && patientList.getSelectedIndex() != -1 );
-			/*                                 Affiche nouveau profile quand sélectionne nouveau nom                    */
+			/*                                 Affiche nouveau profile quand sï¿½lectionne nouveau nom                    */
 	       { 
 	            getProfile();
 	       }
