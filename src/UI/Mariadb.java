@@ -1,5 +1,6 @@
 package UI;
 import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class Mariadb {
@@ -107,6 +108,30 @@ public class Mariadb {
     	  boolean sexe = rs.getBoolean("sexe");
     	  list.add(new  User(id, name, prenom, mdp, mail, pub, sexe));
     	 }
+    	 list.remove(0); // retire la psy de la liste
+    	 return  list; 
+    }
+    
+    public ArrayList<Rdv> getRdv() throws SQLException {
+    	ArrayList<Rdv> list = new ArrayList<>();
+    	  	
+    	Statement st = conn.createStatement();
+    	 ResultSet rs = st.executeQuery("SELECT*FROM db.Client");
+    	 
+    	 while(rs.next()) { 
+    	  int id = rs.getInt("Id_Rdv"); 
+    	  Date jour= rs.getDate("Date");
+    	  Time heure = rs.getTime("Heure");
+    	  float prix = rs.getFloat("Prix");
+    	  String pay = rs.getString("Payement");
+    	  int cl1 = rs.getInt("Id_Client");
+    	  int cl2 = rs.getInt("Id_Client_2");
+    	  int cl3 = rs.getInt("Id_Client_3");
+    	  int consul = rs.getInt("Id_consultation");
+  
+    	  list.add(new  Rdv(id, jour, heure, prix, pay, cl1, cl2, cl3, consul));  
+    	 }
+    	 
     	 return  list; 
     }
 

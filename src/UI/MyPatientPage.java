@@ -43,7 +43,7 @@ public class MyPatientPage extends JFrame implements ActionListener{
 	    private void setList() {
 	    	String patient;     		
     		try {
-    			for (int i=1; i<mySystem.patients.size();i ++)  {//commence liste a 1 pour pas avoir la psy dans les clients
+    			for (int i=0; i<mySystem.patients.size();i ++)  {//commence liste a 1 pour pas avoir la psy dans les clients
     	    		patient = mySystem.patients.get(i).getNom();
     	    		patient += "  "; 
     	    		patient += mySystem.patients.get(i).getPrenom();
@@ -57,7 +57,6 @@ public class MyPatientPage extends JFrame implements ActionListener{
     		}catch(Exception e) {
     			list.addElement("Impossible d'afficher les clients");
     		}
-	    	 
 	    	PrintList();
 	    }
 	    
@@ -71,25 +70,33 @@ public class MyPatientPage extends JFrame implements ActionListener{
 	    private void setLocationAndSize() {
 	    	ExitButton.setBounds(300,350,100,23);
 	    	ShowButton.setBounds(100,350,165,23);
-	    	listScroll.setBounds(100,100,100,100);
+	    	listScroll.setBounds(100,100,100,100); 
 	    	profile_title.setBounds(300,50,150,30);
 	    	profile.setBounds(280,80,150,150);
 	    }
 	    
 	    private void getProfile() {
 	    	int index = patientList.getSelectedIndex(); 
-	    	System.out.println(index);
-	    	String infos = "<html> Nom :  "; 
-	    	infos += mySystem.patients.get(index+1).getNom(); 
-	    	infos += "<br> <br> Prénom  " ;
-	    	infos += mySystem.patients.get(index+1).getPrenom(); 
-	    	infos += "<br> <br>  Email :  " ;
-	    	infos += mySystem.patients.get(index+1).getEmail();
-	    	
-	    	if( mySystem.patients.get(index+1).getSexe())
-	    		infos +="<br><br>  Sexe :  " +"Homme"+"</html>";  
-	    	else 
-	    		infos += "<br><br>  Sexe :  " +"Femme"+"</html>"; 
+	    	String infos;
+	    	try {
+	    		infos = "<html> Nom :  "; 
+		    	infos += mySystem.patients.get(index).getNom(); 
+		    	infos += "<br> <br> Prénom  " ;
+		    	infos += mySystem.patients.get(index).getPrenom(); 
+		    	infos += "<br> <br>  Email :  " ;
+		    	infos += mySystem.patients.get(index).getEmail();
+		    	
+		    	if( mySystem.patients.get(index).getSexe())
+		    		infos +="<br><br>  Sexe :  " +"Homme"+"</html>";  
+		    	else 
+		    		infos += "<br><br>  Sexe :  " +"Femme"+"</html>"; 
+		    	
+	    	}catch(ArrayIndexOutOfBoundsException aiobe) {
+	    		infos = "Aucun profile selectionné !";
+	    	}
+	    	catch(Exception e) {
+	    		infos = "Impossible d'afficher le profile";
+	    	}
 	    	
 	    	profile.setText(infos);
 	    }
@@ -113,7 +120,7 @@ public class MyPatientPage extends JFrame implements ActionListener{
 	            new Psy_GUI();
 	        }	
 		
-		if(patientList.getSelectedIndex() != -1 );
+		if(e.getSource() == ShowButton && patientList.getSelectedIndex() != -1 );
 			/*                                 Affiche nouveau profile quand sélectionne nouveau nom                    */
 	       { 
 	            getProfile();

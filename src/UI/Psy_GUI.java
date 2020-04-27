@@ -57,7 +57,7 @@ public class Psy_GUI extends JFrame implements ActionListener  {
         else if(e.getSource()==RdvButton){
             /*                                 RDV                                  */
             this.dispose();
-            new Rdv();
+            //new Rdv();
         }
         else if(e.getSource()==ExitButton){
             /*                                   EXIT                                      */
