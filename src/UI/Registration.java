@@ -146,9 +146,11 @@ public final class Registration extends Default_Page implements ActionListener {
                         mySystem.mariaconnexion.readDBClient(nomTextField.getText(), prenomTextField.getText(),password,
                                 emailText.getText(),PubComboBox.getSelectedItem().toString() ,sexe);
                        //Actualise la liste de Patient
+
                         mySystem.patients.clear();
                         mySystem.patients = mySystem.mariaconnexion.getPatient();
 
+                 
                         this.dispose();
                         new Psy_GUI();
                     } catch (SQLException throwables) {

@@ -2,6 +2,8 @@ package UI;
 
 import com.toedter.calendar.JCalendar;
 
+
+
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.FlowLayout;
@@ -24,6 +26,7 @@ import javax.swing.border.Border;
 
 
 public class RDVpsy_GUI extends JFrame implements ActionListener{
+
 
    // Calendar calendar2 = Calendar.getInstance();
     private JCalendar calendar =  new JCalendar();
@@ -49,7 +52,7 @@ public class RDVpsy_GUI extends JFrame implements ActionListener{
 
     public void createWindow() {
         this.setTitle("My Patient");
-        this.setBounds(400, 150, 500, 500);
+        this.setBounds(400, 50, 700, 700);
         this.getContentPane().setBackground(Color.getHSBColor(269, 100, 95));
         this.getContentPane().setLayout(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -83,6 +86,7 @@ public class RDVpsy_GUI extends JFrame implements ActionListener{
     }
 
     private void setLocationAndSize() {
+
         ExitButton.setBounds(330,350,100,23);
         ShowButton.setBounds(130,350,100,23);
         SuprButton.setBounds(50,350,100,23);
@@ -113,7 +117,15 @@ public class RDVpsy_GUI extends JFrame implements ActionListener{
         	    
         	    this.add(calendar4);
         	//    contentPane.add(panel1);
-    }
+    
+
+        ExitButton.setBounds(500,500,100,23);
+        ShowButton.setBounds(400,500,100,23);
+        SuprButton.setBounds(300,500,100,23);
+        ModifButton.setBounds(200,500,100,23);
+        listScroll.setBounds(100,350,150,100);
+        calendar.setBounds(30,30,420,220);
+       }
 
     private void getProfile() {
         int index = rdv_List.getSelectedIndex();
@@ -134,20 +146,25 @@ public class RDVpsy_GUI extends JFrame implements ActionListener{
     private void addComponentsToFrame() {
         this.add(listScroll);
         this.add(ExitButton);
-        this.add(profile_title);
         this.add(ShowButton);
         this.add(SuprButton);
         this.add(ModifButton);
-        this.add(profile);
         this.add(calendar);
-
         ExitButton.addActionListener(this);
         ShowButton.addActionListener(this);
     }
 
+    private void CreateCAl(){
+
+    }
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource()==ExitButton){
+            /*                                   EXIT                                      */
+            this.dispose();
+            new Psy_GUI();
+        }
+        else if(e.getSource()==SuprButton){
             /*                                   EXIT                                      */
             this.dispose();
             new Psy_GUI();

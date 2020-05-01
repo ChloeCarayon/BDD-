@@ -44,6 +44,7 @@ public class MyPatientPage extends JFrame implements ActionListener{
 	    private void setList() {
 	    	String patient;     		
     		try {
+
     			for (int i=0; i<mySystem.patients.size();i ++)  {//commence liste a 1 pour pas avoir la psy dans les clients
     	    		patient = mySystem.patients.get(i).getNom();
     	    		patient += "  "; 
@@ -81,6 +82,7 @@ public class MyPatientPage extends JFrame implements ActionListener{
 	    	String infos;
 	    	try {
 	    		infos = "<html> Nom :  "; 
+
 		    	infos += mySystem.patients.get(index).getNom(); 
 		    	infos += "<br> <br> Prénom  " ;
 		    	infos += mySystem.patients.get(index).getPrenom(); 
@@ -88,6 +90,7 @@ public class MyPatientPage extends JFrame implements ActionListener{
 		    	infos += mySystem.patients.get(index).getEmail();
 		    	
 		    	if( mySystem.patients.get(index).getSexe())
+	
 		    		infos +="<br><br>  Sexe :  " +"Homme"+"</html>";  
 		    	else 
 		    		infos += "<br><br>  Sexe :  " +"Femme"+"</html>"; 
