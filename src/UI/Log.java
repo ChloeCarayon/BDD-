@@ -1,30 +1,39 @@
 package UI;
 
 import java.awt.Button;
-import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JFrame;
 
-public class Log extends JFrame implements ActionListener {
+import javax.swing.JLabel;
+
+public class Log extends Default_Page implements ActionListener {
     private Button b1, b2;
+    private JLabel titre = new JLabel("Bienvenue ! ");
     public Log(){
-        Create_Window();
+    	createWindow("Bienvenue",500,100,350,350);
+    	setLocationAndSize(); 
+    	addComponentsToFrame(); 
+    	addImage(10,50);
+    	this.setVisible(true);
+    }
+    protected void setLocationAndSize() {
+    	 b1 = new Button(" Log in ");
+         b2 = new Button(" Exit ");
+         b1.setBounds(50, 80, 100, 25);
+         b2.setBounds(200, 80, 100, 25);
+         titre.setBounds(120,20,200,50);
+         titre.setFont(new Font("Calibri", Font.PLAIN, 24));
     }
 
-    public void Create_Window(){
-        setSize(380,150);
-        setLocation(500,200);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        b1 = new Button(" Log in ");
-        b2 = new Button(" Exit ");
-        setLayout(new FlowLayout());
-        b1.addActionListener(this);
+    protected void addComponentsToFrame() {
+    	b1.addActionListener(this);
         b2.addActionListener(this);
-        add(b1);
-        add(b2);
-        setVisible(true);
+        this.add(b1);
+        this.add(b2);
+        this.add(titre);
     }
+     
 
     @Override
     public void actionPerformed(ActionEvent e) {

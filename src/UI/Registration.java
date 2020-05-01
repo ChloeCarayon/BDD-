@@ -5,54 +5,49 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.awt.*;
 
-public final class Registration extends JFrame implements ActionListener {
+public final class Registration extends Default_Page implements ActionListener {
     boolean LogorRegis;
-    private JLabel nomLabel = new JLabel("Nom");
-    private JLabel prenomLabel = new JLabel("PrÃ©nom");
-    private JLabel emailLabel = new JLabel("Mail");
-    private JLabel passwordLabel = new JLabel("Password");
-    private String[] sexe = {"Homme", "Femme"};
-    private JLabel sexeLabel = new JLabel("Sexe");
-    private String[] pub = {"BaO", "autre patient", "docteur", "Pages Jaunes", "Internet", "autre"};
-    private JLabel pubLabel = new JLabel("Pub");
+    private final JLabel nomLabel = new JLabel("Nom");
+    private final JLabel prenomLabel = new JLabel("Prénom");
+    private final JLabel emailLabel = new JLabel("Mail");
+    private final JLabel passwordLabel = new JLabel("Password");
+    private final String[] sexe = {"Homme", "Femme"};
+    private final JLabel sexeLabel = new JLabel("Sexe");
+    private final String[] pub = {"BaO", "autre patient", "docteur", "Pages Jaunes", "Internet", "autre"};
+    private final JLabel pubLabel = new JLabel("Pub");
 
     private JLabel IdLabel = new JLabel("ID");
 
-    JTextField IdField = new JTextField();
-    JTextField nomTextField = new JTextField();
-    JTextField prenomTextField = new JTextField();
-    JTextField emailText = new JTextField();
-    JPasswordField passwordField = new JPasswordField();
-    JComboBox PubComboBox;
-    JComboBox SexeComboBox;
+    private JTextField IdField = new JTextField();
+    private JTextField nomTextField = new JTextField();
+    private JTextField prenomTextField = new JTextField();
+    private JTextField emailText = new JTextField();
+    private JPasswordField passwordField = new JPasswordField();
+    private  JComboBox PubComboBox = new JComboBox<>(pub);
+    
+    private  JComboBox SexeComboBox =  new JComboBox<>(sexe);
 
-    JButton registerButton = new JButton("REGISTER");
-    JButton resetButton = new JButton("EXIT");
-    JButton backButton=new JButton("Back");
+    private JButton registerButton = new JButton("REGISTER");
+    private JButton resetButton = new JButton("EXIT");
+    private JButton backButton=new JButton("Back");
 
     public Registration(boolean choice) {
         LogorRegis = choice;
-        createWindow();
+      
+        if (!LogorRegis)
+        	  createWindow("Log In", 500, 100, 380, 250);
+        else
+        	  createWindow("Register", 500, 100, 380, 500);     
+        
         setLocationAndSize();
         addComponentsToFrame();
-    }
-
-    private void createWindow() {
-        this.setTitle("Form");
-        if (!LogorRegis)
-            this.setBounds(500, 100, 380, 250);
-        else
-            this.setBounds(500, 100, 380, 500);
-        this.getContentPane().setBackground(Color.lightGray);
-        this.getContentPane().setLayout(null);
+ 
         this.setVisible(true);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setResizable(false);
-        PubComboBox = new JComboBox(pub);
-        SexeComboBox = new JComboBox(sexe);
     }
+    
+ 
 
-    private void setLocationAndSize() {   // Log in
+    protected void setLocationAndSize() {   // Log in
 
         if (LogorRegis) {
             nomLabel.setBounds(20, 20, 70, 70);
@@ -65,14 +60,14 @@ public final class Registration extends JFrame implements ActionListener {
             passwordField.setBounds(180, 123, 165, 23);
             emailText.setBounds(180, 163, 165, 23);
 
-            SexeComboBox.setBounds(180, 183, 165, 70);
-            PubComboBox.setBounds(180, 243, 165, 70);
+            SexeComboBox.setBounds(180, 200, 165, 35);
+            PubComboBox.setBounds(180, 250, 165, 35);
             sexeLabel.setBounds(20, 180, 70, 70);
             pubLabel.setBounds(20, 240, 70, 70);
 
-            registerButton.setBounds(70, 400, 100, 35);
-            resetButton.setBounds(220, 400, 100, 35);
-            backButton.setBounds(200, 450, 100, 35);
+            registerButton.setBounds(20, 380, 100, 35);
+            resetButton.setBounds(150, 380, 70, 35);
+            backButton.setBounds(250, 380, 70, 35);
 
         } else {
             emailLabel.setBounds(20, 20, 70, 70);
@@ -81,10 +76,11 @@ public final class Registration extends JFrame implements ActionListener {
             passwordField.setBounds(180, 83, 165, 23);
             registerButton.setBounds(70, 150, 100, 35);
             resetButton.setBounds(220, 150, 100, 35);
+            addImage(10,300); 
         }
     }
 
-    private void addComponentsToFrame() {   //Adding components to Frame
+    protected void addComponentsToFrame() {   //Adding components to Frame
         this.add(passwordLabel);
         this.add(passwordField);
         this.add(emailLabel);
@@ -150,8 +146,8 @@ public final class Registration extends JFrame implements ActionListener {
                         mySystem.mariaconnexion.readDBClient(nomTextField.getText(), prenomTextField.getText(),password,
                                 emailText.getText(),PubComboBox.getSelectedItem().toString() ,sexe);
                        //Actualise la liste de Patient
-                        mySystem.rdvList.clear();
-                        mySystem.rdvList = mySystem.mariaconnexion.getPatient();
+                        mySystem.patients.clear();
+                        mySystem.patients = mySystem.mariaconnexion.getPatient();
 
                         this.dispose();
                         new Psy_GUI();

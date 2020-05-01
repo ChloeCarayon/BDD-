@@ -3,23 +3,31 @@ package UI;
 import com.toedter.calendar.JCalendar;
 
 import java.awt.Color;
+import java.awt.Container;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Calendar;
+import java.util.Locale;
 
+import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
+import javax.swing.border.Border;
 
 
 public class RDVpsy_GUI extends JFrame implements ActionListener{
 
-    Calendar calendar2 = Calendar.getInstance();
-    private JCalendar calendar =  new JCalendar(calendar2, false);
+   // Calendar calendar2 = Calendar.getInstance();
+    private JCalendar calendar =  new JCalendar();
+    
     private JScrollPane listScroll;
     private JList<String> rdv_List;
     private final DefaultListModel<String> list = new DefaultListModel<>();
@@ -82,6 +90,29 @@ public class RDVpsy_GUI extends JFrame implements ActionListener{
         listScroll.setBounds(100,100,150,100);
         profile_title.setBounds(300,50,150,30);
         profile.setBounds(280,80,150,150);
+        
+        Container contentPane = getContentPane();
+        contentPane.setLayout(null);
+       // MyDateListener listener = new MyDateListener();
+        JCalendar calendar4 =
+        		new JCalendar(
+        		    Locale.FRENCH,
+        		    false);
+        	 //   calendar4.addDateListener(listener);
+        	   
+
+        Border etchedBorder =
+        		BorderFactory.createEtchedBorder();
+        	    Border emptyBorder =
+        		BorderFactory.createEmptyBorder(10, 10, 10, 10);
+        	    Border compoundBorder =
+        		BorderFactory.createCompoundBorder(etchedBorder, emptyBorder);
+      
+        	    calendar4.setBorder(compoundBorder);
+        	    
+        	    
+        	    this.add(calendar4);
+        	//    contentPane.add(panel1);
     }
 
     private void getProfile() {
