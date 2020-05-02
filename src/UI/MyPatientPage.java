@@ -73,27 +73,15 @@ public class MyPatientPage extends JFrame implements ActionListener{
 	    	ExitButton.setBounds(300,350,100,23);
 	    	ShowButton.setBounds(100,350,165,23);
 	    	listScroll.setBounds(100,100,100,100); 
-	    	profile_title.setBounds(300,50,150,30);
-	    	profile.setBounds(280,80,150,150);
+	    	profile_title.setBounds(150,50,150,30);
+	    	profile.setBounds(250,30,150,300);
 	    }
 	    
 	    private void getProfile() {
 	    	int index = patientList.getSelectedIndex(); 
 	    	String infos;
 	    	try {
-	    		infos = "<html> Nom :  "; 
-
-		    	infos += mySystem.patients.get(index).getNom(); 
-		    	infos += "<br> <br> Prénom  " ;
-		    	infos += mySystem.patients.get(index).getPrenom(); 
-		    	infos += "<br> <br>  Email :  " ;
-		    	infos += mySystem.patients.get(index).getEmail();
-		    	
-		    	if( mySystem.patients.get(index).getSexe())
-	
-		    		infos +="<br><br>  Sexe :  " +"Homme"+"</html>";  
-		    	else 
-		    		infos += "<br><br>  Sexe :  " +"Femme"+"</html>"; 
+	    		infos = mySystem.patients.get(index).toString();
 		    	
 	    	}catch(ArrayIndexOutOfBoundsException aiobe) {
 	    		infos = "Aucun profile selectionné !";

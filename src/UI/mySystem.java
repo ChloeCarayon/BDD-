@@ -21,8 +21,6 @@ public class mySystem {
        rdvListe = mariaconnexion.getRdv();
       // new RDVpsy_GUI();
 
-       new RDVpsy_GUI();
-
-       
+       new MyPatientPage();       
     } 
 }
