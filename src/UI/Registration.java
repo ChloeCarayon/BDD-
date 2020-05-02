@@ -8,7 +8,7 @@ import java.awt.*;
 public final class Registration extends Default_Page implements ActionListener {
     boolean LogorRegis;
     private final JLabel nomLabel = new JLabel("Nom");
-    private final JLabel prenomLabel = new JLabel("Prénom");
+    private final JLabel prenomLabel = new JLabel("Prenom");
     private final JLabel emailLabel = new JLabel("Mail");
     private final JLabel passwordLabel = new JLabel("Password");
     private final String[] sexe = {"Homme", "Femme"};
@@ -44,8 +44,6 @@ public final class Registration extends Default_Page implements ActionListener {
  
         this.setVisible(true);
     }
-    
- 
 
     protected void setLocationAndSize() {   // Log in
 

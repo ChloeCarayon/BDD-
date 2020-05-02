@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.awt.*;
 
-public class Psy_GUI extends JFrame implements ActionListener  {
+public class Psy_GUI extends Default_Page implements ActionListener  {
 
     private JButton PatientButton=new JButton("Creation Patient");
     private JButton RdvButton=new JButton("Gestion Rdv");
@@ -12,29 +12,21 @@ public class Psy_GUI extends JFrame implements ActionListener  {
     private JButton ClientButton=new JButton("Mes patients");
 
     public Psy_GUI() {
-        createWindow();
+        createWindow("Psy Side", 500, 100, 400, 350);
         setLocationAndSize();
         addComponentsToFrame();
-    }
-
-    private void createWindow() {
-        this.setTitle("Psy Side");
-        this.setBounds(500, 100, 400, 300);
-        this.getContentPane().setBackground(Color.getHSBColor(269, 100, 95));
-        this.getContentPane().setLayout(null);
+        addImage(40,63);
         this.setVisible(true);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setResizable(false);
     }
 
-    private void setLocationAndSize() {
+    protected void setLocationAndSize() {
         PatientButton.setBounds(10,60,165,23);
         RdvButton.setBounds(210,60,165,23);
         ExitButton.setBounds(210,110,165,23);
         ClientButton.setBounds(10,110,165,23);
     }
 
-    private void addComponentsToFrame() {
+    protected void addComponentsToFrame() {
         this.add(PatientButton);
         this.add(RdvButton);
         this.add(ExitButton);
@@ -57,7 +49,7 @@ public class Psy_GUI extends JFrame implements ActionListener  {
         else if(e.getSource()==RdvButton){
             /*                                 RDV                                  */
             this.dispose();
-            //new Rdv();
+            new RDVpsy_GUI();
         }
         else if(e.getSource()==ExitButton){
             /*                                   EXIT                                      */

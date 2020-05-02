@@ -15,14 +15,9 @@ public class mySystem {
         mariaconnexion.Connection();
         page1 = new Log();    
         page1.setVisible(true);
-        
+        new Psy_GUI();
 
        patients = mariaconnexion.getPatient();
        rdvListe = mariaconnexion.getRdv();
-      // new RDVpsy_GUI();
-
-       new RDVpsy_GUI();
-
-       
     } 
 }

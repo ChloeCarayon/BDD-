@@ -6,12 +6,11 @@ import java.sql.Time;
 public class Rdv {
 	private int id; 
 	private Date date;
-	private Time heure;
-	private float prix; 
-	private String payement;
+	private String heure, payement;
+	private float prix;
 	private int client1, client2, client3;
 	private int id_consul;
-	public Rdv(int id, Date date, Time heure, float prix, String payement, int client1, int client2, int client3, int id_consul) {
+	public Rdv(int id, Date date, String heure, float prix, String payement, int client1, int client2, int client3, int id_consul) {
 		super();
 		this.id = id;
 		this.date = date;
@@ -45,12 +44,12 @@ public class Rdv {
 	}
 
 
-	public Time getHeure() {
+	public String getHeure() {
 		return heure;
 	}
 
 
-	public void setHeure(Time heure) {
+	public void setHeure(String heure) {
 		this.heure = heure;
 	}
 

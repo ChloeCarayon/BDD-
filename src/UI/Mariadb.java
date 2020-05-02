@@ -1,7 +1,7 @@
 package UI;
 import java.sql.*;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+import java.util.*;
+import java.util.Date;
 
 public class Mariadb {
     // JDBC driver name and database URL
@@ -11,7 +11,7 @@ public class Mariadb {
 
     //  Database credentials
     static final String USER = "root";
-    static final String PASS = "bdd";
+    static final String PASS = "new_password";
 
     private Connection conn = null;
     private Statement stmt = null;
@@ -92,10 +92,21 @@ public class Mariadb {
                     resultSet.getString("pub"),resultSet.getBoolean("sexe"));
         }
     }
+
+    public boolean Datecheck(String date) throws SQLException {
+        int count=0;
+        java.sql.Date sqlDate = java.sql.Date.valueOf(date);
+        preparedStatement = conn
+                .prepareStatement("select * from db.rdv  where Date= ?");
+        preparedStatement.setDate(1, sqlDate); // nom
+        resultSet = preparedStatement.executeQuery();
+        while( resultSet.next()) count++;
+        if (count == 10) return false;
+        else return true;
+    }
     
     public ArrayList<User> getPatient() throws SQLException {
     	ArrayList<User> list = new ArrayList<>();
-    	
     	Statement st = conn.createStatement();
     	 ResultSet rs = st.executeQuery("SELECT*FROM db.Client");
     	 while(rs.next()) { 
@@ -114,25 +125,54 @@ public class Mariadb {
     
     public ArrayList<Rdv> getRdv() throws SQLException {
     	ArrayList<Rdv> list = new ArrayList<>();
-    	  	
     	Statement st = conn.createStatement();
     	 ResultSet rs = st.executeQuery("SELECT*FROM db.rdv");
-    	 
     	 while(rs.next()) { 
     	  int id = rs.getInt("Id_rdv");
     	  Date jour= rs.getDate("Date");
-    	  Time heure = rs.getTime("Heure");
+    	  String heure = rs.getString("Heure");
     	  float prix = rs.getFloat("Prix");
     	  String pay = rs.getString("Payement");
     	  int cl1 = rs.getInt("Id_Client");
     	  int cl2 = rs.getInt("Id_Client_2");
     	  int cl3 = rs.getInt("Id_Client_3");
     	  int consul = rs.getInt("Id_consultation");
-  
-    	  list.add(new  Rdv(id, jour, heure, prix, pay, cl1, cl2, cl3, consul));  
+    	  list.add(new  Rdv(id, (java.sql.Date) jour, heure, prix, pay, cl1, cl2, cl3, consul));
     	 }
-    	 
     	 return  list; 
+    }
+
+    private Integer FindClient(String Cl) throws SQLException {
+        if ( !Cl.equals("null")){
+            String[] splitClient1 = Cl.split(" . ", 5);
+            preparedStatement = conn.prepareStatement("select * from db.Client  where Nom_client= ? and Prenom_client =? ");
+            preparedStatement.setString(1, splitClient1[0]);
+            preparedStatement.setString(2, splitClient1[1]);
+            resultSet = preparedStatement.executeQuery();
+            while( resultSet.next())  return(resultSet.getInt("Id_Client"));
+        }
+        return null;
+    }
+
+    public void FillRDV(String date, String heure, float prix, String pay, String cl1, String cl2, String cl3, Integer cons )  throws SQLException{
+        java.sql.Date sqlDate = java.sql.Date.valueOf(date);
+        Integer c1, c2, c3;
+        c1 = FindClient(cl1); c2 = FindClient(cl2); c3 = FindClient(cl3);
+        preparedStatement = conn
+                .prepareStatement("insert into  db.rdv values (default, ?, ?, ?, ? , ?, ?, ?,?)");
+
+        preparedStatement.setDate(1, sqlDate); 
+        preparedStatement.setString(2, heure);
+        preparedStatement.setFloat(3, prix);
+        preparedStatement.setString(4, pay);
+        if(c1 == null) preparedStatement.setNull(5, Types.NULL);
+        else preparedStatement.setInt(5, c1);
+        if(c2 == null) preparedStatement.setNull(6, Types.NULL);
+        else preparedStatement.setInt(6, c1);
+        if(c3 == null) preparedStatement.setNull(7, Types.NULL);
+        else preparedStatement.setInt(7, c1);
+        preparedStatement.setNull(8, Types.NULL);
+        preparedStatement.executeUpdate();
     }
 
     private void close() {
