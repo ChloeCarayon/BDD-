@@ -19,5 +19,7 @@ public class mySystem {
 
        patients = mariaconnexion.getPatient();
        rdvListe = mariaconnexion.getRdv();
+
+       new MyPatientPage();       
     } 
 }

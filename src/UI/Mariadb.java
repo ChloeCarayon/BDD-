@@ -89,7 +89,7 @@ public class Mariadb {
         while( resultSet.next()){
             mySystem.user = new User(resultSet.getInt("Id_Client"),resultSet.getString("Nom_client"),
                     resultSet.getString("Prenom_client"),resultSet.getString("mdp"),resultSet.getString("mail"),
-                    resultSet.getString("pub"),resultSet.getBoolean("sexe"));
+                    resultSet.getString("pub"),resultSet.getBoolean("sexe"), resultSet.getDate("Date_client"));
         }
     }
 
@@ -109,6 +109,8 @@ public class Mariadb {
     	ArrayList<User> list = new ArrayList<>();
     	Statement st = conn.createStatement();
     	 ResultSet rs = st.executeQuery("SELECT*FROM db.Client");
+    	 ResultSet prof ;
+    	 //Récupére les data de la table client
     	 while(rs.next()) { 
     	  int id = rs.getInt("Id_Client"); 
     	  String name= rs.getString("Nom_client");
@@ -117,9 +119,20 @@ public class Mariadb {
     	  String mail = rs.getString("mail");
     	  String pub = rs.getString("pub");
     	  boolean sexe = rs.getBoolean("sexe");
-    	  list.add(new  User(id, name, prenom, mdp, mail, pub, sexe));
+    	  Date client_date = rs.getDate("Date_client");
+    	  User client  = new  User(id, name, prenom, mdp, mail, pub, sexe, client_date);
+    	     	  
+    	  prof =  st.executeQuery("SELECT*FROM db.Prof_Client WHERE Id_Client = "+id);
+    	  //Recupère les datas de la table profession_client correspondant au client créé
+    	  while(prof.next()) {
+    		  String prof_name = prof.getString("Nom_prof"); 
+    		  Date prof_date = prof.getDate("Prof_date");
+    		  client.addProfList(new Profession(prof_name, prof_date));
+    	  }
+    	  
+    	  list.add(client);
     	 }
-    	 list.remove(0); // retire la psy de la liste
+    	 list.remove(0); // retire la psy de la liste client
     	 return  list; 
     }
     

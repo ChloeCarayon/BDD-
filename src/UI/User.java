@@ -1,18 +1,26 @@
 package UI;
 
-public class User {
-    int Id_User; String Nom; String Prenom; String Email; Boolean Sexe; String Pub; String Password;
+import java.util.ArrayList;
+import java.sql.Date;
 
-    public User(int id_User, String nom, String prenom,String password, String email,String pub, boolean sexe) {
-        Id_User = id_User;
-        Nom = nom;
-        Prenom = prenom;
-        Email = email;
-        Sexe = sexe;
-        Pub = pub;
-        Password = password;
+public class User {
+   private int Id_User; String Nom; String Prenom; String Email; Boolean Sexe; String Pub; String Password;
+   private ArrayList<Profession> profList; 
+   private Date anciennete;
+   
+    public User(int id_User, String nom, String prenom,String password, String email,String pub, boolean sexe, Date ancien) {
+        this.Id_User = id_User;
+        this.Nom = nom;
+        this.Prenom = prenom;
+        this.Email = email;
+        this.Sexe = sexe;
+        this.Pub = pub;
+        this.Password = password;
+        this.profList = new ArrayList<>();
+        this.setAnciennete(ancien);
     }
 
+////Getters and Setters 
     public User(int id_User, String password) {
         Id_User = id_User;
         Password = password;
@@ -50,8 +58,10 @@ public class User {
         Email = email;
     }
 
-    public Boolean getSexe() {
-        return Sexe;
+    public String getSexe() {
+    	if(this.Sexe)
+    		return "Homme";
+        return "Femme";
     }
 
     public void setSexe(Boolean sexe) {
@@ -73,4 +83,43 @@ public class User {
     public void setPassword(String password) {
         Password = password;
     }
-}
+
+	public ArrayList<Profession> getProfList() {
+		return profList;
+	}
+
+	public void addProfList(Profession p) {
+		this.profList.add(p);
+	}
+
+	public Date getAnciennete() {
+		return anciennete;
+	}
+
+	public void setAnciennete(Date anciennete) {
+		this.anciennete = anciennete;
+	}
+	
+	
+////// Methodes 
+	public String toString() {
+		
+		String p = " "; 
+		if(this.profList.size()==0) 
+			p = "Aucune profession enregistrée";
+		else {
+			for(Profession k : profList) {
+				p += k.toString();
+				p +="<br>";
+			}
+		}
+		
+		
+		return "<html> Nom :  " +this.Nom
+				+ "<br> <br> Prénom : "+ this.Prenom
+				+"<br> <br>  Email :  "+ this.Email
+				+"<br> <br>  Client depuis  :  " +this.anciennete.toString()
+				+"<br> <br>  Sexe :"+ this.getSexe() 
+				+ "<br> <br> Professions exercées : "+p;
+	}
+}	
