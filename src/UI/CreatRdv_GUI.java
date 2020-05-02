@@ -9,8 +9,6 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public final class CreatRdv_GUI extends Default_Page implements ActionListener  {
-    boolean LogorRegis;
-   // private JDateChooser Date =new JDateChooser();
     private JLabel DateLabel = new JLabel("Date");
     private JLabel HeureLabel = new JLabel("Heure");
     private JLabel Patient1Label = new JLabel("Patient 1");
@@ -32,17 +30,17 @@ public final class CreatRdv_GUI extends Default_Page implements ActionListener  
     public CreatRdv_GUI(Date date) throws SQLException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         DateChoose = new JLabel(sdf.format(date));
-        if (!mySystem.mariaconnexion.Datecheck(sdf.format(date))){
-            JOptionPane.showMessageDialog(null, "Vous travaillez 10h à ce jour.\nVeuillez sélectionner une autre date");
-            this.dispose();
-            new RDVpsy_GUI();
-        }
         SetListPatient();
         SetListHeure();
         createWindow("Creation d'un RDV",500, 100, 380, 500);
         setLocationAndSize();
         addComponentsToFrame();
         this.setVisible(true);
+        if (!mySystem.mariaconnexion.Datecheck(sdf.format(date))){
+            JOptionPane.showMessageDialog(null, "Vous travaillez 10h à ce jour.\nVeuillez sélectionner une autre date");
+            this.dispose();
+            new RDVpsy_GUI();
+        }
     }
 
     protected void setLocationAndSize() {   // Log in
@@ -160,7 +158,7 @@ public final class CreatRdv_GUI extends Default_Page implements ActionListener  
             new RDVpsy_GUI();
         }
         else if(e.getSource()==exitButton){
-
+            this.dispose();
             new Psy_GUI();
         }
     }

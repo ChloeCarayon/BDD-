@@ -106,7 +106,7 @@ public class User {
 		
 		String p = " "; 
 		if(this.profList.size()==0) 
-			p = "Aucune profession enregistrée";
+			p = "Aucune profession enregistree";
 		else {
 			for(Profession k : profList) {
 				p += k.toString();
@@ -116,10 +116,10 @@ public class User {
 		
 		
 		return "<html> Nom :  " +this.Nom
-				+ "<br> <br> Prénom : "+ this.Prenom
+				+ "<br> <br> Prenom : "+ this.Prenom
 				+"<br> <br>  Email :  "+ this.Email
 				+"<br> <br>  Client depuis  :  " +this.anciennete.toString()
 				+"<br> <br>  Sexe :"+ this.getSexe() 
-				+ "<br> <br> Professions exercées : "+p;
+				+ "<br> <br> Professions exercees : "+p;
 	}
 }	

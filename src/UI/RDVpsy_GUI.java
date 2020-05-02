@@ -1,31 +1,17 @@
 package UI;
 
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import com.toedter.calendar.JCalendar;
 
-
-
-import java.awt.Color;
-import java.awt.Container;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
+import java.awt.*;
+import java.awt.event.*;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Locale;
-
 import javax.swing.*;
 import javax.swing.border.Border;
 
 
 public class RDVpsy_GUI extends Default_Page implements ActionListener {
-
-
-   // Calendar calendar2 = Calendar.getInstance();
     private JCalendar calendar =  new JCalendar();
     private JScrollPane listScroll;
     private JList<String> rdv_List;
@@ -57,12 +43,12 @@ public class RDVpsy_GUI extends Default_Page implements ActionListener {
                 list.addElement(Rdv);
             }
             if(mySystem.rdvListe.size()<1) {
-                list.addElement("Vous n'avez pas encore de RDV !");
+                list.addElement("bloup bloup ");
             }
         }catch(IndexOutOfBoundsException e) {
-            list.addElement("Vous n'avez pas encore de RDV !");
+            list.addElement("bloup bloup");
         }catch(Exception e) {
-            list.addElement("Impossible d'afficher les RDV");
+            list.addElement("bloup bloup");
         }
         PrintList();
     }
@@ -116,22 +102,6 @@ public class RDVpsy_GUI extends Default_Page implements ActionListener {
         calendar.setBounds(0,0,600,220);
        }
 
-    protected void getProfile() {
-        int index = rdv_List.getSelectedIndex();
-        String infos;
-        try {
-            infos = "<html> Nom :  ";
-            infos += String.valueOf(mySystem.rdvListe.get(index).getId());
-        }catch(ArrayIndexOutOfBoundsException aiobe) {
-            infos = "Aucun rdv selectionne !";
-        }
-        catch(Exception e) {
-            infos = "Impossible d'afficher le rdv";
-        }
-
-        profile.setText(infos);
-    }
-
     protected void addComponentsToFrame() {
         this.add(listScroll);
         this.add(ExitButton);
@@ -145,9 +115,6 @@ public class RDVpsy_GUI extends Default_Page implements ActionListener {
         ModifButton.addActionListener(this);
     }
 
-    private void CreateCAl(){
-
-    }
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource()==ExitButton){

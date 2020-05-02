@@ -1,7 +1,9 @@
 package UI;
 import java.sql.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.Date;
+import java.sql.Date;
 
 public class Mariadb {
     // JDBC driver name and database URL
@@ -101,8 +103,7 @@ public class Mariadb {
         preparedStatement.setDate(1, sqlDate); // nom
         resultSet = preparedStatement.executeQuery();
         while( resultSet.next()) count++;
-        if (count == 10) return false;
-        else return true;
+        return count != 10;
     }
     
     public ArrayList<User> getPatient() throws SQLException {
@@ -110,8 +111,7 @@ public class Mariadb {
     	Statement st = conn.createStatement();
     	 ResultSet rs = st.executeQuery("SELECT*FROM db.Client");
     	 ResultSet prof ;
-    	 //Récupére les data de la table client
-    	 while(rs.next()) { 
+         while(rs.next()) {
     	  int id = rs.getInt("Id_Client"); 
     	  String name= rs.getString("Nom_client");
     	  String prenom = rs.getString("Prenom_client");
@@ -121,9 +121,8 @@ public class Mariadb {
     	  boolean sexe = rs.getBoolean("sexe");
     	  Date client_date = rs.getDate("Date_client");
     	  User client  = new  User(id, name, prenom, mdp, mail, pub, sexe, client_date);
-    	     	  
     	  prof =  st.executeQuery("SELECT*FROM db.Prof_Client WHERE Id_Client = "+id);
-    	  //Recupère les datas de la table profession_client correspondant au client créé
+    	  //Recupï¿½re les datas de la table profession_client correspondant au client crï¿½ï¿½
     	  while(prof.next()) {
     		  String prof_name = prof.getString("Nom_prof"); 
     		  Date prof_date = prof.getDate("Prof_date");
@@ -133,7 +132,8 @@ public class Mariadb {
     	  list.add(client);
     	 }
     	 list.remove(0); // retire la psy de la liste client
-    	 return  list; 
+    	 return  list;
+    	 // java.sql.Date sqlDate = java.sql.Date.valueOf(date);
     }
     
     public ArrayList<Rdv> getRdv() throws SQLException {
@@ -206,94 +206,3 @@ public class Mariadb {
         }
     }
     }
-
-
-/*
-EXEMPLE POUR COMPRENDRE
-
-
-    public void readDataBase() throws Exception {
-        try {
-            // This will load the MySQL driver, each DB has its own driver
-            Class.forName("org.mariadb.jdbc.Driver");
-            // Setup the connection with the DB
-            conn = DriverManager
-                    .getConnection("jdbc:mariadb://127.0.0.1/db", USER, PASS);
-
-            // Statements allow to issue SQL queries to the database
-            stmt = conn.createStatement();
-            // Result set get the result of the SQL query
-            resultSet = stmt
-                    .executeQuery("select * from db.Client");
-            writeResultSet(resultSet);
-
-            // PreparedStatements can use variables and are more efficient
-            boolean sexe = true;
-            preparedStatement = conn
-                    .prepareStatement("insert into  db.Client values (default, ?, ?, ?, ? , ?,?)");
-            // "myuser, webpage, datum, summary, COMMENTS from feedback.comments");
-            // Parameters start with 1
-            preparedStatement.setString(1, "Dupond"); // nom
-            preparedStatement.setString(2, "Michel");   // prÃ©nom
-            preparedStatement.setString(3, "amamama");      // mdp
-            preparedStatement.setString(4, "mich@gmail.com");      // mail
-            preparedStatement.setString(5, "BaO");      //pub
-            preparedStatement.setBoolean(6, sexe);
-            preparedStatement.executeUpdate();
-
-            preparedStatement = conn
-                    .prepareStatement("SELECT Id_client, Nom_client, Prenom_client, mdp, mail, pub,sexe from db.Client");
-            resultSet = preparedStatement.executeQuery();
-            writeResultSet(resultSet);
-
-            // Remove again the insert comment
-            preparedStatement = conn
-                    .prepareStatement("delete from db.client where Nom_client= ? ; ");
-            preparedStatement.setString(1, "Test");
-            preparedStatement.executeUpdate();
-
-            resultSet = stmt
-                    .executeQuery("select * from db.Client");
-            writeMetaData(resultSet);
-
-        } catch (Exception e) {
-            throw e;
-        } finally {
-            close();
-        }
-    }
-
-        public void readDB() throws SQLException {
-        resultSet = stmt
-                .executeQuery("select * from db.Client");
-        writeResultSet(resultSet);
-        boolean sexe = false;
-        preparedStatement = conn
-                .prepareStatement("insert into  db.Client values (default, ?, ?, ?, ? , ?,?)");
-        // "myuser, webpage, datum, summary, COMMENTS from feedback.comments");
-        // Parameters start with 1
-        preparedStatement.setString(1, "Beau"); // nom
-        preparedStatement.setString(2, "Corinne");   // prÃ©nom
-        preparedStatement.setString(3, "papapa");      // mdp
-        preparedStatement.setString(4, "corinne@gmail.com");      // mail
-        preparedStatement.setString(5, "Internet");      //pub
-        preparedStatement.setBoolean(6, sexe);
-        preparedStatement.executeUpdate();
-
-        preparedStatement = conn
-                .prepareStatement("SELECT Id_client, Nom_client, Prenom_client, mdp, mail, pub,sexe from db.Client");
-        resultSet = preparedStatement.executeQuery();
-        writeResultSet(resultSet);
-    }
-
-    private void writeMetaData(ResultSet resultSet) throws SQLException {
-        //  Now get some metadata from the database
-        // Result set get the result of the SQL query
-
-        System.out.println("The columns in the table are: ");
-        System.out.println("Table: " + resultSet.getMetaData().getTableName(1));
-        for  (int i = 1; i<= resultSet.getMetaData().getColumnCount(); i++){
-            System.out.println("Column " +i  + " "+ resultSet.getMetaData().getColumnName(i));
-        }
-    }
- */

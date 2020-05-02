@@ -3,7 +3,7 @@ package UI;
 import java.sql.*;
 import javax.swing.*;
 import java.awt.event.*;
-import java.awt.*;
+import java.text.ParseException;
 
 public final class Registration extends Default_Page implements ActionListener {
     boolean LogorRegis;
@@ -151,7 +151,7 @@ public final class Registration extends Default_Page implements ActionListener {
                  
                         this.dispose();
                         new Psy_GUI();
-                    } catch (SQLException throwables) {
+                    } catch (SQLException  throwables) {
                         throwables.printStackTrace(); JOptionPane.showMessageDialog(null, "Erreur mot de passe ou email.");
                     }
                 }
