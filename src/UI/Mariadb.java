@@ -13,7 +13,7 @@ public class Mariadb {
 
     //  Database credentials
     static final String USER = "root";
-    static final String PASS = "new_password";
+    static final String PASS = "bdd";
 
     private Connection conn = null;
     private Statement stmt = null;
@@ -110,7 +110,7 @@ public class Mariadb {
     	ArrayList<User> list = new ArrayList<>();
     	Statement st = conn.createStatement();
     	 ResultSet rs = st.executeQuery("SELECT*FROM db.Client");
-    	 ResultSet prof ;
+    	 ResultSet getlistes ;
          while(rs.next()) {
     	  int id = rs.getInt("Id_Client"); 
     	  String name= rs.getString("Nom_client");
@@ -121,12 +121,28 @@ public class Mariadb {
     	  boolean sexe = rs.getBoolean("sexe");
     	  Date client_date = rs.getDate("Date_client");
     	  User client  = new  User(id, name, prenom, mdp, mail, pub, sexe, client_date);
-    	  prof =  st.executeQuery("SELECT*FROM db.Prof_Client WHERE Id_Client = "+id);
-    	  //Recup�re les datas de la table profession_client correspondant au client cr��
-    	  while(prof.next()) {
-    		  String prof_name = prof.getString("Nom_prof"); 
-    		  Date prof_date = prof.getDate("Prof_date");
-    		  client.addProfList(new Profession(prof_name, prof_date));
+    	  
+    	  
+    	  getlistes =  st.executeQuery("SELECT*FROM db.Prof_Client WHERE Id_Client = "+id);
+    	  //Recup�re les datas de la table profession_client correspondant au client 
+    	  while(getlistes.next()) {
+    		  String prof_name =  getlistes.getString("Nom_prof"); 
+    		  Date prof_date =  getlistes.getDate("Prof_date");
+    		  client.addProfList(prof_date,prof_name);
+    	  }
+    	  
+    	  getlistes =  st.executeQuery("SELECT*FROM db.Couple WHERE Id_Client = "+id);
+    	  while(getlistes.next()) {
+    		  Boolean en_couple =  getlistes.getBoolean("en_couple"); 
+    		  Date couple_date =  getlistes.getDate("Date_couple");
+    		  client.addCoupleList(couple_date,en_couple);
+    	  }
+    	  
+    	  getlistes =  st.executeQuery("SELECT*FROM db.type WHERE Id_Client = "+id);
+    	  while(getlistes.next()) {
+    		  String type_name =  getlistes.getString("Nom_type"); 
+    		  Date type_date =  getlistes.getDate("Date_type");
+    		  client.addTypeList(type_date,type_name);
     	  }
     	  
     	  list.add(client);
