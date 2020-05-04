@@ -1,11 +1,15 @@
 package UI;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.sql.Date;
 
 public class User {
    private int Id_User; String Nom; String Prenom; String Email; Boolean Sexe; String Pub; String Password;
-   private ArrayList<Profession> profList; 
+   private Map<Date, String> profList;
+   private Map<Date,String> typeList; 
+   private Map<Date,Boolean> coupleList;    
    private Date anciennete;
    
     public User(int id_User, String nom, String prenom,String password, String email,String pub, boolean sexe, Date ancien) {
@@ -16,8 +20,10 @@ public class User {
         this.Sexe = sexe;
         this.Pub = pub;
         this.Password = password;
-        this.profList = new ArrayList<>();
+        this.profList = new HashMap<>();
         this.setAnciennete(ancien);
+        this.typeList = new HashMap<>();
+        this.coupleList = new HashMap<>();
     }
 
 ////Getters and Setters 
@@ -84,12 +90,12 @@ public class User {
         Password = password;
     }
 
-	public ArrayList<Profession> getProfList() {
+	public  Map<Date,String>  getProfList() {
 		return profList;
 	}
 
-	public void addProfList(Profession p) {
-		this.profList.add(p);
+	public Map<Date,Boolean> getCoupleList() {
+		return coupleList;
 	}
 
 	public Date getAnciennete() {
@@ -100,26 +106,78 @@ public class User {
 		this.anciennete = anciennete;
 	}
 	
+	public Map<Date,String> getTypeList() {
+		return typeList;
+	}
+
+////METHODES ADD
+	public void addTypeList(Date d, String t) {
+		this.typeList.put(d, t);
+	}
 	
-////// Methodes 
+	public void addCoupleList(Date d, Boolean c) {
+		this.coupleList.put(d, c);
+	}
+	
+	
+	public void addProfList(Date d, String p) {
+		this.profList.put(d, p);
+	}
+	
+	
+	
+////// Methodes to String
+	
 	public String toString() {
 		
 		String p = " "; 
 		if(this.profList.size()==0) 
 			p = "Aucune profession enregistree";
 		else {
-			for(Profession k : profList) {
-				p += k.toString();
-				p +="<br>";
+			for(Date d : profList.keySet()) {
+				p += profList.get(d);
+				p +=" en ";
+				p += d;
+				p +=" <br>";
 			}
 		}
 		
+		String t = " "; 
+		if(this.typeList.size()==0) 
+			t = "Aucun type enregistré";
+		else {
+			for(Date d : typeList.keySet()) {
+				t += typeList.get(d);
+				t +=" en ";
+				t += d;
+				t +=" <br>";
+			}
+		}
+		
+		String c = " "; 
+		if(this.coupleList.size()==0) 
+			t = "Aucun couple enregistré";
+		else {
+			for(Date d : coupleList.keySet()) {
+				if(coupleList.get(d))
+					c += "En couple";
+				else c+= "Célibataire";
+				
+				c +=" en ";
+				c += d;
+				c +=" <br>";
+			}
+		}
 		
 		return "<html> Nom :  " +this.Nom
 				+ "<br> <br> Prenom : "+ this.Prenom
 				+"<br> <br>  Email :  "+ this.Email
 				+"<br> <br>  Client depuis  :  " +this.anciennete.toString()
 				+"<br> <br>  Sexe :"+ this.getSexe() 
-				+ "<br> <br> Professions exercees : "+p;
+				+" <br> <br>  Type  :"+ t
+				+" <br>  Situation  :"+ c
+				+ " <br> Professions exercees : "+p;
 	}
+
+	
 }	
