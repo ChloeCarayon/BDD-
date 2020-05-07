@@ -126,7 +126,7 @@ public class Mariadb {
         preparedStatement.setDate(1, sqlDate); // nom
         resultSet = preparedStatement.executeQuery();
         while( resultSet.next()) count++;
-        return count != 10;
+        return count != 20;
     }
     
     public ArrayList<User> getPatient() throws SQLException {

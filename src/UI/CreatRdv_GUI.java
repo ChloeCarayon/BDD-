@@ -93,8 +93,8 @@ public final class CreatRdv_GUI extends Default_Page implements ActionListener  
         try {
             String[] ListPatient = new String[mySystem.patients.size()];
             ListPatient[0] = "null";
-            for(int cnt=1;cnt<mySystem.patients.size();cnt++)
-                ListPatient[cnt] = (mySystem.patients.get(cnt).getNom() + " . "+ mySystem.patients.get(cnt).getPrenom() ) ;
+            for(int cnt=0;cnt<mySystem.patients.size();cnt++)
+                ListPatient[cnt+1] = (mySystem.patients.get(cnt).getNom() + " . "+ mySystem.patients.get(cnt).getPrenom() ) ;
             Patient1ComboBox = new JComboBox<>(ListPatient);Patient2ComboBox = new JComboBox<>(ListPatient);
             Patient3ComboBox = new JComboBox<>(ListPatient);
         }
