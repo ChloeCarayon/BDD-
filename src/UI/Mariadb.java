@@ -41,12 +41,12 @@ public class Mariadb {
         }
     }
 
-    public void readDBClient(String nom, String prenom, String mdp, String mail, String pub, boolean sexe) throws SQLException {
+    public int readDBClient(String nom, String prenom, String mdp, String mail, String pub, boolean sexe) throws SQLException {
         resultSet = stmt
                 .executeQuery("select * from db.Client");
-        writeResultSet(resultSet);
+       // writeResultSet(resultSet);
         preparedStatement = conn
-                .prepareStatement("insert into  db.Client values (default, ?, ?, ?, ? , ?,?)");
+                .prepareStatement("insert into  db.Client values (default, ?, ?, ?, ? , ?,?,NOW())");
         // Parameters start with 1
         preparedStatement.setString(1, nom); // nom
         preparedStatement.setString(2, prenom);   // prÃ©nom
@@ -59,7 +59,30 @@ public class Mariadb {
         preparedStatement = conn
                 .prepareStatement("SELECT Id_client, Nom_client, Prenom_client, mdp, mail, pub,sexe from db.Client");
         resultSet = preparedStatement.executeQuery();
-        writeResultSet(resultSet);
+    //    writeResultSet(resultSet);
+        
+    	Statement st = conn.createStatement();
+    	ResultSet rs = st.executeQuery("SELECT Id_Client FROM db.Client WHERE mail =  "+mail); //2 clients ne peuvent avoir le même mail
+    	rs.next();
+        	
+    	return rs.getInt("Id_Client"); //renvoie l'id du nouveau client
+       
+    }
+    
+    public void addDBCouple(int id_client, Date date, boolean couple) throws SQLException{
+    	resultSet = stmt
+                .executeQuery("select * from db.couple");
+    	
+    	if(date == null) {
+            preparedStatement = conn
+                    .prepareStatement("insert into  db.couple values (default," + couple + "," + id_client + ")");
+            
+    	}else 
+          preparedStatement = conn
+                  .prepareStatement("insert into  db.couple values (" + date + "," + couple + "," + id_client + ")");
+         
+    	resultSet = preparedStatement.executeQuery();
+          
     }
 
     private void writeResultSet(ResultSet resultSet) throws SQLException {
