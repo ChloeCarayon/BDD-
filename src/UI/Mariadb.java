@@ -57,19 +57,16 @@ public class Mariadb {
         preparedStatement.executeUpdate();
 
         preparedStatement = conn
-                .prepareStatement("SELECT Id_client, Nom_client, Prenom_client, mdp, mail, pub,sexe from db.Client", Statement.RETURN_GENERATED_KEYS);
+                .prepareStatement("SELECT Nom_client, Prenom_client, mdp, mail, pub,sexe from db.Client");
         preparedStatement.execute();
         
    
-       ResultSet rs = preparedStatement.getGeneratedKeys();
-        int id = -1;
-        rs.next();
-        id = rs.getInt(1);
-      	
-        System.out.print(id);
-        
-    	return 0; //renvoie l'id du nouveau client
-       
+       ResultSet rs = preparedStatement.executeQuery("Select LAST_INSERT_ID()");
+        int id_nouveau_client = -1;
+        if(rs.next()) {
+        	id_nouveau_client = rs.getInt(1);
+        } 	
+        return id_nouveau_client;
     }
     
     public void addDBCouple(int id_client, Date date, boolean couple) throws SQLException{

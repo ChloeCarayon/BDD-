@@ -189,8 +189,8 @@ public final class Registration extends Default_Page implements ActionListener {
                                 emailText.getText(),PubComboBox.getSelectedItem().toString() ,sexe);
                         
                     
-                    //    mySystem.mariaconnexion.addDBCouple(id_nouveau_client, null, couple); //null car date du jour par défaut dans le SQL
-                   //     mySystem.mariaconnexion.addDBType(id_nouveau_client, null,  TypeComboBox.getSelectedItem().toString() );
+                       mySystem.mariaconnexion.addDBCouple(id_nouveau_client, null, couple); //null car date du jour par défaut dans le SQL
+                        mySystem.mariaconnexion.addDBType(id_nouveau_client, null,  TypeComboBox.getSelectedItem().toString() );
                         
                        //Actualise la liste de Patient
                         mySystem.patients.clear();
