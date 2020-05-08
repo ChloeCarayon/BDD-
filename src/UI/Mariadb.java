@@ -57,15 +57,18 @@ public class Mariadb {
         preparedStatement.executeUpdate();
 
         preparedStatement = conn
-                .prepareStatement("SELECT Id_client, Nom_client, Prenom_client, mdp, mail, pub,sexe from db.Client");
-        resultSet = preparedStatement.executeQuery();
-    //    writeResultSet(resultSet);
+                .prepareStatement("SELECT Id_client, Nom_client, Prenom_client, mdp, mail, pub,sexe from db.Client", Statement.RETURN_GENERATED_KEYS);
+        preparedStatement.execute();
         
-    	Statement st = conn.createStatement();
-    	ResultSet rs = st.executeQuery("SELECT Id_Client FROM db.Client WHERE mail =  "+mail); //2 clients ne peuvent avoir le même mail
-    	rs.next();
-        	
-    	return rs.getInt("Id_Client"); //renvoie l'id du nouveau client
+   
+       ResultSet rs = preparedStatement.getGeneratedKeys();
+        int id = -1;
+        rs.next();
+        id = rs.getInt(1);
+      	
+        System.out.print(id);
+        
+    	return 0; //renvoie l'id du nouveau client
        
     }
     
@@ -76,15 +79,27 @@ public class Mariadb {
     	if(date == null) {
             preparedStatement = conn
                     .prepareStatement("insert into  db.couple values (default," + couple + "," + id_client + ")");
-            
     	}else 
           preparedStatement = conn
                   .prepareStatement("insert into  db.couple values (" + date + "," + couple + "," + id_client + ")");
          
-    	resultSet = preparedStatement.executeQuery();
-          
+    	resultSet = preparedStatement.executeQuery();          
     }
 
+    
+    public void addDBType(int id_client, Date date, String type) throws SQLException{
+    	resultSet = stmt
+                .executeQuery("select * from db.type");
+    	
+    	if(date == null) {
+            preparedStatement = conn
+                    .prepareStatement("insert into  db.type values (default," + type + "," + id_client + ")");
+    	}else 
+          preparedStatement = conn
+                  .prepareStatement("insert into  db.type values (" + date + "," + type + "," + id_client + ")");
+         
+    	resultSet = preparedStatement.executeQuery();          
+    }
     private void writeResultSet(ResultSet resultSet) throws SQLException {
         // ResultSet is initially before the first data set
         while (resultSet.next()) {
@@ -165,7 +180,7 @@ public class Mariadb {
     	  while(getlistes.next()) {
     		  String type_name =  getlistes.getString("Nom_type"); 
     		  Date type_date =  getlistes.getDate("Date_type");
-    		  client.addTypeList(type_date,type_name);
+    		  client.addTypeList(type_date, type_name);
     	  }
     	  
     	  list.add(client);
