@@ -13,7 +13,7 @@ public class Mariadb {
 
     //  Database credentials
     static final String USER = "root";
-    static final String PASS = "bdd";
+    static final String PASS = "new_password";
 
     private Connection conn = null;
     private Statement stmt = null;
@@ -62,7 +62,7 @@ public class Mariadb {
     //    writeResultSet(resultSet);
         
     	Statement st = conn.createStatement();
-    	ResultSet rs = st.executeQuery("SELECT Id_Client FROM db.Client WHERE mail =  "+mail); //2 clients ne peuvent avoir le même mail
+    	ResultSet rs = st.executeQuery("SELECT Id_Client FROM db.Client WHERE mail =  "+mail); //2 clients ne peuvent avoir le mï¿½me mail
     	rs.next();
         	
     	return rs.getInt("Id_Client"); //renvoie l'id du nouveau client

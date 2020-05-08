@@ -133,11 +133,11 @@ public class RDVpsy_GUI extends Default_Page implements ActionListener {
                 JOptionPane.showMessageDialog(null, "Vous n'avez pas encore de patients.");
             else {
                 this.dispose();
-              /*  try {
-                 //   new CreatRdv_GUI(calendar.getDate());
+                try {
+                    new CreatRdv_GUI(calendar.getDate());
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
-                }*/
+                }
             }
         }
     }
