@@ -188,7 +188,9 @@ public final class Registration extends Default_Page implements ActionListener {
                         int id_nouveau_client = mySystem.mariaconnexion.readDBClient(nomTextField.getText(), prenomTextField.getText(),password,
                                 emailText.getText(),PubComboBox.getSelectedItem().toString() ,sexe);
                         
-                       // mySystem.mariaconnexion.addDBCouple(id_nouveau_client, null, couple);
+                    
+                       mySystem.mariaconnexion.addDBCouple(id_nouveau_client, null, couple); //null car date du jour par défaut dans le SQL
+                        mySystem.mariaconnexion.addDBType(id_nouveau_client, null,  TypeComboBox.getSelectedItem().toString() );
                         
                        //Actualise la liste de Patient
                         mySystem.patients.clear();
@@ -205,6 +207,7 @@ public final class Registration extends Default_Page implements ActionListener {
                     }
                     catch (SQLException  throwables) {
                        JOptionPane.showMessageDialog(null, "Impossible de créer le patient");
+                      throwables.printStackTrace();
                     }
                 }
             }

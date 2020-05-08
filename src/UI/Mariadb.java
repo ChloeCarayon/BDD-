@@ -41,32 +41,21 @@ public class Mariadb {
         }
     }
 
-    public int readDBClient(String nom, String prenom, String mdp, String mail, String pub, boolean sexe) throws SQLException {
-        resultSet = stmt
-                .executeQuery("select * from db.Client");
-       // writeResultSet(resultSet);
-        preparedStatement = conn
-                .prepareStatement("insert into  db.Client values (default, ?, ?, ?, ? , ?,?,NOW())");
-        // Parameters start with 1
-        preparedStatement.setString(1, nom); // nom
-        preparedStatement.setString(2, prenom);   // prénom
-        preparedStatement.setString(3, mdp);      // mdp
-        preparedStatement.setString(4, mail);      // mail
-        preparedStatement.setString(5, pub);      //pub
-        preparedStatement.setBoolean(6, sexe);
-        preparedStatement.executeUpdate();
-
-        preparedStatement = conn
-                .prepareStatement("SELECT Id_client, Nom_client, Prenom_client, mdp, mail, pub,sexe from db.Client");
-        resultSet = preparedStatement.executeQuery();
-    //    writeResultSet(resultSet);
-        
-    	Statement st = conn.createStatement();
-    	ResultSet rs = st.executeQuery("SELECT Id_Client FROM db.Client WHERE mail =  "+mail); //2 clients ne peuvent avoir le m�me mail
-    	rs.next();
-        	
-    	return rs.getInt("Id_Client"); //renvoie l'id du nouveau client
-       
+public int readDBClient(String nom, String prenom, String mdp, String mail, String pub, boolean sexe) throws SQLException { 
+  resultSet = stmt .executeQuery("select * from db.Client");
+   writeResultSet(resultSet); preparedStatement = conn .prepareStatement("insert into db.Client values (default, ?, ?, ?, ? , ?,?,NOW())");
+   Parameters start with 1 preparedStatement.setString(1, nom); 
+   nom preparedStatement.setString(2, prenom); // prÃ©nom 
+  preparedStatement.setString(3, mdp); // mdp 
+  preparedStatement.setString(4, mail); // mail 
+  preparedStatement.setString(5, pub); //pub 
+  preparedStatement.setBoolean(6, sexe); preparedStatement.executeUpdate(); preparedStatement = conn .prepareStatement("SELECT Nom_client, Prenom_client, mdp, mail, pub,sexe from db.Client"); 
+  preparedStatement.execute(); 
+  ResultSet rs = preparedStatement.executeQuery("Select LAST_INSERT_ID()"); 
+  int id_nouveau_client = -1; 
+  if(rs.next()) { 
+    id_nouveau_client = rs.getInt(1); } 
+    return id_nouveau_client; `
     }
     
     public void addDBCouple(int id_client, Date date, boolean couple) throws SQLException{
@@ -76,15 +65,27 @@ public class Mariadb {
     	if(date == null) {
             preparedStatement = conn
                     .prepareStatement("insert into  db.couple values (default," + couple + "," + id_client + ")");
-            
     	}else 
           preparedStatement = conn
                   .prepareStatement("insert into  db.couple values (" + date + "," + couple + "," + id_client + ")");
          
-    	resultSet = preparedStatement.executeQuery();
-          
+    	resultSet = preparedStatement.executeQuery();          
     }
 
+    
+    public void addDBType(int id_client, Date date, String type) throws SQLException{
+    	resultSet = stmt
+                .executeQuery("select * from db.type");
+    	
+    	if(date == null) {
+            preparedStatement = conn
+                    .prepareStatement("insert into  db.type values (default," + type + "," + id_client + ")");
+    	}else 
+          preparedStatement = conn
+                  .prepareStatement("insert into  db.type values (" + date + "," + type + "," + id_client + ")");
+         
+    	resultSet = preparedStatement.executeQuery();          
+    }
     private void writeResultSet(ResultSet resultSet) throws SQLException {
         // ResultSet is initially before the first data set
         while (resultSet.next()) {
@@ -165,7 +166,7 @@ public class Mariadb {
     	  while(getlistes.next()) {
     		  String type_name =  getlistes.getString("Nom_type"); 
     		  Date type_date =  getlistes.getDate("Date_type");
-    		  client.addTypeList(type_date,type_name);
+    		  client.addTypeList(type_date, type_name);
     	  }
     	  
     	  list.add(client);
