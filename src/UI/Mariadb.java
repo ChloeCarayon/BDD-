@@ -87,16 +87,18 @@ public class Mariadb {
     public void addDBType(int id_client, Date date, String type) throws SQLException{
     	resultSet = stmt
                 .executeQuery("select * from db.type");
-    	
+
     	if(date == null) {
             preparedStatement = conn
-                    .prepareStatement("insert into  db.type values (default," + type + "," + id_client + ")");
+                    .prepareStatement("INSERT INTO `db`.`type` (`Date_type`, `Nom_type`, `Id_Client`) VALUES (default,'"+type+"'," + id_client + ")");
     	}else 
           preparedStatement = conn
-                  .prepareStatement("insert into  db.type values (" + date + "," + type + "," + id_client + ")");
-         
+                  .prepareStatement("INSERT INTO `db`.`type` (`Date_type`, `Nom_type`, `Id_Client`) VALUES ('"+date+"','"+type+"'," + id_client + ")");
+    	
     	resultSet = preparedStatement.executeQuery();          
     }
+    
+    
     private void writeResultSet(ResultSet resultSet) throws SQLException {
         // ResultSet is initially before the first data set
         while (resultSet.next()) {
