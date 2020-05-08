@@ -44,8 +44,8 @@ public class Mariadb {
 public int readDBClient(String nom, String prenom, String mdp, String mail, String pub, boolean sexe) throws SQLException { 
   resultSet = stmt .executeQuery("select * from db.Client");
    writeResultSet(resultSet); preparedStatement = conn .prepareStatement("insert into db.Client values (default, ?, ?, ?, ? , ?,?,NOW())");
-   Parameters start with 1 preparedStatement.setString(1, nom); 
-   nom preparedStatement.setString(2, prenom); // prÃ©nom 
+   preparedStatement.setString(1, nom);
+   preparedStatement.setString(2, prenom); // prÃ©nom
   preparedStatement.setString(3, mdp); // mdp 
   preparedStatement.setString(4, mail); // mail 
   preparedStatement.setString(5, pub); //pub 
@@ -55,7 +55,7 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
   int id_nouveau_client = -1; 
   if(rs.next()) { 
     id_nouveau_client = rs.getInt(1); } 
-    return id_nouveau_client; `
+    return id_nouveau_client;
     }
     
     public void addDBCouple(int id_client, Date date, boolean couple) throws SQLException{
@@ -75,14 +75,14 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
     
     public void addDBType(int id_client, Date date, String type) throws SQLException{
     	resultSet = stmt
-                .executeQuery("select * from db.type");
+                .executeQuery("select * from db.type_p");
     	
     	if(date == null) {
             preparedStatement = conn
-                    .prepareStatement("insert into  db.type values (default," + type + "," + id_client + ")");
+                    .prepareStatement("insert into  db.type_p values (default," + type + "," + id_client + ")");
     	}else 
           preparedStatement = conn
-                  .prepareStatement("insert into  db.type values (" + date + "," + type + "," + id_client + ")");
+                  .prepareStatement("insert into  db.type_p values (" + date + "," + type + "," + id_client + ")");
          
     	resultSet = preparedStatement.executeQuery();          
     }
@@ -162,7 +162,7 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
     		  client.addCoupleList(couple_date,en_couple);
     	  }
     	  
-    	  getlistes =  st.executeQuery("SELECT*FROM db.type WHERE Id_Client = "+id);
+    	  getlistes =  st.executeQuery("SELECT*FROM db.type_p WHERE Id_Client = "+id);
     	  while(getlistes.next()) {
     		  String type_name =  getlistes.getString("Nom_type"); 
     		  Date type_date =  getlistes.getDate("Date_type");

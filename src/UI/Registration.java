@@ -131,7 +131,7 @@ public final class Registration extends Default_Page implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-    	if(LogorRegis) ///PAGE PATIENT; ne peut pas avoir les deux cases sélectionnées
+    	if(LogorRegis) ///PAGE PATIENT; ne peut pas avoir les deux cases sï¿½lectionnï¿½es
     	{
     		 if (e.getSource() == checkCouple) {
     			checkCelib.setSelected(false);
@@ -188,26 +188,23 @@ public final class Registration extends Default_Page implements ActionListener {
                         int id_nouveau_client = mySystem.mariaconnexion.readDBClient(nomTextField.getText(), prenomTextField.getText(),password,
                                 emailText.getText(),PubComboBox.getSelectedItem().toString() ,sexe);
                         
-                    
-                       mySystem.mariaconnexion.addDBCouple(id_nouveau_client, null, couple); //null car date du jour par défaut dans le SQL
-                        mySystem.mariaconnexion.addDBType(id_nouveau_client, null,  TypeComboBox.getSelectedItem().toString() );
-                        
+                       // mySystem.mariaconnexion.addDBCouple(id_nouveau_client, null, couple);
+
                        //Actualise la liste de Patient
                         mySystem.patients.clear();
                         mySystem.patients = mySystem.mariaconnexion.getPatient();
-                        
-                        //Récupère l'id du client créé                    
-                 
+
+                        //Rï¿½cupï¿½re l'id du client crï¿½ï¿½
+
                         this.dispose();
                         new Psy_GUI();
                     } catch(java.sql.SQLIntegrityConstraintViolationException icve) {
                     	emailText.setText(" ");
                     	emailText.setBorder(BorderFactory.createLineBorder(Color.red));
-                    	JOptionPane.showMessageDialog(null, "Cette addresse Email existe déjà");
+                    	JOptionPane.showMessageDialog(null, "Cette addresse Email existe dï¿½jï¿½");
                     }
                     catch (SQLException  throwables) {
-                       JOptionPane.showMessageDialog(null, "Impossible de créer le patient");
-                      throwables.printStackTrace();
+                       JOptionPane.showMessageDialog(null, "Impossible de crï¿½er le patient");
                     }
                 }
             }
