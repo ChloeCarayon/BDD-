@@ -2,6 +2,7 @@ package UI;
 import java.sql.*;
 import java.util.*;
 import java.sql.Date;
+import java.util.stream.Collectors;
 
 public class Mariadb {
     // JDBC driver name and database URL
@@ -247,6 +248,18 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
                 int consul = rs.getInt("Id_consultation");
                 mySystem.rdvListe.add(new  Rdv(id,sqlDate , heure, prix, pay, c_1, c_2, c_3, consul));
             }
+        }
+    }
+
+    public boolean DeleteRdv(int id) {
+        try{
+        stmt = conn.createStatement();
+        resultSet= stmt.executeQuery("DELETE FROM db.rdv WHERE Id_rdv =" + id);
+        mySystem.rdvListe.remove(mySystem.rdvListe.stream().filter(r -> (r.getId()== id)).findFirst().get());
+            // RAJOUTER LA SUPPRESSION DE LA CONSULTATION
+        return true; }
+        catch( SQLException e){
+            return false;
         }
     }
 

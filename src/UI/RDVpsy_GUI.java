@@ -12,14 +12,13 @@ public class RDVpsy_GUI extends Default_Page implements ActionListener {
     
     private JScrollPane listScroll;
     private JList<String> rdv_List;
-    private final DefaultListModel<String> list = new DefaultListModel<>();
-
-    private JButton AddConsButton = new JButton("Ajouter une consultation ");
-    private JButton ExitButton=new JButton("Exit");
-    private JButton CreateButton = new JButton("Creer ");
-    private JButton ModifButton = new JButton("Modifier ");
-    private JButton SuprButton = new JButton("Supprimer ");
-   
+    private DefaultListModel<String> list = new DefaultListModel<>();
+    private final JButton AddConsButton = new JButton("Ajouter une consultation ");
+    private final JButton ExitButton=new JButton("Exit");
+    private final JButton CreateButton = new JButton("Creer ");
+    private final JButton ModifButton = new JButton("Modifier ");
+    private final JButton SuprButton = new JButton("Supprimer ");
+    private int index =-1;
     private final JLabel profile_title = new JLabel("Profile : ");
     private final JLabel profile = new JLabel("Selectionnez un profile");
 
@@ -61,10 +60,11 @@ public class RDVpsy_GUI extends Default_Page implements ActionListener {
     }
 
     protected void PrintList() {
-
         rdv_List = new JList<>(list);
         rdv_List.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        rdv_List.setVisibleRowCount(-1);
+       // rdv_List.setVisibleRowCount(-1);
+        rdv_List.setSelectedIndex(-1);
+        rdv_List.clearSelection();
         listScroll = new JScrollPane(rdv_List);
     }
 
@@ -78,7 +78,6 @@ public class RDVpsy_GUI extends Default_Page implements ActionListener {
         listScroll.setBounds(80,230,460,100);
         calendar.setBounds(0,0,600,220);
         AddConsButton.setBounds(200,355,200,23);
-
        }
 
     protected void addComponentsToFrame() {
@@ -94,29 +93,43 @@ public class RDVpsy_GUI extends Default_Page implements ActionListener {
         SuprButton.addActionListener(this);
         ModifButton.addActionListener(this);
         AddConsButton.addActionListener(this);
+
+    }
+
+    private void SupprRDV(){
+        System.out.println(rdv_List.getSelectedIndex());
+        if (rdv_List.getSelectedIndex() != -1){
+            String rdvsup = rdv_List.getModel().getElementAt(rdv_List.getSelectedIndex());
+            String[] id_string = rdvsup.split("  ", 2);
+            try {
+                boolean work = mySystem.mariaconnexion.DeleteRdv(Integer.parseInt(id_string[0]));
+                if (work) JOptionPane.showMessageDialog(null, "Rendez-vous supprimé avec succès");
+                else JOptionPane.showMessageDialog(null, "Erreur dans la suppression");
+            }
+            catch (NumberFormatException e) { }
+        }
+
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        //if ((e.getSource()==ModifButton || e.getSource()==SuprButton || e.getSource()==AddConsButton ) && (rdv_List.getSelectedIndex() == -1))
+          //  JOptionPane.showMessageDialog(null, "Veuillez sélectionner un RDV.");
+        //else {
+            if(e.getSource()==SuprButton )
+                SupprRDV();
+            if(e.getSource()==ModifButton  ) {
+               this.dispose();
+                //new CreatRdv_GUI();
+            }
+            if(e.getSource()==AddConsButton ) {
+                /*                                   EXIT                                      */
+                this.dispose();
+                //new CreatRdv_GUI();
+            }
+        //}
         if(e.getSource()==exitButton){
-            /*                                   EXIT                                      */
-            this.dispose();
-            new Psy_GUI();
-        }
-        if(e.getSource()==SuprButton && (rdv_List.getSelectedIndex() != -1) ){
-            /*                                   EXIT                                      */
-            this.dispose(); //patientList.getSelectedIndex() != -1
-            new Psy_GUI();
-        }
-        if(e.getSource()==ModifButton && (rdv_List.getSelectedIndex() != -1) ) {
-            /*                                   EXIT                                      */
-            this.dispose();
-            //new CreatRdv_GUI();
-        }
-        if(e.getSource()==AddConsButton && (rdv_List.getSelectedIndex() != -1) ) {
-            /*                                   EXIT                                      */
-            this.dispose();
-            //new CreatRdv_GUI();
+            this.dispose();new Psy_GUI();
         }
         if(e.getSource() == CreateButton) {
             if (mySystem.patients.size() == 1) {
@@ -132,7 +145,5 @@ public class RDVpsy_GUI extends Default_Page implements ActionListener {
                 }
             }
         }
-        if ((e.getSource()==ModifButton || e.getSource()==SuprButton || e.getSource()==AddConsButton ) && (rdv_List.getSelectedIndex() == -1))
-            JOptionPane.showMessageDialog(null, "Veuillez sélectionner un RDV.");
-    }
+        }
 }
