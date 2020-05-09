@@ -40,8 +40,7 @@ public final class Registration extends Default_Page implements ActionListener {
     private boolean choice_celib, choice_couple;
     
     private JButton registerButton = new JButton("REGISTER");
-    private JButton resetButton = new JButton("EXIT");
-    private JButton backButton=new JButton("Back");
+ 
 
     public Registration(boolean choice) {
         LogorRegis = choice;
@@ -82,7 +81,7 @@ public final class Registration extends Default_Page implements ActionListener {
             checkCelib.setBounds(250,370,70,30);
 
             registerButton.setBounds(20, 450, 100, 35);
-            resetButton.setBounds(150, 450, 70, 35);
+            exitButton.setBounds(150, 450, 70, 35);
             backButton.setBounds(250, 450, 70, 35);
 
         } else {
@@ -91,7 +90,7 @@ public final class Registration extends Default_Page implements ActionListener {
             emailText.setBounds(180, 43, 165, 23);
             passwordField.setBounds(180, 83, 165, 23);
             registerButton.setBounds(70, 150, 100, 35);
-            resetButton.setBounds(220, 150, 100, 35);
+            exitButton.setBounds(220, 150, 100, 35);
             addImage(10,300); 
         }
     }
@@ -102,7 +101,7 @@ public final class Registration extends Default_Page implements ActionListener {
         this.add(emailLabel);
         this.add(emailText);
         this.add(registerButton);
-        this.add(resetButton);
+        this.add(exitButton);
         this.add(backButton); 
    
         
@@ -123,7 +122,7 @@ public final class Registration extends Default_Page implements ActionListener {
         }
 
         registerButton.addActionListener(this);
-        resetButton.addActionListener(this);
+        exitButton.addActionListener(this);
         backButton.addActionListener(this);
         checkCouple.addActionListener(this);
         checkCelib.addActionListener(this);
@@ -181,8 +180,7 @@ public final class Registration extends Default_Page implements ActionListener {
                     else sexe= false;                    
                     if(choice_couple) couple = true;
                     else couple = false;
-                    
-                    
+                               
                     try {
                         String password = new String(passwordField.getPassword());
                         int id_nouveau_client = mySystem.mariaconnexion.readDBClient(nomTextField.getText(), prenomTextField.getText(),password,
@@ -212,7 +210,7 @@ public final class Registration extends Default_Page implements ActionListener {
                 }
             }
         }
-        if (e.getActionCommand().equals("EXIT")) {
+        if (e.getActionCommand().equals("Exit")) {
             this.dispose();
             // sql exit
         }

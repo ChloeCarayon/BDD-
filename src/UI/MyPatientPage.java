@@ -12,12 +12,8 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 
-public class MyPatientPage extends JFrame implements ActionListener{
+public class MyPatientPage extends Default_Page implements ActionListener{
 	
-	   private JScrollPane listScroll;
-	   private JList<String> patientList;
-	   private final DefaultListModel<String> list = new DefaultListModel<>();
-	   private JButton ExitButton=new JButton("Exit");
 	   private JButton ShowButton = new JButton("Voir le profile");
 	   
 	   private final JLabel profile_title = new JLabel("Profile : ");
@@ -26,7 +22,7 @@ public class MyPatientPage extends JFrame implements ActionListener{
 	 
 	 public MyPatientPage() {
 			createWindow();
-			setList();
+			setListClient();
 	        setLocationAndSize();
 	        addComponentsToFrame();
 	        this.setVisible(true);
@@ -40,37 +36,10 @@ public class MyPatientPage extends JFrame implements ActionListener{
 	         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	         this.setResizable(false);
 	     }
-	    
-	    private void setList() {
-	    	String patient;     		
-    		try {
+	        
 
-    			for (int i=0; i<mySystem.patients.size();i ++)  {//commence liste a 1 pour pas avoir la psy dans les clients
-    	    		patient = mySystem.patients.get(i).getNom();
-    	    		patient += "  "; 
-    	    		patient += mySystem.patients.get(i).getPrenom();
-    	    		list.addElement(patient);
-    	    	}	 
-    			if(mySystem.patients.size()<1) {
-    				list.addElement("Vous n'avez pas encore de clients !");
-    			}
-    		}catch(IndexOutOfBoundsException e) {
-    			list.addElement("Vous n'avez pas encore de clients !");
-    		}catch(Exception e) {
-    			list.addElement("Impossible d'afficher les clients");
-    		}
-	    	PrintList();
-	    }
-	    
-	    private void PrintList() {
-	    	patientList = new JList<>(list);
-	    	patientList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-	        patientList.setVisibleRowCount(-1);
-	        listScroll = new JScrollPane(patientList);	          
-	    }
-
-	    private void setLocationAndSize() {
-	    	ExitButton.setBounds(300,350,100,23);
+	    protected void setLocationAndSize() {
+	    	exitButton.setBounds(300,350,100,23);
 	    	ShowButton.setBounds(100,350,165,23);
 	    	listScroll.setBounds(100,100,100,100); 
 	    	profile_title.setBounds(150,50,150,30);
@@ -93,20 +62,20 @@ public class MyPatientPage extends JFrame implements ActionListener{
 	    	profile.setText(infos);
 	    }
 	    
-	    private void addComponentsToFrame() {
+	    protected void addComponentsToFrame() {
 	    	this.add(listScroll);	      
-	    	this.add(ExitButton);
+	    	this.add(exitButton);
 	    	this.add(profile_title);	
 	    	this.add(ShowButton);
 	    	this.add(profile);
 	    	
-	    	ExitButton.addActionListener(this);
+	    	exitButton.addActionListener(this);
 	    	ShowButton.addActionListener(this);
 	    }
 	    
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource()==ExitButton){
+		if(e.getSource()==exitButton){
 	            /*                                   EXIT                                      */
 	            this.dispose();
 	            new Psy_GUI();
