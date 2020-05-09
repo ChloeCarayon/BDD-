@@ -16,6 +16,7 @@ public class RDVpsy_GUI extends Default_Page implements ActionListener {
     private JScrollPane listScroll;
     private JList<String> rdv_List;
     private final DefaultListModel<String> list = new DefaultListModel<>();
+    private JButton AddConsButton = new JButton("Ajouter une consultation ");
     private JButton ExitButton=new JButton("Exit");
     private JButton CreateButton = new JButton("Creer ");
     private JButton ModifButton = new JButton("Modifier ");
@@ -40,16 +41,21 @@ public class RDVpsy_GUI extends Default_Page implements ActionListener {
             for (int i=0; i<mySystem.rdvListe.size();i ++)  {//commence liste a 1 pour pas avoir la psy dans les clients
                 Rdv = String.valueOf(mySystem.rdvListe.get(i).getId());
                 Rdv += "  ";
+                Rdv += String.valueOf(mySystem.rdvListe.get(i).getDate());
+                Rdv += "  ";
+                Rdv += String.valueOf(mySystem.rdvListe.get(i).getHeure());
+                Rdv += "  ";
+                Rdv += mySystem.mariaconnexion.getClient(mySystem.rdvListe.get(i).getClient1());
+                Rdv += "  ";
+                Rdv += mySystem.mariaconnexion.getClient(mySystem.rdvListe.get(i).getClient2());
+                Rdv += "  ";
+                Rdv += mySystem.mariaconnexion.getClient(mySystem.rdvListe.get(i).getClient3());
                 list.addElement(Rdv);
             }
             if(mySystem.rdvListe.size()<1) {
-                list.addElement("bloup bloup ");
+                list.addElement("Pas de RDV pour l'instant.");
             }
-        }catch(IndexOutOfBoundsException e) {
-            list.addElement("bloup bloup");
-        }catch(Exception e) {
-            list.addElement("bloup bloup");
-        }
+        } catch(Exception e) { }
         PrintList();
     }
 
@@ -61,25 +67,14 @@ public class RDVpsy_GUI extends Default_Page implements ActionListener {
     }
 
     protected void setLocationAndSize() {
-
-        ExitButton.setBounds(330,350,100,23);
-        ModifButton.setBounds(130,350,100,23);
-        SuprButton.setBounds(50,350,100,23);
-        CreateButton.setBounds(190,350,100,23);
-        listScroll.setBounds(100,100,150,100);
         profile_title.setBounds(300,50,150,30);
         profile.setBounds(280,80,150,150);
-        
         Container contentPane = getContentPane();
         contentPane.setLayout(null);
-       // MyDateListener listener = new MyDateListener();
         JCalendar calendar4 =
         		new JCalendar(
         		    Locale.FRENCH,
         		    false);
-        	 //   calendar4.addDateListener(listener);
-        	   
-
         Border etchedBorder =
         		BorderFactory.createEtchedBorder();
         	    Border emptyBorder =
@@ -88,18 +83,15 @@ public class RDVpsy_GUI extends Default_Page implements ActionListener {
         		BorderFactory.createCompoundBorder(etchedBorder, emptyBorder);
       
         	    calendar4.setBorder(compoundBorder);
-        	    
-        	    
         	    this.add(calendar4);
-        	//    contentPane.add(panel1);
-    
 
         ExitButton.setBounds(490,400,100,23);
         SuprButton.setBounds(340,400,100,23);
         ModifButton.setBounds(180,400,100,23);
         CreateButton.setBounds(20,400,100,23);
-        listScroll.setBounds(80,250,460,100);
+        listScroll.setBounds(80,230,460,100);
         calendar.setBounds(0,0,600,220);
+        AddConsButton.setBounds(200,355,200,23);
        }
 
     protected void addComponentsToFrame() {
@@ -109,10 +101,12 @@ public class RDVpsy_GUI extends Default_Page implements ActionListener {
         this.add(SuprButton);
         this.add(ModifButton);
         this.add(calendar);
+        this.add(AddConsButton);
         ExitButton.addActionListener(this);
         CreateButton.addActionListener(this);
         SuprButton.addActionListener(this);
         ModifButton.addActionListener(this);
+        AddConsButton.addActionListener(this);
     }
 
     @Override
@@ -122,23 +116,34 @@ public class RDVpsy_GUI extends Default_Page implements ActionListener {
             this.dispose();
             new Psy_GUI();
         }
-        else if(e.getSource()==SuprButton){
+        if(e.getSource()==SuprButton && (rdv_List.getSelectedIndex() != -1) ){
             /*                                   EXIT                                      */
-            this.dispose();
+            this.dispose(); //patientList.getSelectedIndex() != -1
             new Psy_GUI();
         }
-
+        if(e.getSource()==ModifButton && (rdv_List.getSelectedIndex() != -1) ) {
+            /*                                   EXIT                                      */
+            this.dispose();
+            //new CreatRdv_GUI();
+        }
+        if(e.getSource()==AddConsButton && (rdv_List.getSelectedIndex() != -1) ) {
+            /*                                   EXIT                                      */
+            this.dispose();
+            //new CreatRdv_GUI();
+        }
         if(e.getSource() == CreateButton) {
             if (mySystem.patients.size() == 1)
                 JOptionPane.showMessageDialog(null, "Vous n'avez pas encore de patients.");
             else {
                 this.dispose();
                 try {
-                    new CreatRdv_GUI(calendar.getDate());
+                    new CreatRdv_GUI(new SimpleDateFormat("yyyy-MM-dd").format(calendar.getDate()));
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
                 }
             }
         }
+        if ((e.getSource()==ModifButton || e.getSource()==SuprButton || e.getSource()==AddConsButton ) && (rdv_List.getSelectedIndex() == -1))
+            JOptionPane.showMessageDialog(null, "Veuillez sélectionner un RDV.");
     }
 }

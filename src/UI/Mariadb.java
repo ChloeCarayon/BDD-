@@ -1,7 +1,5 @@
 package UI;
 import java.sql.*;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.sql.Date;
 
@@ -208,6 +206,17 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
         return null;
     }
 
+    public String getClient(int Cl) throws SQLException {
+        preparedStatement = conn.prepareStatement("select * from db.Client  where Id_client=" + Cl);
+        resultSet = preparedStatement.executeQuery();
+        String Client="";
+        while( resultSet.next()){
+            Client = resultSet.getString("Nom_client"); Client+=" ";
+            Client += resultSet.getString("Prenom_client");
+        }
+        return(Client);
+    }
+
     public void FillRDV(String date, String heure, float prix, String pay, String cl1, String cl2, String cl3, Integer cons )  throws SQLException{
         java.sql.Date sqlDate = java.sql.Date.valueOf(date);
         Integer c1, c2, c3;
@@ -227,6 +236,12 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
         else preparedStatement.setInt(7, c1);
         preparedStatement.setNull(8, Types.NULL);
         preparedStatement.executeUpdate();
+        ResultSet rs = preparedStatement.executeQuery("Select LAST_INSERT_ID()");
+        if(rs.next()) {
+            mySystem.rdvListe.add(new Rdv(rs.getInt(1),sqlDate,heure,prix,pay,c1,c2,c3,Integer.parseInt(null)));
+            }
+
+
     }
 
     private void close() {

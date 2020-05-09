@@ -1,17 +1,15 @@
 package UI;
 
-import com.toedter.calendar.JDateChooser;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.text.*;
 import java.util.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
-public final class CreatRdv_GUI extends Default_Page implements ActionListener  {
+public final class ModifRdv_GUI extends Default_Page implements ActionListener {
     private JLabel DateLabel = new JLabel("Date");
     private JLabel HeureLabel = new JLabel("Heure");
     private JLabel Patient1Label = new JLabel("Patient 1");
@@ -21,33 +19,31 @@ public final class CreatRdv_GUI extends Default_Page implements ActionListener  
     private JLabel PaymentLabel = new JLabel("Payement");
     private String [] ListPayment = {"CB", "Cheques", "Espece"};
 
-     JTextField PrixField = new JTextField();
+    JTextField PrixField = new JTextField();
     private JLabel DateChoose;
     JComboBox Patient1ComboBox; JComboBox Patient2ComboBox; JComboBox Patient3ComboBox;
     JComboBox HeureComboBox;
     JComboBox PaymentComboBox = new JComboBox<>(ListPayment);
-    JButton CreateButton = new JButton("Creer");
+    JButton CreateButton = new JButton("Modifier");
     JButton exitButton = new JButton("Exit");
     JButton backButton=new JButton("Back");
 
-    public CreatRdv_GUI(String date) throws SQLException {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        sdf.setLenient(false);
-        try {
-            sdf.parse(date);
-        } catch (ParseException e) { }
-        DateChoose = new JLabel(date);
-        SetListPatient();
+    public ModifRdv_GUI(String rdvString) throws SQLException {
+        setLabel(rdvString);
+        //DateChoose = new JLabel(date);
+
         SetListHeure();
-        createWindow("Creation d'un RDV",500, 100, 380, 500);
+        createWindow("Modification d'un RDV",500, 100, 380, 500);
         setLocationAndSize();
         addComponentsToFrame();
         this.setVisible(true);
-        if (!mySystem.mariaconnexion.Datecheck(date)){
-            JOptionPane.showMessageDialog(null, "Vous travaillez 10h à ce jour.\nVeuillez sélectionner une autre date");
-            this.dispose();
-            new RDVpsy_GUI();
-        }
+    }
+
+    public void setLabel(String rdvString){
+        String[] rdv = rdvString.split("  ", 6); String Cl1,Cl2,Cl3;
+        Rdv rdv_mod = mySystem.rdvListe.stream().filter(r -> (r.getId()== Integer.parseInt(rdv[0]))).collect(Collectors.toList()).get(0);
+        SetListPatient(rdv_mod);
+
     }
 
     protected void setLocationAndSize() {   // Log in
@@ -96,19 +92,23 @@ public final class CreatRdv_GUI extends Default_Page implements ActionListener  
         backButton.addActionListener(this);
     }
 
-    private void SetListPatient(){
-       // try {
-            String[] ListPatient = new String[mySystem.patients.size()];
-            ListPatient[0] = "null";
-            for(int cnt=0;cnt<mySystem.patients.size()-1;cnt++)
-                ListPatient[cnt+1] = (mySystem.patients.get(cnt).getNom() + " . "+ mySystem.patients.get(cnt).getPrenom() ) ;
-            Patient1ComboBox = new JComboBox<>(ListPatient);Patient2ComboBox = new JComboBox<>(ListPatient);
-            Patient3ComboBox = new JComboBox<>(ListPatient);
-       // }
-       // catch(IndexOutOfBoundsException IOB) {
-         //   JOptionPane.showMessageDialog(null, "Vous n'avez pas encore de patients.");
-        //}
+    private void SetListPatient(Rdv rdv){
+        // try {
+        String[] ListPatient1 = new String[mySystem.patients.size()];
+        String[] ListPatient2 = new String[mySystem.patients.size()];
+        String[] ListPatient3 = new String[mySystem.patients.size()];
+        String user_1 = mySystem.patients.stream().filter(r -> (r.getId_User()== rdv.getClient1())).map(r -> (r.getPrenom()+" . "+r.getNom())).toString();
+        String user_2 = mySystem.patients.stream().filter(r -> (r.getId_User()== rdv.getClient2())).map(r -> (r.getPrenom()+" . "+r.getNom())).toString();
+        String user_3 = mySystem.patients.stream().filter(r -> (r.getId_User()== rdv.getClient3())).map(r -> (r.getPrenom()+" . "+r.getNom())).toString();
 
+        ListPatient1[0] = user_1;
+        for(int cnt=0;cnt<mySystem.patients.size()-1;cnt++){
+        //   if ()
+            ListPatient1[cnt+1] = (mySystem.patients.get(cnt).getNom() + " . "+ mySystem.patients.get(cnt).getPrenom() ) ;
+        }
+
+        Patient1ComboBox = new JComboBox<>(ListPatient1);Patient2ComboBox = new JComboBox<>(ListPatient1);
+        Patient3ComboBox = new JComboBox<>(ListPatient1);
     }
 
     private void SetListHeure(){
@@ -117,7 +117,7 @@ public final class CreatRdv_GUI extends Default_Page implements ActionListener  
         List<String> list = new ArrayList<String>(Arrays.asList(Heure));
         for(int cnt=0;cnt<mySystem.rdvListe.size();cnt++) {
             if (DateChoose.getText().equals(String.valueOf((mySystem.rdvListe.get(cnt).getDate() )) ))
-                list.remove(mySystem.rdvListe.get(cnt).getHeure()); 
+                list.remove(mySystem.rdvListe.get(cnt).getHeure());
         }
         String[] Dispo = new String[0];
         Dispo = list.toArray(Dispo);
@@ -172,4 +172,3 @@ public final class CreatRdv_GUI extends Default_Page implements ActionListener  
     }
 
 }
-//https://www.vogella.com/tutorials/MySQLJava/article.html

@@ -22,7 +22,6 @@ public class Rdv {
 		this.client3 = client3;
 		this.id_consul = id_consul;
 	}
-
 		
 	public int getId() {
 		return id;
