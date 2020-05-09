@@ -1,27 +1,20 @@
 package UI;
 
-import com.toedter.calendar.JCalendar;
-
-import java.awt.*;
 import java.awt.event.*;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.util.Locale;
-import javax.swing.*;
-import javax.swing.border.Border;
 
+import javax.swing.*;
 
 public class RDVpsy_GUI extends Default_Page implements ActionListener {
     
     private JScrollPane listScroll;
     private JList<String> rdv_List;
     private final DefaultListModel<String> list = new DefaultListModel<>();
-    private JButton ExitButton=new JButton("Exit");
+ 
     private JButton CreateButton = new JButton("Creer ");
     private JButton ModifButton = new JButton("Modifier ");
     private JButton SuprButton = new JButton("Supprimer ");
    
-
     private final JLabel profile_title = new JLabel("Profile : ");
     private final JLabel profile = new JLabel("Selectionnez un profile");
 
@@ -62,7 +55,7 @@ public class RDVpsy_GUI extends Default_Page implements ActionListener {
 
     protected void setLocationAndSize() {
 
-        ExitButton.setBounds(330,350,100,23);
+        exitButton.setBounds(330,350,100,23);
         ModifButton.setBounds(130,350,100,23);
         SuprButton.setBounds(50,350,100,23);
         CreateButton.setBounds(190,350,100,23);
@@ -70,7 +63,7 @@ public class RDVpsy_GUI extends Default_Page implements ActionListener {
         profile_title.setBounds(300,50,150,30);
         profile.setBounds(280,80,150,150);   
 
-        ExitButton.setBounds(490,400,100,23);
+        exitButton.setBounds(490,400,100,23);
         SuprButton.setBounds(340,400,100,23);
         ModifButton.setBounds(180,400,100,23);
         CreateButton.setBounds(20,400,100,23);
@@ -81,12 +74,12 @@ public class RDVpsy_GUI extends Default_Page implements ActionListener {
 
     protected void addComponentsToFrame() {
         this.add(listScroll);
-        this.add(ExitButton);
+        this.add(exitButton);
         this.add(CreateButton);
         this.add(SuprButton);
         this.add(ModifButton);
         this.add(calendar);
-        ExitButton.addActionListener(this);
+        exitButton.addActionListener(this);
         CreateButton.addActionListener(this);
         SuprButton.addActionListener(this);
         ModifButton.addActionListener(this);
@@ -94,7 +87,7 @@ public class RDVpsy_GUI extends Default_Page implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource()==ExitButton){
+        if(e.getSource()==exitButton){
             /*                                   EXIT                                      */
             this.dispose();
             new Psy_GUI();
@@ -111,6 +104,7 @@ public class RDVpsy_GUI extends Default_Page implements ActionListener {
              }
             else {
                 this.dispose();
+
                try {
             	   System.out.println(calendar.getDate());
                     new CreatRdv_GUI(calendar.getDate());

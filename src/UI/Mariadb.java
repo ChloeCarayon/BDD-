@@ -41,32 +41,21 @@ public class Mariadb {
         }
     }
 
-    public int readDBClient(String nom, String prenom, String mdp, String mail, String pub, boolean sexe) throws SQLException {
-        resultSet = stmt
-                .executeQuery("select * from db.Client");
-       // writeResultSet(resultSet);
-        preparedStatement = conn
-                .prepareStatement("insert into  db.Client values (default, ?, ?, ?, ? , ?,?,NOW())");
-        // Parameters start with 1
-        preparedStatement.setString(1, nom); // nom
-        preparedStatement.setString(2, prenom);   // prénom
-        preparedStatement.setString(3, mdp);      // mdp
-        preparedStatement.setString(4, mail);      // mail
-        preparedStatement.setString(5, pub);      //pub
-        preparedStatement.setBoolean(6, sexe);
-        preparedStatement.executeUpdate();
-
-        preparedStatement = conn
-                .prepareStatement("SELECT Nom_client, Prenom_client, mdp, mail, pub,sexe from db.Client");
-        preparedStatement.execute();
-        
-   
-       ResultSet rs = preparedStatement.executeQuery("Select LAST_INSERT_ID()");
-        int id_nouveau_client = -1;
-        if(rs.next()) {
-        	id_nouveau_client = rs.getInt(1);
-        } 	
-        return id_nouveau_client;
+public int readDBClient(String nom, String prenom, String mdp, String mail, String pub, boolean sexe) throws SQLException { 
+  resultSet = stmt .executeQuery("select * from db.Client");
+   writeResultSet(resultSet); preparedStatement = conn .prepareStatement("insert into db.Client values (default, ?, ?, ?, ? , ?,?,NOW())");
+   preparedStatement.setString(1, nom);
+   preparedStatement.setString(2, prenom); // prÃ©nom
+  preparedStatement.setString(3, mdp); // mdp 
+  preparedStatement.setString(4, mail); // mail 
+  preparedStatement.setString(5, pub); //pub 
+  preparedStatement.setBoolean(6, sexe); preparedStatement.executeUpdate(); preparedStatement = conn .prepareStatement("SELECT Nom_client, Prenom_client, mdp, mail, pub,sexe from db.Client"); 
+  preparedStatement.execute(); 
+  ResultSet rs = preparedStatement.executeQuery("Select LAST_INSERT_ID()"); 
+  int id_nouveau_client = -1; 
+  if(rs.next()) { 
+    id_nouveau_client = rs.getInt(1); } 
+    return id_nouveau_client;
     }
     
     public void addDBCouple(int id_client, Date date, boolean couple) throws SQLException{
@@ -85,8 +74,7 @@ public class Mariadb {
 
     
     public void addDBType(int id_client, Date date, String type) throws SQLException{
-    	resultSet = stmt
-                .executeQuery("select * from db.type");
+    	resultSet = stmt.executeQuery("select * from db.type");
 
     	if(date == null) {
             preparedStatement = conn
@@ -94,7 +82,7 @@ public class Mariadb {
     	}else 
           preparedStatement = conn
                   .prepareStatement("INSERT INTO `db`.`type` (`Date_type`, `Nom_type`, `Id_Client`) VALUES ('"+date+"','"+type+"'," + id_client + ")");
-    	
+
     	resultSet = preparedStatement.executeQuery();          
     }
     
@@ -175,7 +163,7 @@ public class Mariadb {
     		  client.addCoupleList(couple_date,en_couple);
     	  }
     	  
-    	  getlistes =  st.executeQuery("SELECT*FROM db.type WHERE Id_Client = "+id);
+    	  getlistes =  st.executeQuery("SELECT*FROM db.type_p WHERE Id_Client = "+id);
     	  while(getlistes.next()) {
     		  String type_name =  getlistes.getString("Nom_type"); 
     		  Date type_date =  getlistes.getDate("Date_type");

@@ -2,6 +2,7 @@ package UI;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -12,6 +13,8 @@ public class ProfessionPage extends Default_Page implements ActionListener {
 	private JLabel profLabel = new JLabel("Profession");
 	private JButton addButton = new JButton("Add");	
 	private JButton backButton = new JButton("Back");
+	
+	
 	
 	public ProfessionPage() {
 		createWindow("Profession",500, 100, 380, 300);
