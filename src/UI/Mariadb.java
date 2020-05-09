@@ -251,16 +251,11 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
         }
     }
 
-    public boolean DeleteRdv(int id) {
-        try{
+    public void DeleteRdv(int id) throws SQLException {
         stmt = conn.createStatement();
         resultSet= stmt.executeQuery("DELETE FROM db.rdv WHERE Id_rdv =" + id);
         mySystem.rdvListe.remove(mySystem.rdvListe.stream().filter(r -> (r.getId()== id)).findFirst().get());
             // RAJOUTER LA SUPPRESSION DE LA CONSULTATION
-        return true; }
-        catch( SQLException e){
-            return false;
-        }
     }
 
     private void close() {
