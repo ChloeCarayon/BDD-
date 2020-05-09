@@ -63,21 +63,6 @@ public class RDVpsy_GUI extends Default_Page implements ActionListener {
     protected void setLocationAndSize() {
         profile_title.setBounds(300,50,150,30);
         profile.setBounds(280,80,150,150);
-        Container contentPane = getContentPane();
-        contentPane.setLayout(null);
-        JCalendar calendar4 =
-        		new JCalendar(
-        		    Locale.FRENCH,
-        		    false);
-        Border etchedBorder =
-        		BorderFactory.createEtchedBorder();
-        	    Border emptyBorder =
-        		BorderFactory.createEmptyBorder(10, 10, 10, 10);
-        	    Border compoundBorder =
-        		BorderFactory.createCompoundBorder(etchedBorder, emptyBorder);
-      
-        	    calendar4.setBorder(compoundBorder);
-        	    this.add(calendar4);
         exitButton.setBounds(490,400,100,23);
         SuprButton.setBounds(340,400,100,23);
         ModifButton.setBounds(180,400,100,23);
@@ -132,7 +117,7 @@ public class RDVpsy_GUI extends Default_Page implements ActionListener {
             else {
                 this.dispose();
                 try {
-                    new CreatRdv_GUI(new SimpleDateFormat("yyyy-MM-dd").format(calendar.getDate()));
+                    new CreatRdv_GUI(sdf.format(calendar.getDate()));
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
                     JOptionPane.showMessageDialog(null, "Impossible d'ouvrir cette page."); 

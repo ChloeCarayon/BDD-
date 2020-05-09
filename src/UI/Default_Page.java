@@ -24,12 +24,12 @@ import com.toedter.calendar.JCalendar;
 
 public class Default_Page extends JFrame {
 	
-///Variables pour les listes clients 
+///Variables pour les listes clients
 	protected JScrollPane listScroll;
 	protected JList<String> patientList;
 	protected final DefaultListModel<String> list = new DefaultListModel<>();
 
-///Variables pour la création d'un calendrier 
+///Variables pour la crï¿½ation d'un calendrier 
 	protected JLabel background ;
 	protected JCalendar calendar =  new JCalendar();
 	protected SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
