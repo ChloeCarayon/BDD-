@@ -1,28 +1,22 @@
 package UI;
 
-import com.toedter.calendar.JCalendar;
-
-import java.awt.*;
 import java.awt.event.*;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.util.Locale;
-import javax.swing.*;
-import javax.swing.border.Border;
 
+import javax.swing.*;
 
 public class RDVpsy_GUI extends Default_Page implements ActionListener {
-    private JCalendar calendar =  new JCalendar();
+    
     private JScrollPane listScroll;
     private JList<String> rdv_List;
     private final DefaultListModel<String> list = new DefaultListModel<>();
+
     private JButton AddConsButton = new JButton("Ajouter une consultation ");
     private JButton ExitButton=new JButton("Exit");
     private JButton CreateButton = new JButton("Creer ");
     private JButton ModifButton = new JButton("Modifier ");
     private JButton SuprButton = new JButton("Supprimer ");
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
+   
     private final JLabel profile_title = new JLabel("Profile : ");
     private final JLabel profile = new JLabel("Selectionnez un profile");
 
@@ -31,7 +25,7 @@ public class RDVpsy_GUI extends Default_Page implements ActionListener {
         setList();
         setLocationAndSize();
         addComponentsToFrame();
-
+        addCalendar();
         this.setVisible(true);
     }
 
@@ -84,19 +78,19 @@ public class RDVpsy_GUI extends Default_Page implements ActionListener {
       
         	    calendar4.setBorder(compoundBorder);
         	    this.add(calendar4);
-
-        ExitButton.setBounds(490,400,100,23);
+        exitButton.setBounds(490,400,100,23);
         SuprButton.setBounds(340,400,100,23);
         ModifButton.setBounds(180,400,100,23);
         CreateButton.setBounds(20,400,100,23);
         listScroll.setBounds(80,230,460,100);
         calendar.setBounds(0,0,600,220);
         AddConsButton.setBounds(200,355,200,23);
+
        }
 
     protected void addComponentsToFrame() {
         this.add(listScroll);
-        this.add(ExitButton);
+        this.add(exitButton);
         this.add(CreateButton);
         this.add(SuprButton);
         this.add(ModifButton);
@@ -111,7 +105,7 @@ public class RDVpsy_GUI extends Default_Page implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource()==ExitButton){
+        if(e.getSource()==exitButton){
             /*                                   EXIT                                      */
             this.dispose();
             new Psy_GUI();
@@ -132,14 +126,16 @@ public class RDVpsy_GUI extends Default_Page implements ActionListener {
             //new CreatRdv_GUI();
         }
         if(e.getSource() == CreateButton) {
-            if (mySystem.patients.size() == 1)
-                JOptionPane.showMessageDialog(null, "Vous n'avez pas encore de patients.");
+            if (mySystem.patients.size() == 1) {
+                JOptionPane.showMessageDialog(null, "Vous n'avez pas encore de patients."); 
+             }
             else {
                 this.dispose();
                 try {
                     new CreatRdv_GUI(new SimpleDateFormat("yyyy-MM-dd").format(calendar.getDate()));
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
+                    JOptionPane.showMessageDialog(null, "Impossible d'ouvrir cette page."); 
                 }
             }
         }

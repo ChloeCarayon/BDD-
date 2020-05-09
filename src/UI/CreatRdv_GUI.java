@@ -21,14 +21,17 @@ public final class CreatRdv_GUI extends Default_Page implements ActionListener  
     private JLabel PaymentLabel = new JLabel("Payement");
     private String [] ListPayment = {"CB", "Cheques", "Espece"};
 
-     JTextField PrixField = new JTextField();
+    private  JTextField PrixField = new JTextField();
     private JLabel DateChoose;
-    JComboBox Patient1ComboBox; JComboBox Patient2ComboBox; JComboBox Patient3ComboBox;
-    JComboBox HeureComboBox;
-    JComboBox PaymentComboBox = new JComboBox<>(ListPayment);
-    JButton CreateButton = new JButton("Creer");
-    JButton exitButton = new JButton("Exit");
-    JButton backButton=new JButton("Back");
+    
+    private JComboBox<String> Patient1ComboBox; 
+    private JComboBox<String> Patient2ComboBox;
+    private JComboBox<String> Patient3ComboBox;
+    
+    private JComboBox<String> HeureComboBox;
+    private JComboBox<String> PaymentComboBox = new JComboBox<>(ListPayment);
+    private JButton CreateButton = new JButton("Creer");
+   
 
     public CreatRdv_GUI(String date) throws SQLException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -103,6 +106,7 @@ public final class CreatRdv_GUI extends Default_Page implements ActionListener  
             for(int cnt=0;cnt<mySystem.patients.size()-1;cnt++)
                 ListPatient[cnt+1] = (mySystem.patients.get(cnt).getNom() + " . "+ mySystem.patients.get(cnt).getPrenom() ) ;
             Patient1ComboBox = new JComboBox<>(ListPatient);Patient2ComboBox = new JComboBox<>(ListPatient);
+            Patient2ComboBox = new JComboBox<>(ListPatient);
             Patient3ComboBox = new JComboBox<>(ListPatient);
        // }
        // catch(IndexOutOfBoundsException IOB) {
