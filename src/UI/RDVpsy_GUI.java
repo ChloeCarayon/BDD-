@@ -1,7 +1,10 @@
 package UI;
 
 import java.awt.event.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.sql.SQLException;
+import java.util.Calendar;
 
 import javax.swing.*;
 
@@ -26,34 +29,39 @@ public class RDVpsy_GUI extends Default_Page implements ActionListener {
         setLocationAndSize();
         addComponentsToFrame();
         addCalendar();
+        calendar.addPropertyChangeListener("calendar", new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                setList();
+            }
+        });
         this.setVisible(true);
     }
 
     private void setList() {
         String Rdv;
         try {
+            list.clear();
             for (int i=0; i<mySystem.rdvListe.size();i ++)  {//commence liste a 1 pour pas avoir la psy dans les clients
-                Rdv = String.valueOf(mySystem.rdvListe.get(i).getId());
-                Rdv += "  ";
-                Rdv += String.valueOf(mySystem.rdvListe.get(i).getDate());
-                Rdv += "  ";
-                Rdv += String.valueOf(mySystem.rdvListe.get(i).getHeure());
-                Rdv += "  ";
-                Rdv += mySystem.mariaconnexion.getClient(mySystem.rdvListe.get(i).getClient1());
-                Rdv += "  ";
-                Rdv += mySystem.mariaconnexion.getClient(mySystem.rdvListe.get(i).getClient2());
-                Rdv += "  ";
-                Rdv += mySystem.mariaconnexion.getClient(mySystem.rdvListe.get(i).getClient3());
-                list.addElement(Rdv);
+               if ((sdf.format(calendar.getDate())).equals(mySystem.rdvListe.get(i).getDate().toString())){
+                   Rdv = String.valueOf(mySystem.rdvListe.get(i).getId()); Rdv += "  ";
+                   Rdv += String.valueOf(mySystem.rdvListe.get(i).getDate()); Rdv += "  ";
+                   Rdv += String.valueOf(mySystem.rdvListe.get(i).getHeure()); Rdv += "  ";
+                   Rdv += mySystem.mariaconnexion.getClient(mySystem.rdvListe.get(i).getClient1()); Rdv += "  ";
+                   Rdv += mySystem.mariaconnexion.getClient(mySystem.rdvListe.get(i).getClient2()); Rdv += "  ";
+                   Rdv += mySystem.mariaconnexion.getClient(mySystem.rdvListe.get(i).getClient3());
+                   list.addElement(Rdv);
+               }
             }
-            if(mySystem.rdvListe.size()<1) {
-                list.addElement("Pas de RDV pour l'instant.");
+            if(list.size()<1) {
+                list.addElement("Pas de RDV pour l'instant à ce jour.");
             }
         } catch(Exception e) { }
         PrintList();
     }
 
     protected void PrintList() {
+
         rdv_List = new JList<>(list);
         rdv_List.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         rdv_List.setVisibleRowCount(-1);
