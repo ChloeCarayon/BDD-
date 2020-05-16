@@ -193,17 +193,19 @@ public final class Registration extends Default_Page implements ActionListener {
                         mySystem.patients.clear();
                         mySystem.patients = mySystem.mariaconnexion.getPatient();
 
-                        //Rï¿½cupï¿½re l'id du client crï¿½ï¿½
+                        System.out.println(mySystem.patients.get(mySystem.patients.size()-1).getId_User());
 
                         this.dispose();
-                        new Psy_GUI();
+                        new ProfessionPage(id_nouveau_client);
+                        //new Psy_GUI();
                     } catch(java.sql.SQLIntegrityConstraintViolationException icve) {
                     	emailText.setText(" ");
                     	emailText.setBorder(BorderFactory.createLineBorder(Color.red));
                     	JOptionPane.showMessageDialog(null, "Cette addresse Email existe dï¿½jï¿½");
                     }
                     catch (SQLException  throwables) {
-                       JOptionPane.showMessageDialog(null, "Impossible de crï¿½er le patient");
+                       JOptionPane.showMessageDialog(null, "Impossible de crééer le patient");
+                       throwables.printStackTrace();
                     }
                 }
             }
