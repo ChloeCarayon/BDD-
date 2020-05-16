@@ -11,26 +11,27 @@ public class Cons_ModifRDV extends Default_Page implements ActionListener {
     private DefaultListModel<String> listpasse = new DefaultListModel<>();
     private DefaultListModel<String> listfutur = new DefaultListModel<>();
     private final JButton ModifButton = new JButton("Modifier RDV futur");
+    private final JButton SupprButton = new JButton("Supprimer RDV futur");
     private final JButton ConsButton = new JButton("Ajouter consult ");
     private final JLabel Rdv_Passe = new JLabel("RDV Passés : ");
     private final JLabel Rdv_Futurs = new JLabel("RDV Futurs : ");
 
     public Cons_ModifRDV() {
         createWindow("Consulter les RDV", 400, 50, 600, 470);
-        setList();
+        setList(true);
         setLocationAndSize();
         addComponentsToFrame();
         this.setVisible(true);
     }
 
-    private void setList() {
+    private void setList(boolean type) {
         String Rdvpassé, Rdvfutur;
         try {
             listpasse.clear(); listfutur.clear();
             for (int i = 0; i < mySystem.rdvListe.size(); i++) {//commence liste a 1 pour pas avoir la psy dans les clients
-                if(mySystem.patients.get(mySystem.current_clientId).getId_User() == mySystem.rdvListe.get(i).getClient1() ||
-                        mySystem.patients.get(mySystem.current_clientId).getId_User() == mySystem.rdvListe.get(i).getClient2() ||
-                mySystem.patients.get(mySystem.current_clientId).getId_User() == mySystem.rdvListe.get(i).getClient3()){
+                if(mySystem.patients.get(mySystem.current_client_id).getId_User() == mySystem.rdvListe.get(i).getClient1() ||
+                        mySystem.patients.get(mySystem.current_client_id).getId_User() == mySystem.rdvListe.get(i).getClient2() ||
+                mySystem.patients.get(mySystem.current_client_id).getId_User() == mySystem.rdvListe.get(i).getClient3()){
                     // RDV auxquels on doit ajouter une consultation
                     if ((sdf.format(calendar.getDate())).compareTo(mySystem.rdvListe.get(i).getDate().toString()) >= 0){
                         Rdvpassé = String.valueOf(mySystem.rdvListe.get(i).getId()); Rdvpassé += "  ";
@@ -59,9 +60,15 @@ public class Cons_ModifRDV extends Default_Page implements ActionListener {
             } if (listfutur.size() < 1)listfutur.addElement("Pas de RDV futurs pour l'instant.");
         } catch (Exception e) {
         }
-        rdv_List = new JList<>(listpasse); cons_List_ =  new JList<>(listfutur);
-        rdv_List.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); cons_List_.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        listScrollRdv = new JScrollPane(rdv_List); listScrollCons= new JScrollPane(cons_List_);
+        PrintList(type);
+    }
+
+    protected void PrintList(boolean type) {
+        if (type) {
+            cons_List_ = new JList<>(listpasse); rdv_List =  new JList<>(listfutur);
+            rdv_List.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); cons_List_.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+            listScrollRdv = new JScrollPane(rdv_List); listScrollCons= new JScrollPane(cons_List_);
+        }
     }
 
     protected void setLocationAndSize() {
@@ -69,9 +76,10 @@ public class Cons_ModifRDV extends Default_Page implements ActionListener {
         Rdv_Futurs.setBounds(20, 170, 150, 30);
         ConsButton.setBounds(425, 75, 170, 23);
         exitButton.setBounds(425, 400, 170, 23);
-        ModifButton.setBounds(425, 250, 170, 23);
-        listScrollRdv.setBounds(20, 50, 400, 100);
-        listScrollCons.setBounds(20, 200, 400, 100);
+        ModifButton.setBounds(425, 225, 170, 23);
+        SupprButton.setBounds(425, 255, 170, 23);
+        listScrollRdv.setBounds(20, 200, 400, 100);
+        listScrollCons.setBounds(20, 50, 400, 100);
     }
 
     protected void addComponentsToFrame() {
@@ -82,35 +90,65 @@ public class Cons_ModifRDV extends Default_Page implements ActionListener {
         this.add(exitButton);
         this.add(ModifButton);
         this.add(ConsButton);
+        this.add(SupprButton);
         ModifButton.addActionListener(this);
         ConsButton.addActionListener(this);
-
+        SupprButton.addActionListener(this);
+        exitButton.addActionListener(this);
     }
 
-    private void modifRDV() {
+    private void SupprRDV() {
         System.out.println(rdv_List.getSelectedIndex());
         if (rdv_List.getSelectedIndex() != -1) {
-            String rdvsup = rdv_List.getModel().getElementAt(rdv_List.getSelectedIndex());
-            String[] id_string = rdvsup.split("  ", 2);
-            try {
-                mySystem.mariaconnexion.DeleteRdv(Integer.parseInt(id_string[0]));
-                setList();
-            } catch (NumberFormatException | SQLException e) {
+            if ((sdf.format(calendar.getDate())).compareTo(sdf.format(java.util.Calendar.getInstance().getTime())) < 0){
+                JOptionPane.showMessageDialog(null, "Vous ne pouvez pas supprimer un RDV passé.");
+            }
+            else {
+                String rdvsup = rdv_List.getModel().getElementAt(rdv_List.getSelectedIndex());
+                String[] id_string = rdvsup.split("  ", 2);
+                try {
+                    mySystem.mariaconnexion.DeleteRdv(Integer.parseInt(id_string[0]));
+                    setList(false);
+                } catch (NumberFormatException | SQLException e) { }
             }
         }
 
     }
 
+    private void ModifRDV() throws SQLException {
+        System.out.println(rdv_List.getSelectedIndex());
+        if (rdv_List.getSelectedIndex() != -1) {
+            if ((sdf.format(calendar.getDate())).compareTo(sdf.format(java.util.Calendar.getInstance().getTime())) < 0){
+                JOptionPane.showMessageDialog(null, "Vous ne pouvez pas modifier un RDV passé.");
+            }
+            else {
+                String rdvmodif = rdv_List.getModel().getElementAt(rdv_List.getSelectedIndex());
+                String[] id_string = rdvmodif.split("  ", 2);
+                new ModifRdv_Patientpage(id_string[0]);
+            }
+        }
+
+    }
     @Override
     public void actionPerformed(ActionEvent e) {
         if ((e.getSource() == ModifButton ) && (rdv_List.getSelectedIndex() == -1 || rdv_List.getSelectedValue().equals("Pas de RDV pour l'instant à ce jour.")))
             JOptionPane.showMessageDialog(null, "Veuillez sélectionner un RDV.");
+        if ((e.getSource() == ConsButton ) && (rdv_List.getSelectedIndex() == -1 || cons_List_.getSelectedValue().equals("Pas de RDV pour l'instant à ce jour.")))
+            JOptionPane.showMessageDialog(null, "Veuillez sélectionner un RDV.");
         else {
             if (e.getSource() == ModifButton) {
-                this.dispose();
+                try {
+                    ModifRDV();
+                    this.dispose();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
             }
             if (e.getSource() == ConsButton) {
                this.dispose();
+            }
+            if (e.getSource() == SupprButton) {
+               SupprRDV();
             }
             if (e.getSource() == exitButton) {
                 this.dispose();

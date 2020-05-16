@@ -88,7 +88,7 @@ public class MyPatientPage extends Default_Page implements ActionListener{
 	            getProfile();
 	       }
 		if(e.getSource()==RDVButton && patientList.getSelectedIndex() != -1 ){
-			mySystem.current_clientId = patientList.getSelectedIndex();
+			mySystem.current_client_id = patientList.getSelectedIndex();
 			this.dispose();
 			new Cons_ModifRDV();
 		}

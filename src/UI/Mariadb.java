@@ -12,7 +12,7 @@ public class Mariadb {
 
     //  Database credentials
     static final String USER = "root";
-    static final String PASS = "bdd";
+    static final String PASS = "new_password";
 
     private Connection conn = null;
     private Statement stmt = null;

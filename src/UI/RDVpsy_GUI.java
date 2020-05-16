@@ -100,12 +100,16 @@ public class RDVpsy_GUI extends Default_Page implements ActionListener {
     private void SupprRDV() {
         System.out.println(rdv_List.getSelectedIndex());
         if (rdv_List.getSelectedIndex() != -1) {
-            String rdvsup = rdv_List.getModel().getElementAt(rdv_List.getSelectedIndex());
-            String[] id_string = rdvsup.split("  ", 2);
-            try {
-                mySystem.mariaconnexion.DeleteRdv(Integer.parseInt(id_string[0]));
-                setList(false);
-            } catch (NumberFormatException | SQLException e) {
+            if ((sdf.format(calendar.getDate())).compareTo(sdf.format(java.util.Calendar.getInstance().getTime())) < 0){
+                JOptionPane.showMessageDialog(null, "Vous ne pouvez pas supprimer un RDV passé.");
+            }
+            else {
+                String rdvsup = rdv_List.getModel().getElementAt(rdv_List.getSelectedIndex());
+                String[] id_string = rdvsup.split("  ", 2);
+                try {
+                    mySystem.mariaconnexion.DeleteRdv(Integer.parseInt(id_string[0]));
+                    setList(false);
+                } catch (NumberFormatException | SQLException e) { }
             }
         }
 
