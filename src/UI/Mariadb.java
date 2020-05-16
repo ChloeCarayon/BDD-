@@ -260,6 +260,22 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
         }
     }
 
+    public void ModifRDV_sql(Rdv rdv_m,String date )  throws SQLException{
+        java.sql.Date sqlDate = java.sql.Date.valueOf(date);
+        preparedStatement = conn
+                .prepareStatement("UPDATE db.rdv t SET t.Date = ?, t.Heure = ?, t.Prix = ?, t.Payement = ? WHERE t.Id_rdv = ?");
+        preparedStatement.setDate(1, sqlDate);
+        preparedStatement.setString(2, rdv_m.getHeure());
+        preparedStatement.setFloat(3, rdv_m.getPrix());
+        preparedStatement.setString(4, rdv_m.getPayement());
+        preparedStatement.setInt(5, rdv_m.getId());
+        preparedStatement.executeUpdate();
+
+                mySystem.rdvListe.stream().filter(p-> p.getId()==rdv_m.getId()).map(p-> {p.setHeure(rdv_m.getHeure());
+                         p.setDate(sqlDate); p.setPayement(rdv_m.getPayement()); p.setPrix(rdv_m.getPrix());
+                    return null; }).collect(Collectors.toList());
+    }
+
     public void DeleteRdv(int id) throws SQLException {
         stmt = conn.createStatement();
         resultSet= stmt.executeQuery("DELETE FROM db.rdv WHERE Id_rdv =" + id);

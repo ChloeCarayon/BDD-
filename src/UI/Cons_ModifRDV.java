@@ -134,7 +134,7 @@ public class Cons_ModifRDV extends Default_Page implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if ((e.getSource() == ModifButton ) && (rdv_List.getSelectedIndex() == -1 || rdv_List.getSelectedValue().equals("Pas de RDV pour l'instant à ce jour.")))
             JOptionPane.showMessageDialog(null, "Veuillez sélectionner un RDV.");
-        if ((e.getSource() == ConsButton ) && (rdv_List.getSelectedIndex() == -1 || cons_List_.getSelectedValue().equals("Pas de RDV pour l'instant à ce jour.")))
+        if ((e.getSource() == ConsButton ) && (cons_List_.getSelectedIndex() == -1 || cons_List_.getSelectedValue().equals("Pas de RDV pour l'instant à ce jour.")))
             JOptionPane.showMessageDialog(null, "Veuillez sélectionner un RDV.");
         else {
             if (e.getSource() == ModifButton) {

@@ -7,12 +7,9 @@ import java.awt.*;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.sql.Array;
 import java.sql.SQLException;
-import java.text.*;
 import java.util.*;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public final class ModifRdv_Patientpage extends Default_Page implements ActionListener {
     private JLabel DateLabel = new JLabel("Date");
@@ -30,7 +27,7 @@ public final class ModifRdv_Patientpage extends Default_Page implements ActionLi
     private ArrayList<String> List_heure;
     private Rdv rdv_actuel;
     private JLabel Patient1Text,Patient2Text,Patient3Text;
-    JTextField PrixField;
+    private  JTextField PrixField = new JTextField();
     private JComboBox HeureComboBox =  new JComboBox<>();
     private JComboBox<String> PaymentComboBox = new JComboBox<>(ListPayment);
     JButton ModifButton = new JButton("Modifier");
@@ -56,7 +53,7 @@ public final class ModifRdv_Patientpage extends Default_Page implements ActionLi
         });
        // SetListHeure(true);
         SetListHeure(true);
-        PrixField = new JTextField((int) rdv_actuel.getPrix());
+
         setPatients();
         createWindow("Modification d'un RDV",500, 100, 380, 500);
         setLocationAndSize();
@@ -149,11 +146,18 @@ public final class ModifRdv_Patientpage extends Default_Page implements ActionLi
           if (PrixField.getText().equals("")) JOptionPane.showMessageDialog(null, "Veuillez rentrer un prix.");
           else {
               try {
-                 // mariadb ici
+                  rdv_actuel.setHeure(HeureComboBox.getSelectedItem().toString());
+                  rdv_actuel.setPrix(Float.parseFloat(PrixField.getText()));
+                  rdv_actuel.setPayement(PaymentComboBox.getSelectedItem().toString());
+                 mySystem.mariaconnexion.ModifRDV_sql(rdv_actuel, sdf.format(dateChooser.getDate()));
                   this.dispose();
                   new MyPatientPage();
               }
-              catch (NumberFormatException nfe) {
+              catch (SQLException nfe) {
+                  JOptionPane.showMessageDialog(null, "Erreur dans le sql.");
+                  PrixField.setBorder(BorderFactory.createLineBorder(Color.red));
+              }
+              catch (NumberFormatException fe) {
                   JOptionPane.showMessageDialog(null, "Veuillez entrer des chiffres pour le prix.");
                   PrixField.setBorder(BorderFactory.createLineBorder(Color.red));
               }

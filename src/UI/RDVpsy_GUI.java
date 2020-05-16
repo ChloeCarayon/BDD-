@@ -13,7 +13,7 @@ public class RDVpsy_GUI extends Default_Page implements ActionListener {
     private DefaultListModel<String> list = new DefaultListModel<>();
     private final JButton AddConsButton = new JButton("Ajouter une consultation ");
     private final JButton CreateButton = new JButton("Creer ");
-    private final JButton ModifButton = new JButton("Modifier ");
+   // private final JButton ModifButton = new JButton("Modifier ");
     private final JButton SuprButton = new JButton("Supprimer ");
     private int index = -1;
     private final JLabel profile_title = new JLabel("Profile : ");
@@ -73,10 +73,10 @@ public class RDVpsy_GUI extends Default_Page implements ActionListener {
     protected void setLocationAndSize() {
         profile_title.setBounds(300, 50, 150, 30);
         profile.setBounds(280, 80, 150, 150);
-        exitButton.setBounds(490, 400, 100, 23);
-        SuprButton.setBounds(340, 400, 100, 23);
-        ModifButton.setBounds(180, 400, 100, 23);
-        CreateButton.setBounds(20, 400, 100, 23);
+        exitButton.setBounds(400, 400, 100, 23);
+        SuprButton.setBounds(260, 400, 100, 23);
+       // ModifButton.setBounds(180, 400, 100, 23);
+        CreateButton.setBounds(110, 400, 100, 23);
         listScroll.setBounds(80, 230, 460, 100);
         calendar.setBounds(0, 0, 600, 220);
         AddConsButton.setBounds(200, 355, 200, 23);
@@ -87,12 +87,12 @@ public class RDVpsy_GUI extends Default_Page implements ActionListener {
         this.add(exitButton);
         this.add(CreateButton);
         this.add(SuprButton);
-        this.add(ModifButton);
+   //     this.add(ModifButton);
         this.add(calendar);
         this.add(AddConsButton);
         CreateButton.addActionListener(this);
         SuprButton.addActionListener(this);
-        ModifButton.addActionListener(this);
+    //    ModifButton.addActionListener(this);
         AddConsButton.addActionListener(this);
         exitButton.addActionListener(this);
     }
@@ -121,15 +121,15 @@ public class RDVpsy_GUI extends Default_Page implements ActionListener {
             this.dispose();
             new Psy_GUI();
         }
-        if ((e.getSource() == ModifButton || e.getSource() == SuprButton || e.getSource() == AddConsButton) && (rdv_List.getSelectedIndex() == -1 || rdv_List.getSelectedValue().equals("Pas de RDV pour l'instant à ce jour.")))
+        if ( (e.getSource() == SuprButton || e.getSource() == AddConsButton) && (rdv_List.getSelectedIndex() == -1 || rdv_List.getSelectedValue().equals("Pas de RDV pour l'instant à ce jour.")))
             JOptionPane.showMessageDialog(null, "Veuillez sélectionner un RDV.");
         else {
             if (e.getSource() == SuprButton)
                 SupprRDV();
-            if (e.getSource() == ModifButton) {
-                this.dispose();
+           // if (e.getSource() == ModifButton) {
+             //   this.dispose();
                 //new CreatRdv_GUI();
-            }
+            //}
             if (e.getSource() == AddConsButton) {
                 this.dispose();
                 //new CreatRdv_GUI();
