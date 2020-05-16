@@ -53,7 +53,7 @@ public class MyPatientPage extends Default_Page implements ActionListener{
 	    		infos = mySystem.patients.get(index).toString();
 		    	
 	    	}catch(ArrayIndexOutOfBoundsException aiobe) {
-	    		infos = "Aucun profile selectionné !";
+	    		infos = "Aucun profile selectionnï¿½ !";
 	    	}
 	    	catch(Exception e) {
 	    		infos = "Impossible d'afficher le profile";
@@ -82,7 +82,7 @@ public class MyPatientPage extends Default_Page implements ActionListener{
 	        }	
 		
 		if(e.getSource() == ShowButton && patientList.getSelectedIndex() != -1 );
-			/*                                 Affiche nouveau profile quand sélectionne nouveau nom                    */
+			/*                                 Affiche nouveau profile quand sï¿½lectionne nouveau nom                    */
 	       { 
 	            getProfile();
 	       }

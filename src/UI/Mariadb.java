@@ -2,6 +2,7 @@ package UI;
 import java.sql.*;
 import java.util.*;
 import java.sql.Date;
+import java.util.stream.Collectors;
 
 public class Mariadb {
     // JDBC driver name and database URL
@@ -239,15 +240,32 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
         if(c1 == null) preparedStatement.setNull(5, Types.NULL);
         else preparedStatement.setInt(5, c1);
         if(c2 == null) preparedStatement.setNull(6, Types.NULL);
-        else preparedStatement.setInt(6, c1);
+        else preparedStatement.setInt(6, c2);
         if(c3 == null) preparedStatement.setNull(7, Types.NULL);
-        else preparedStatement.setInt(7, c1);
+        else preparedStatement.setInt(7, c3);
         preparedStatement.setNull(8, Types.NULL);
         preparedStatement.executeUpdate();
         ResultSet rs = preparedStatement.executeQuery("Select LAST_INSERT_ID()");
         if(rs.next()) {
-            mySystem.rdvListe.add(new Rdv(rs.getInt(1),sqlDate,heure,prix,pay,c1,c2,c3,Integer.parseInt(null)));
+           int id = rs.getInt(1);
+           rs = preparedStatement.executeQuery("Select * from db.rdv where Id_rdv=" +id);
+            while(rs.next()) {
+                int c_1 = rs.getInt("Id_Client");
+                int c_2 = rs.getInt("Id_Client_2");
+                int c_3 = rs.getInt("Id_Client_3");
+                int consul = rs.getInt("Id_consultation");
+                mySystem.rdvListe.add(new  Rdv(id,sqlDate , heure, prix, pay, c_1, c_2, c_3, consul));
             }
+
+        }
+    }
+
+    public void DeleteRdv(int id) throws SQLException {
+        stmt = conn.createStatement();
+        resultSet= stmt.executeQuery("DELETE FROM db.rdv WHERE Id_rdv =" + id);
+        mySystem.rdvListe.remove(mySystem.rdvListe.stream().filter(r -> (r.getId()== id)).findFirst().get());
+            // RAJOUTER LA SUPPRESSION DE LA CONSULTATION
+
     }
 
     private void close() {
