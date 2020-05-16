@@ -84,7 +84,7 @@ public class Default_Page extends JFrame {
 	    	patientList = new JList<>(list);
 	    	patientList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	        patientList.setVisibleRowCount(-1);
-	        listScroll = new JScrollPane(patientList);	          
+	        listScroll = new JScrollPane(patientList);	  
 	    }
 	 
 	 protected void addCalendar() {

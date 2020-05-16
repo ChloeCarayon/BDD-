@@ -11,7 +11,7 @@ public class Mariadb {
 
     //  Database credentials
     static final String USER = "root";
-    static final String PASS = "new_password";
+    static final String PASS = "bdd";
 
     private Connection conn = null;
     private Statement stmt = null;
@@ -41,7 +41,8 @@ public class Mariadb {
 
 public int readDBClient(String nom, String prenom, String mdp, String mail, String pub, boolean sexe) throws SQLException { 
   resultSet = stmt .executeQuery("select * from db.Client");
-   writeResultSet(resultSet); preparedStatement = conn .prepareStatement("insert into db.Client values (default, ?, ?, ?, ? , ?,?,NOW())");
+
+   preparedStatement = conn .prepareStatement("insert into db.Client values (default, ?, ?, ?, ? , ?,?,NOW())");
    preparedStatement.setString(1, nom);
    preparedStatement.setString(2, prenom); // prÃ©nom
   preparedStatement.setString(3, mdp); // mdp 
@@ -69,17 +70,25 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
          
     	resultSet = preparedStatement.executeQuery();          
     }
+    
+    public void addDBProfession(int id_client, String prof_name, String date) throws SQLException{
+    	java.sql.Date sqlDate = java.sql.Date.valueOf(date);
+    	preparedStatement = conn
+                .prepareStatement("INSERT INTO `db`.`prof_client` (`Nom_prof`, `Id_Client`, `Prof_date`) VALUES ('"+prof_name+"',"+id_client+",'" + sqlDate + "')");
+         
+    	resultSet = preparedStatement.executeQuery();   
+    }
 
     
     public void addDBType(int id_client, Date date, String type) throws SQLException{
-    	resultSet = stmt.executeQuery("select * from db.type");
+    	resultSet = stmt.executeQuery("select * from db.type_p");
 
     	if(date == null) {
             preparedStatement = conn
-                    .prepareStatement("INSERT INTO `db`.`type` (`Date_type`, `Nom_type`, `Id_Client`) VALUES (default,'"+type+"'," + id_client + ")");
+                    .prepareStatement("INSERT INTO `db`.`type_p` (`Date_type`, `Nom_type`, `Id_Client`) VALUES (default,'"+type+"'," + id_client + ")");
     	}else 
           preparedStatement = conn
-                  .prepareStatement("INSERT INTO `db`.`type` (`Date_type`, `Nom_type`, `Id_Client`) VALUES ('"+date+"','"+type+"'," + id_client + ")");
+                  .prepareStatement("INSERT INTO `db`.`type_p` (`Date_type`, `Nom_type`, `Id_Client`) VALUES ('"+date+"','"+type+"'," + id_client + ")");
 
     	resultSet = preparedStatement.executeQuery();          
     }
@@ -172,7 +181,6 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
     	 }
     	 list.remove(0); // retire la psy de la liste client
     	 return  list;
-    	 // java.sql.Date sqlDate = java.sql.Date.valueOf(date);
     }
     
     public ArrayList<Rdv> getRdv() throws SQLException {
@@ -240,8 +248,6 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
         if(rs.next()) {
             mySystem.rdvListe.add(new Rdv(rs.getInt(1),sqlDate,heure,prix,pay,c1,c2,c3,Integer.parseInt(null)));
             }
-
-
     }
 
     private void close() {
