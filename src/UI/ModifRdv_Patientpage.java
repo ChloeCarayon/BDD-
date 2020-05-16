@@ -9,7 +9,7 @@ import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public final class ModifRdv_GUI extends Default_Page implements ActionListener {
+public final class ModifRdv_Patientpage extends Default_Page implements ActionListener {
     private JLabel DateLabel = new JLabel("Date");
     private JLabel HeureLabel = new JLabel("Heure");
     private JLabel Patient1Label = new JLabel("Patient 1");
@@ -25,10 +25,8 @@ public final class ModifRdv_GUI extends Default_Page implements ActionListener {
     JComboBox HeureComboBox;
     JComboBox PaymentComboBox = new JComboBox<>(ListPayment);
     JButton CreateButton = new JButton("Modifier");
-    JButton exitButton = new JButton("Exit");
-    JButton backButton=new JButton("Back");
 
-    public ModifRdv_GUI(String rdvString) throws SQLException {
+    public ModifRdv_Patientpage(String rdvString) throws SQLException {
         setLabel(rdvString);
         //DateChoose = new JLabel(date);
 
@@ -42,6 +40,8 @@ public final class ModifRdv_GUI extends Default_Page implements ActionListener {
     public void setLabel(String rdvString){
         String[] rdv = rdvString.split("  ", 6); String Cl1,Cl2,Cl3;
         Rdv rdv_mod = mySystem.rdvListe.stream().filter(r -> (r.getId()== Integer.parseInt(rdv[0]))).collect(Collectors.toList()).get(0);
+        System.out.println("-->"+ rdv_mod);
+
         SetListPatient(rdv_mod);
 
     }

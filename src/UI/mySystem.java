@@ -16,8 +16,10 @@ public class mySystem {
         patients = mariaconnexion.getPatient();
         rdvListe = mariaconnexion.getRdv();
         page1 = new Log();    
-        page1.setVisible(true);
-        new Psy_GUI();
+       // page1.setVisible(true);
+      // new MyPatientPage();
+    //   new PatientProf();
+         new Psy_GUI();
       //  new ProfessionPage();
     } 
 }

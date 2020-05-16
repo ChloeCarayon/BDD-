@@ -4,20 +4,14 @@ import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.sql.SQLException;
-import java.util.Calendar;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 public class RDVpsy_GUI extends Default_Page implements ActionListener {
-
-    // private DefaultListModel listModel = new DefaultListModel();
     private JScrollPane listScroll;
     private JList<String> rdv_List;
     private DefaultListModel<String> list = new DefaultListModel<>();
     private final JButton AddConsButton = new JButton("Ajouter une consultation ");
-    private final JButton ExitButton = new JButton("Exit");
     private final JButton CreateButton = new JButton("Creer ");
     private final JButton ModifButton = new JButton("Modifier ");
     private final JButton SuprButton = new JButton("Supprimer ");
@@ -96,12 +90,11 @@ public class RDVpsy_GUI extends Default_Page implements ActionListener {
         this.add(ModifButton);
         this.add(calendar);
         this.add(AddConsButton);
-        ExitButton.addActionListener(this);
         CreateButton.addActionListener(this);
         SuprButton.addActionListener(this);
         ModifButton.addActionListener(this);
         AddConsButton.addActionListener(this);
-
+        exitButton.addActionListener(this);
     }
 
     private void SupprRDV() {
@@ -120,6 +113,10 @@ public class RDVpsy_GUI extends Default_Page implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == exitButton) {
+            this.dispose();
+            new Psy_GUI();
+        }
         if ((e.getSource() == ModifButton || e.getSource() == SuprButton || e.getSource() == AddConsButton) && (rdv_List.getSelectedIndex() == -1 || rdv_List.getSelectedValue().equals("Pas de RDV pour l'instant à ce jour.")))
             JOptionPane.showMessageDialog(null, "Veuillez sélectionner un RDV.");
         else {
@@ -130,15 +127,10 @@ public class RDVpsy_GUI extends Default_Page implements ActionListener {
                 //new CreatRdv_GUI();
             }
             if (e.getSource() == AddConsButton) {
-                /*                                   EXIT                                      */
                 this.dispose();
                 //new CreatRdv_GUI();
             }
-            //}
-            if (e.getSource() == exitButton) {
-                this.dispose();
-                new Psy_GUI();
-            }
+
             if (e.getSource() == CreateButton) {
                 if (mySystem.patients.size() == 1) {
                     JOptionPane.showMessageDialog(null, "Vous n'avez pas encore de patients.");
