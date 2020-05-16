@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.util.Calendar;
 
 public class Cons_ModifRDV extends Default_Page implements ActionListener {
     private JScrollPane listScrollRdv, listScrollCons ;
@@ -124,7 +125,7 @@ public class Cons_ModifRDV extends Default_Page implements ActionListener {
             else {
                 String rdvmodif = rdv_List.getModel().getElementAt(rdv_List.getSelectedIndex());
                 String[] id_string = rdvmodif.split("  ", 2);
-                new ModifRdv_Patientpage(id_string[0]);
+                new ModifRdv_Patientpage(id_string[0], Calendar.getInstance().getTime(), true);
             }
         }
 

@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.sql.Array;
 import java.sql.SQLException;
 import java.text.*;
 import java.util.*;
@@ -23,26 +24,37 @@ public final class ModifRdv_Patientpage extends Default_Page implements ActionLi
     private JLabel PaymentLabel = new JLabel("Payement");
     private String [] ListPayment = {"CB", "Cheques", "Espece"};
     private JDateChooser dateChooser;
+    private DefaultListModel<String> list = new DefaultListModel<>();
+
     private DefaultComboBoxModel<String> Dispo_H =new DefaultComboBoxModel<>();
+    private ArrayList<String> List_heure;
     private Rdv rdv_actuel;
     private JLabel Patient1Text,Patient2Text,Patient3Text;
     JTextField PrixField;
-    private JComboBox<String> HeureComboBox;
+    private JComboBox HeureComboBox =  new JComboBox<>();
     private JComboBox<String> PaymentComboBox = new JComboBox<>(ListPayment);
     JButton ModifButton = new JButton("Modifier");
 
-    public ModifRdv_Patientpage(String rdvString) throws SQLException {
+    public ModifRdv_Patientpage(String rdvString, Date date, boolean pass) throws SQLException {
         Optional<Rdv>  rdv = mySystem.rdvListe.stream().filter(r -> (r.getId()== Integer.parseInt(rdvString))).findFirst();
         rdv_actuel  = rdv.get();
-        dateChooser = new JDateChooser(rdv_actuel.getDate());
+        if (pass){
+            dateChooser = new JDateChooser(rdv_actuel.getDate());
+        }
+        else {
+            dateChooser = new JDateChooser(date);
+        }
         dateChooser.addPropertyChangeListener("date", new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
-                System.out.println("BLABLABLA");
-                SetListHeure(false);
+                if ((sdf.format(calendar.getDate())).compareTo(sdf.format(dateChooser.getDate())) > 0){
+                    JOptionPane.showMessageDialog(null, "Vous ne pouvez pas choisir une date passée.");
+                    dateChooser.setDate(rdv_actuel.getDate());
+                }
+                else{ SetListHeure(false); }
             }
         });
-
+       // SetListHeure(true);
         SetListHeure(true);
         PrixField = new JTextField((int) rdv_actuel.getPrix());
         setPatients();
@@ -51,6 +63,29 @@ public final class ModifRdv_Patientpage extends Default_Page implements ActionLi
         addComponentsToFrame();
         this.setVisible(true);
 
+    }
+
+
+    private void SetListHeure(boolean type ){
+        String[] Heure = {"8h00","8h30", "9h00","9h30", "10h00","10h30", "11h00","11h30", "12h00","12h30", "13h00","13h30", "14h00",
+                "14h30", "15h00","15h30", "16h00","16h30", "17h00","17h30", "18h00","18h30", "19h00","19h30", "20h00"};
+        List<String> list = new ArrayList<String>(Arrays.asList(Heure));
+        for(int cnt=0;cnt<mySystem.rdvListe.size();cnt++) {
+            if ((sdf.format(dateChooser.getDate())).equals(mySystem.rdvListe.get(cnt).getDate().toString()))
+                list.remove(mySystem.rdvListe.get(cnt).getHeure());
+        }
+        if (type){
+            String[] Dispo = new String[0];
+            Dispo = list.toArray(Dispo);
+            Dispo_H = new DefaultComboBoxModel<>(Dispo);
+            HeureComboBox.setModel(Dispo_H);
+        }
+        else{
+            Dispo_H.removeAllElements();
+            for(int i=0; i< list.size();i++){
+                Dispo_H.addElement(list.get(i));
+            }
+        }
     }
 
     protected void setLocationAndSize() {   // Log in
@@ -99,34 +134,6 @@ public final class ModifRdv_Patientpage extends Default_Page implements ActionLi
         backButton.addActionListener(this);
     }
 
-    private void SetListHeure(boolean type){
-        String[] Heure = {"8h00","8h30", "9h00","9h30", "10h00","10h30", "11h00","11h30", "12h00","12h30", "13h00","13h30", "14h00",
-                "14h30", "15h00","15h30", "16h00","16h30", "17h00","17h30", "18h00","18h30", "19h00","19h30", "20h00"};
-        Dispo_H.removeAllElements();
-        List<String> list_H = new ArrayList<String>(); list_H.add(rdv_actuel.getHeure());
-        list_H.addAll(Arrays.asList(Heure));
-        for(int cnt=0;cnt<mySystem.rdvListe.size();cnt++) {
-            if ((sdf.format(dateChooser.getDate())).equals(mySystem.rdvListe.get(cnt).getDate().toString())){
-                if(mySystem.rdvListe.get(cnt).getId() != rdv_actuel.getId()){
-                    list_H.remove(mySystem.rdvListe.get(cnt).getHeure());
-                }
-           }
-        }
-        for(int c=0;c<list_H.size();c++) {
-            Dispo_H.addElement(list_H.get(c));
-        }
-        //String[] Dispo = new String[0];
-       //Dispo_H = new DefaultComboBoxModel<>(list.toArray(Dispo));
-        PrintList(type);
-    }
-
-    private void PrintList(boolean type) {
-        if (type) {
-            HeureComboBox = new JComboBox<>(Dispo_H);
-            listScroll = new JScrollPane(HeureComboBox);
-        }else {
-        }
-    }
 
     private void setPatients(){
        Patient1Text = new JLabel(mySystem.patients.stream().distinct().filter(p-> p.getId_User() == rdv_actuel.getClient1() ).map(p-> p.getPrenom()+ "  " + p.getNom()).reduce("", String::concat));
