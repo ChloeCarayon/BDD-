@@ -48,7 +48,17 @@ public final class ModifRdv_Patientpage extends Default_Page implements ActionLi
                     JOptionPane.showMessageDialog(null, "Vous ne pouvez pas choisir une date passée.");
                     dateChooser.setDate(rdv_actuel.getDate());
                 }
-                else{ SetListHeure(false); }
+                else{
+                    try {
+                        if (!mySystem.mariaconnexion.Datecheck(sdf.format(dateChooser.getDate()),rdv_actuel.getId())){
+                            JOptionPane.showMessageDialog(null, "Vous travaillez 10h à ce jour.\nVeuillez sélectionner une autre date");
+                            dateChooser.setDate(rdv_actuel.getDate());
+                        }
+                        else SetListHeure(false);
+                    } catch (SQLException throwables) {
+                        JOptionPane.showMessageDialog(null, "Erreur sql");
+                    }
+                }
             }
         });
        // SetListHeure(true);

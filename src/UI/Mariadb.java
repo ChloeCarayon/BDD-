@@ -128,16 +128,20 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
         }
     }
 
-    public boolean Datecheck(String date) throws SQLException {
+    public boolean Datecheck(String date,int rdv) throws SQLException {
         int count=0;
         java.sql.Date sqlDate = java.sql.Date.valueOf(date);
         preparedStatement = conn
                 .prepareStatement("select * from db.rdv  where Date= ?");
         preparedStatement.setDate(1, sqlDate); // nom
         resultSet = preparedStatement.executeQuery();
-        while( resultSet.next()) count++;
+        while( resultSet.next()){
+            if(resultSet.getInt("Id_rdv") != rdv)
+            count++;
+        }
         return count != 20;
     }
+
     
     public ArrayList<User> getPatient() throws SQLException {
     	ArrayList<User> list = new ArrayList<>();
@@ -271,9 +275,9 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
         preparedStatement.setInt(5, rdv_m.getId());
         preparedStatement.executeUpdate();
 
-                mySystem.rdvListe.stream().filter(p-> p.getId()==rdv_m.getId()).map(p-> {p.setHeure(rdv_m.getHeure());
-                         p.setDate(sqlDate); p.setPayement(rdv_m.getPayement()); p.setPrix(rdv_m.getPrix());
-                    return null; }).collect(Collectors.toList());
+        mySystem.rdvListe.stream().filter(p-> p.getId()==rdv_m.getId()).map(p-> {p.setHeure(rdv_m.getHeure());
+        p.setDate(sqlDate); p.setPayement(rdv_m.getPayement()); p.setPrix(rdv_m.getPrix());
+        return null; }).collect(Collectors.toList());
     }
 
     public void DeleteRdv(int id) throws SQLException {

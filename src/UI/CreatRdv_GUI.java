@@ -46,7 +46,7 @@ public final class CreatRdv_GUI extends Default_Page implements ActionListener  
         setLocationAndSize();
         addComponentsToFrame();
         this.setVisible(true);
-        if (!mySystem.mariaconnexion.Datecheck(date)){
+        if (!mySystem.mariaconnexion.Datecheck(date,-1)){
             JOptionPane.showMessageDialog(null, "Vous travaillez 10h à ce jour.\nVeuillez sélectionner une autre date");
             this.dispose();
             new RDVpsy_GUI();
