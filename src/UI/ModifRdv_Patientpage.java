@@ -21,10 +21,7 @@ public final class ModifRdv_Patientpage extends Default_Page implements ActionLi
     private JLabel PaymentLabel = new JLabel("Payement");
     private String [] ListPayment = {"CB", "Cheques", "Espece"};
     private JDateChooser dateChooser;
-    private DefaultListModel<String> list = new DefaultListModel<>();
-
     private DefaultComboBoxModel<String> Dispo_H =new DefaultComboBoxModel<>();
-    private ArrayList<String> List_heure;
     private Rdv rdv_actuel;
     private JLabel Patient1Text,Patient2Text,Patient3Text;
     private  JTextField PrixField = new JTextField();
