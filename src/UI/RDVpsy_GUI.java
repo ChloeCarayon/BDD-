@@ -3,7 +3,9 @@ package UI;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.sql.Date;
 import java.sql.SQLException;
+import java.util.Calendar;
 
 import javax.swing.*;
 
@@ -141,7 +143,9 @@ public class RDVpsy_GUI extends Default_Page implements ActionListener {
                 } else {
                     this.dispose();
                     try {
-                        new CreatRdv_GUI(sdf.format(calendar.getDate()));
+                      if (calendar.getCalendar().get(Calendar.DAY_OF_WEEK) !=Calendar.SUNDAY)
+                            new CreatRdv_GUI(sdf.format(calendar.getDate()));
+                      else  JOptionPane.showMessageDialog(null, "Vous ne pouvez pas avoir de rendez-vous le dimanche.");
                     } catch (SQLException throwables) {
                         throwables.printStackTrace();
                         JOptionPane.showMessageDialog(null, "Impossible d'ouvrir cette page.");

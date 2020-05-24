@@ -47,11 +47,14 @@ public final class ModifRdv_Patientpage extends Default_Page implements ActionLi
                 }
                 else{
                     try {
-                        if (!mySystem.mariaconnexion.Datecheck(sdf.format(dateChooser.getDate()),rdv_actuel.getId())){
-                            JOptionPane.showMessageDialog(null, "Vous travaillez 10h à ce jour.\nVeuillez sélectionner une autre date");
-                            dateChooser.setDate(rdv_actuel.getDate());
+                        if (calendar.getCalendar().get(Calendar.DAY_OF_WEEK) !=Calendar.SUNDAY){
+                            if (!mySystem.mariaconnexion.Datecheck(sdf.format(dateChooser.getDate()),rdv_actuel.getId())){
+                                JOptionPane.showMessageDialog(null, "Vous travaillez 10h à ce jour.\nVeuillez sélectionner une autre date");
+                                dateChooser.setDate(rdv_actuel.getDate());
+                            }
+                            else SetListHeure(false);
                         }
-                        else SetListHeure(false);
+                        else JOptionPane.showMessageDialog(null, "Vous ne pouvez pas avoir de rendez-vous le dimanche.");
                     } catch (SQLException throwables) {
                         JOptionPane.showMessageDialog(null, "Erreur sql");
                     }
