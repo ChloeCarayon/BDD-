@@ -40,7 +40,7 @@ public class Log extends Default_Page implements ActionListener {
         if(e.getSource()==b1){
             /*                                 Log IN                                                     */
             mySystem.page1.setVisible(false);
-            new Registration(false);
+            new Registration(false,0);
 
         } else{
             /*                                   EXIT                                        */

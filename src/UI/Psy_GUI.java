@@ -43,7 +43,7 @@ public class Psy_GUI extends Default_Page implements ActionListener  {
         if(e.getSource()== PatientButton){
             /*                                CREATION PATIENT                                 */
             this.dispose();
-            new Registration(true);
+            new Registration(true,0);
 
         }
         else if(e.getSource()==RdvButton){

@@ -4,60 +4,62 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.awt.*;
 
-public class Patient_GUI extends JFrame implements ActionListener  {
+public class Patient_GUI extends Default_Page implements ActionListener  {
 
-    private JButton HistoButton=new JButton("Historique");
-    private JButton RdvButton=new JButton("Rdv à venir");
-    private JButton ExitButton=new JButton("EXIT");
-
-    public Patient_GUI() {
-        createWindow();
+    private JButton modifButton=new JButton("Modifier mon profile");
+    private JButton rdvButton=new JButton("Rdv a venir");
+    private JButton coupleButton = new JButton("Modifier ma situation");
+    private JButton typeButton = new JButton("Modifier mon type");
+    private JButton professionButton = new JButton("Modifier ma profession");
+   
+    
+    public Patient_GUI(int id) {
+        createWindow("Patient Side",500, 100, 500, 500);
         setLocationAndSize();
         addComponentsToFrame();
-    }
-
-    private void createWindow() {
-        this.setTitle("Patient Side");
-        this.setBounds(500, 100, 380, 200);
-        this.getContentPane().setBackground(Color.getHSBColor(269, 100, 95));
-        this.getContentPane().setLayout(null);
+        addImage(200,250);
+        getProfile(id);
+        mySystem.current_client_id = id;
         this.setVisible(true);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setResizable(false);
     }
 
-    private void setLocationAndSize() {
-        HistoButton.setBounds(10,60,165,23);
-        RdvButton.setBounds(210,60,165,23);
-        ExitButton.setBounds(110,110,165,23);
+    protected void setLocationAndSize() {
+    	modifButton.setBounds(300,130,165,23);
+        rdvButton.setBounds(300,90,165,23);
+        profile.setBounds(20,50,250,300);
+        coupleButton.setBounds(300,170,165,23);
+        typeButton.setBounds(300,210,165,23);
+        professionButton.setBounds(300,250,165,23);
     }
 
-    private void addComponentsToFrame() {
-        this.add(HistoButton);
-        this.add(RdvButton);
-        this.add(ExitButton);
+    protected void addComponentsToFrame() {
+        this.add(modifButton);
+        this.add(rdvButton);
+        this.add(exitButton);
+        this.add(profile);
+        this.add(typeButton); 
+        this.add(coupleButton); 
+        this.add(professionButton);
+        
+        profile.setFont(new Font("Verdana", 12, 12));
 
-        HistoButton.addActionListener(this);
-        RdvButton.addActionListener(this);
-        ExitButton.addActionListener(this);
+        modifButton.addActionListener(e-> {
+        	this.dispose();
+        	new Registration(true,mySystem.current_client_id);
+        	});
+        rdvButton.addActionListener(e-> {
+        	this.dispose();
+        	});
+        exitButton.addActionListener(e-> {
+        	this.dispose();
+        	});
+        professionButton.addActionListener(e -> {
+        	this.dispose(); 
+        	new ModifListePage("profession");
+        });
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        if(e.getSource()== HistoButton){
-            /*                                CREATION PATIENT                                 */
-            this.dispose();
-            new Registration(true);
-
-        }
-        else if(e.getSource()==RdvButton){
-            /*                                 RDV                                  */
-            this.dispose();
-        }
-        else if(e.getSource()==ExitButton){
-            /*                                   EXIT                                      */
-            this.dispose();
-        }
-    }
+    public void actionPerformed(ActionEvent e) { }
 
 }

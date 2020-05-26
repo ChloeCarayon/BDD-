@@ -17,14 +17,15 @@ public class MyPatientPage extends Default_Page implements ActionListener{
 	   private JButton ShowButton = new JButton("Voir le profile");
 	   
 	   private final JLabel profile_title = new JLabel("Profile : ");
-	   private final JLabel profile = new JLabel("Selectionnez un profile");
+	  
 
 	 
 	 public MyPatientPage() {
-			createWindow();
+			createWindow(); 
 			setListClient();
 	        setLocationAndSize();
 	        addComponentsToFrame();
+	        profile.setText("Selectionnez un profile");
 	        this.setVisible(true);
 	    }
 
@@ -44,23 +45,8 @@ public class MyPatientPage extends Default_Page implements ActionListener{
 	    	listScroll.setBounds(100,100,100,100); 
 	    	profile_title.setBounds(150,50,150,30);
 	    	profile.setBounds(250,30,150,300);
-	    }
-	    
-	    private void getProfile() {
-	    	int index = patientList.getSelectedIndex(); 
-	    	String infos;
-	    	try {
-	    		infos = mySystem.patients.get(index).toString();
-		    	
-	    	}catch(ArrayIndexOutOfBoundsException aiobe) {
-	    		infos = "Aucun profile selectionn� !";
-	    	}
-	    	catch(Exception e) {
-	    		infos = "Impossible d'afficher le profile";
-	    	}
-	    	
-	    	profile.setText(infos);
-	    }
+	    }    
+	
 	    
 	    protected void addComponentsToFrame() {
 	    	this.add(listScroll);	      
@@ -84,7 +70,7 @@ public class MyPatientPage extends Default_Page implements ActionListener{
 		if(e.getSource() == ShowButton && patientList.getSelectedIndex() != -1 );
 			/*                                 Affiche nouveau profile quand s�lectionne nouveau nom                    */
 	       { 
-	            getProfile();
+	            getProfile(patientList.getSelectedIndex());
 	       }
 	}
 }

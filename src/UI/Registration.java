@@ -40,25 +40,32 @@ public final class Registration extends Default_Page implements ActionListener {
     private boolean choice_celib, choice_couple;
     
     private JButton registerButton = new JButton("REGISTER");
- 
-
-    public Registration(boolean choice) {
+    private JButton modifButton = new JButton("MODIFIER");
+    private  User current_client;
+    
+    public Registration(boolean choice, int id) {
         LogorRegis = choice;
       
         if (!LogorRegis)
         	  createWindow("Log In", 500, 100, 380, 250);
-        else
-        	  createWindow("Register", 500, 100, 380, 550);     
+        else {
+        	createWindow("Register", 500, 100, 380, 550);  
+        	  if(id>0) {
+              	current_client = mySystem.patients.get(id);
+              	modifPage();
+              }
+              else 
+              	registerPage();
+        }        	     
         
         setLocationAndSize();
-        addComponentsToFrame();
- 
+        addComponentsToFrame();   
         this.setVisible(true);
     }
 
-    protected void setLocationAndSize() {   // Log in
+    protected void setLocationAndSize() {  
 
-        if (LogorRegis) {
+        if (LogorRegis) { //Register et modification
             nomLabel.setBounds(20, 20, 70, 70);
             prenomLabel.setBounds(20, 60, 70, 70);
             passwordLabel.setBounds(20, 100, 70, 70);
@@ -81,10 +88,11 @@ public final class Registration extends Default_Page implements ActionListener {
             checkCelib.setBounds(250,370,70,30);
 
             registerButton.setBounds(20, 450, 100, 35);
+            modifButton.setBounds(20, 450, 100, 35);
             exitButton.setBounds(150, 450, 70, 35);
             backButton.setBounds(250, 450, 70, 35);
 
-        } else {
+        } else {//log in
             emailLabel.setBounds(20, 20, 70, 70);
             passwordLabel.setBounds(20, 60, 70, 70);
             emailText.setBounds(180, 43, 165, 23);
@@ -94,131 +102,155 @@ public final class Registration extends Default_Page implements ActionListener {
             addImage(10,300); 
         }
     }
-
+    
     protected void addComponentsToFrame() {   //Adding components to Frame
-        this.add(passwordLabel);
-        this.add(passwordField);
-        this.add(emailLabel);
-        this.add(emailText);
-        this.add(registerButton);
-        this.add(exitButton);
-        this.add(backButton); 
-   
-        
-        if (LogorRegis) {
-            this.add(prenomLabel);
-            this.add(nomLabel);
-            this.add(nomTextField);
-            this.add(prenomTextField);
-            this.add(SexeComboBox);
-            this.add(sexeLabel);
-            this.add(PubComboBox);
-            this.add(pubLabel);
-            this.add(checkCouple);
-            this.add(coupleLabel);
-            this.add(typeLabel);
-            this.add(TypeComboBox);
-            this.add(checkCelib);
+        ///commun aux trois pages 
+        	this.add(passwordLabel);
+            this.add(passwordField);
+            this.add(emailLabel);
+            this.add(emailText);
+            this.add(exitButton);
+            this.add(backButton); 
+       
+            
+            if (LogorRegis) { //commun au registrer et au modif 
+            	this.add(prenomLabel);
+                this.add(nomLabel);
+                this.add(nomTextField);
+                this.add(prenomTextField);
+                this.add(SexeComboBox);
+                this.add(sexeLabel);
+            }else {
+            	this.add(registerButton);
+              	registerButton.addActionListener(e -> { //log in page 
+            		  if ( emailText.getText().equals("") || passwordField.getText().equals("") )
+                          JOptionPane.showMessageDialog(null, "Veuillez remplir tous les champs.");
+                      else {
+                          try {
+                              String password = new String(passwordField.getPassword());
+                              mySystem.mariaconnexion.LogDB(emailText.getText(),password);
+                          } catch (SQLException throwables) {
+                              throwables.printStackTrace();
+                          }
+                          if (mySystem.user != null){
+                              if (mySystem.user.getId_User() == 1){
+                                  this.dispose();
+                                  new Psy_GUI();
+                              }
+                              else{
+                                  this.dispose();
+                                  new Patient_GUI(mySystem.user.getId_User());
+                              }
+                          }else {
+                              JOptionPane.showMessageDialog(null, "Erreur mot de passe ou email.");
+                          }
+                      }
+              	});
+            }
+            
+            ///Commun aux trois pages 
+            exitButton.addActionListener(e -> {
+            		this.dispose();
+            	});
+            backButton.addActionListener(e -> {
+	            	this.dispose(); 
+	            	mySystem.page1.setVisible(true);
+            	});
         }
-
-        registerButton.addActionListener(this);
-        exitButton.addActionListener(this);
-        backButton.addActionListener(this);
-        checkCouple.addActionListener(this);
-        checkCelib.addActionListener(this);
+    
+    protected void modifPage() {
+    	nomTextField.setText(current_client.getNom());
+    	 prenomTextField.setText(current_client.getPrenom());
+         passwordField.setText(current_client.getPassword());
+         emailText.setText(current_client.getEmail());
+         
+         SexeComboBox.setSelectedItem(current_client.getSexe());
+         for(String p  : pub)
+        	 if(p.equals(current_client.getPub())) PubComboBox.setSelectedItem(p);     
+         
+        this.add(modifButton); 
+        modifButton.addActionListener(e-> {
+        	
+        	try {
+        		boolean s=false;
+        		if (SexeComboBox.getSelectedItem().toString().equals("Homme")) s = true;
+           	 
+				mySystem.mariaconnexion.modifyClient(current_client.getId_User(),nomTextField.getText(), prenomTextField.getText(), new String(passwordField.getPassword()),
+				        emailText.getText(),PubComboBox.getSelectedItem().toString(),s);
+				JOptionPane.showMessageDialog(null, "Profile Modifier avec succès");
+				this.dispose();
+				
+			}  catch (SQLException  throwables) {
+                JOptionPane.showMessageDialog(null, "Impossible de modififer le profile");
+                throwables.printStackTrace();
+             }
+        });
     }
+
+    protected void registerPage() {         
+         this.add(PubComboBox);
+         this.add(pubLabel);
+         this.add(checkCouple);
+         this.add(coupleLabel);
+         this.add(typeLabel);
+         this.add(TypeComboBox);
+         this.add(checkCelib);
+         this.add(registerButton);
+         
+         checkCouple.addActionListener(e->{ //ne peut selectionner qu'un seul à la fois 
+        	 	checkCelib.setSelected(false);
+          		choice_celib = false;
+          		choice_couple = true;  
+          	});
+         
+         checkCelib.addActionListener(e -> {  //ne peut selectionner qu'un seul à la fois 
+	        	checkCouple.setSelected(false);
+	           	choice_celib = true;
+	           	choice_couple = false;  
+         	});
+         
+         registerButton.addActionListener(e-> {
+	        	 if ( nomTextField.getText().equals("") || passwordField.getText().equals("") || prenomTextField.getText().equals("") || (!choice_couple && !choice_celib)
+	                     ||   emailText.getText().equals(""))
+	                 JOptionPane.showMessageDialog(null, "Veuillez remplir tous les champs.");
+	             else {
+	                 boolean sexe,couple;
+	                 if (SexeComboBox.getSelectedItem().toString().equals("Homme")) sexe = true;
+	                 else sexe= false;                    
+	                 if(choice_couple) couple = true;
+	                 else couple = false;
+	                            
+	                 try {
+	                     String password = new String(passwordField.getPassword());
+	                     int id_nouveau_client = mySystem.mariaconnexion.readDBClient(nomTextField.getText(), prenomTextField.getText(),password,
+	                             emailText.getText(),PubComboBox.getSelectedItem().toString() ,sexe);
+	                     
+	                     mySystem.mariaconnexion.addDBCouple(id_nouveau_client, null, couple);
+	                     mySystem.mariaconnexion.addDBType(id_nouveau_client, null, TypeComboBox.getSelectedItem().toString() );
+	
+	                    //Actualise la liste de Patient
+	                     mySystem.patients.clear();
+	                     mySystem.patients = mySystem.mariaconnexion.getPatient();
+	
+	                     System.out.println(mySystem.patients.get(mySystem.patients.size()-1).getId_User());
+	
+	                     this.dispose();
+	                     new ProfessionPage(id_nouveau_client);
+	                     //new Psy_GUI();
+		                 } catch(java.sql.SQLIntegrityConstraintViolationException icve) {
+		                 	emailText.setText(" ");
+		                 	emailText.setBorder(BorderFactory.createLineBorder(Color.red));
+		                 	JOptionPane.showMessageDialog(null, "Cette addresse Email existe dï¿½jï¿½");
+		                 }
+		                 catch (SQLException  throwables) {
+		                    JOptionPane.showMessageDialog(null, "Impossible de crééer le patient");
+		                    throwables.printStackTrace();
+		                 }
+	             }
+         	});
+   
+    }   
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-    	if(LogorRegis) ///PAGE PATIENT; ne peut pas avoir les deux cases sï¿½lectionnï¿½es
-    	{
-    		 if (e.getSource() == checkCouple) {
-    			checkCelib.setSelected(false);
-             	choice_celib = false;
-             	choice_couple = true;    
-             }
-    		 else if(e.getSource() == checkCelib) {
-            	checkCouple.setSelected(false);
-              	choice_celib = true;
-              	choice_couple = false;       
-             }
-    	}
-        	
-        if (e.getActionCommand().equals("REGISTER")) {
-            // PAGE  LOG IN
-            if (!LogorRegis){
-                if ( emailText.getText().equals("") || passwordField.getText().equals("") )
-                    JOptionPane.showMessageDialog(null, "Veuillez remplir tous les champs.");
-                else {
-                    try {
-                        String password = new String(passwordField.getPassword());
-                        mySystem.mariaconnexion.LogDB(emailText.getText(),password);
-                    } catch (SQLException throwables) {
-                        throwables.printStackTrace();
-                    }
-                    if (mySystem.user != null){
-                        if (mySystem.user.getId_User() == 1){
-                            this.dispose();
-                            new Psy_GUI();
-                        }
-                        else{
-                            this.dispose();
-                            new Patient_GUI();
-                        }
-                    }else {
-                        JOptionPane.showMessageDialog(null, "Erreur mot de passe ou email.");
-                    }
-                }
-            }/// PAGE CREATION PATIENT
-            else {
-                if ( nomTextField.getText().equals("") || passwordField.getText().equals("") || prenomTextField.getText().equals("") || (!choice_couple && !choice_celib)
-                        ||   emailText.getText().equals(""))
-                    JOptionPane.showMessageDialog(null, "Veuillez remplir tous les champs.");
-                else {
-                    boolean sexe,couple;
-                    if (SexeComboBox.getSelectedItem().toString().equals("Homme")) sexe = true;
-                    else sexe= false;                    
-                    if(choice_couple) couple = true;
-                    else couple = false;
-                               
-                    try {
-                        String password = new String(passwordField.getPassword());
-                        int id_nouveau_client = mySystem.mariaconnexion.readDBClient(nomTextField.getText(), prenomTextField.getText(),password,
-                                emailText.getText(),PubComboBox.getSelectedItem().toString() ,sexe);
-                        
-                        mySystem.mariaconnexion.addDBCouple(id_nouveau_client, null, couple);
-                        mySystem.mariaconnexion.addDBType(id_nouveau_client, null, TypeComboBox.getSelectedItem().toString() );
-
-                       //Actualise la liste de Patient
-                        mySystem.patients.clear();
-                        mySystem.patients = mySystem.mariaconnexion.getPatient();
-
-                        System.out.println(mySystem.patients.get(mySystem.patients.size()-1).getId_User());
-
-                        this.dispose();
-                        new ProfessionPage(id_nouveau_client);
-                        //new Psy_GUI();
-                    } catch(java.sql.SQLIntegrityConstraintViolationException icve) {
-                    	emailText.setText(" ");
-                    	emailText.setBorder(BorderFactory.createLineBorder(Color.red));
-                    	JOptionPane.showMessageDialog(null, "Cette addresse Email existe dï¿½jï¿½");
-                    }
-                    catch (SQLException  throwables) {
-                       JOptionPane.showMessageDialog(null, "Impossible de crééer le patient");
-                       throwables.printStackTrace();
-                    }
-                }
-            }
-        }
-        if (e.getActionCommand().equals("Exit")) {
-            this.dispose();
-            // sql exit
-        }
-        if(e.getActionCommand().equals("Back")) {
-        	this.dispose(); 
-        	mySystem.page1.setVisible(true);
-        }
-    }
-
+    public void actionPerformed(ActionEvent e) {    }
 }
-//https://www.vogella.com/tutorials/MySQLJava/article.html

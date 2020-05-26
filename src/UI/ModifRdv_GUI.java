@@ -21,9 +21,9 @@ public final class ModifRdv_GUI extends Default_Page implements ActionListener {
 
     JTextField PrixField = new JTextField();
     private JLabel DateChoose;
-    JComboBox Patient1ComboBox; JComboBox Patient2ComboBox; JComboBox Patient3ComboBox;
-    JComboBox HeureComboBox;
-    JComboBox PaymentComboBox = new JComboBox<>(ListPayment);
+    JComboBox<String> Patient1ComboBox; JComboBox<String> Patient2ComboBox; JComboBox Patient3ComboBox;
+    JComboBox<String> HeureComboBox;
+    JComboBox<String> PaymentComboBox = new JComboBox<>(ListPayment);
     JButton CreateButton = new JButton("Modifier");
     JButton exitButton = new JButton("Exit");
     JButton backButton=new JButton("Back");

@@ -119,14 +119,16 @@ public class User {
 		this.coupleList.put(d, c);
 	}
 	
-	
+
 	public void addProfList(Date d, String p) {
 		this.profList.put(d, p);
 	}
 	
 	
 	
-////// Methodes to String
+	
+	
+////// Methode to String
 	
 	public String toString() {
 		
@@ -144,7 +146,7 @@ public class User {
 		
 		String t = " "; 
 		if(this.typeList.size()==0) 
-			t = "Aucun type enregistré";
+			t += "Aucun type enregistré";
 		else {
 			for(Date d : typeList.keySet()) {
 				t += typeList.get(d);
@@ -156,13 +158,12 @@ public class User {
 		
 		String c = " "; 
 		if(this.coupleList.size()==0) 
-			t = "Aucun couple enregistré";
+			c += "Aucun couple enregistré";
 		else {
 			for(Date d : coupleList.keySet()) {
 				if(coupleList.get(d))
 					c += "En couple";
-				else c+= "Célibataire";
-				
+				else c+= "Célibataire";				
 				c +=" en ";
 				c += d;
 				c +=" <br>";
@@ -173,10 +174,10 @@ public class User {
 				+ "<br> <br> Prenom : "+ this.Prenom
 				+"<br> <br>  Email :  "+ this.Email
 				+"<br> <br>  Client depuis  :  " +this.anciennete.toString()
-				+"<br> <br>  Sexe :"+ this.getSexe() 
-				+" <br> <br>  Type  :"+ t
-				+" <br>  Situation  :"+ c
-				+ " <br> Professions exercees : "+p;
+				+"<br> <br>  Sexe : "+ this.getSexe() 
+				+" <br> <br>   Type  : "+ t
+				+" <br> <br>  Situation  : "+ c
+				+" <br> <br> Professions exercees : "+p;
 	}
 
 	

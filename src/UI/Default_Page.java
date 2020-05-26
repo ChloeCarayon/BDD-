@@ -38,6 +38,8 @@ public class Default_Page extends JFrame {
 	protected JButton exitButton = new JButton("Exit");
 	protected JButton backButton=new JButton("Back");
 	
+	protected JLabel profile = new JLabel(" ");
+	
 	public Default_Page() {
 		
 	}
@@ -116,9 +118,23 @@ public class Default_Page extends JFrame {
 				background.setBounds(x,y,300,310);
 				this.add(background);
 	        } catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}		
 	}
+    protected void getProfile(int index) {
+    	
+    	String infos;
+    	try {
+    		infos = mySystem.patients.get(index).toString();
+	    	
+    	}catch(ArrayIndexOutOfBoundsException aiobe) {
+    		infos = "Aucun profile selectionn� !";
+    	}
+    	catch(Exception e) {
+    		infos = "Impossible d'afficher le profile";
+    	}
+    	
+    	profile.setText(infos);
+    }
 
 }

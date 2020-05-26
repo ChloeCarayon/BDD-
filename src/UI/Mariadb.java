@@ -80,7 +80,7 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
     	resultSet = preparedStatement.executeQuery();   
     }
 
-    
+    //TODO remplacer type date, voir pageProfesion 
     public void addDBType(int id_client, Date date, String type) throws SQLException{
     	resultSet = stmt.executeQuery("select * from db.type_p");
 
@@ -266,6 +266,14 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
         mySystem.rdvListe.remove(mySystem.rdvListe.stream().filter(r -> (r.getId()== id)).findFirst().get());
             // RAJOUTER LA SUPPRESSION DE LA CONSULTATION
 
+    }
+    
+    public void modifyClient(int id, String nom, String prenom, String mdp, String mail, String pub, boolean sexe) throws SQLException {
+    	stmt = conn.createStatement(); 
+    	resultSet = stmt.executeQuery(
+    			"UPDATE db.client SET "
+    					+ "Nom_client= ' "+nom+"' ,Prenom_client = ' "+prenom+" ' , mdp= ' "+mdp+" ', mail = ' "+mail+" ', pub = ' "+pub+" ', sexe = "+sexe
+    			+ " WHERE  Id_Client="+id+"; ");
     }
 
     private void close() {
