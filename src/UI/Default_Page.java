@@ -56,8 +56,7 @@ public class Default_Page extends JFrame {
 	    
 	    }
 
-	 protected void 
-	 addComponentsToFrame() {
+	 protected void addComponentsToFrame() {
 	      
 	    }
 	 

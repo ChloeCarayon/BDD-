@@ -21,7 +21,7 @@ import com.toedter.calendar.JDateChooser;
 
 public class ModifListePage  extends Default_Page implements ActionListener {
 	private JTextField profText = new JTextField(); 
-	private JLabel profLabel ;
+	private JLabel profLabel;
 	private JButton addButton = new JButton("Add");	
 	private JButton modifButton = new JButton("Modify");	
 	private JLabel clientLabel = new JLabel();
@@ -34,16 +34,20 @@ public class ModifListePage  extends Default_Page implements ActionListener {
 	private Calendar cal = Calendar.getInstance();
 	private JDateChooser dateChooser = new JDateChooser(cal.getTime());
 
-	private String a_modifier;
+	private String a_modifier ;
 	
 	public ModifListePage( String a_modifier) {
 		
 		createWindow(a_modifier,500, 100, 380, 300);
 		setList(mySystem.patients.get(mySystem.current_client_id).getProfList());
 	
+		profLabel = new JLabel(a_modifier);
 		setLocationAndSize();
 		addComponentsToFrame();
 		this.a_modifier = a_modifier;
+
+	
+		
 		setVisible(true);
 	}
 	
@@ -83,11 +87,12 @@ public class ModifListePage  extends Default_Page implements ActionListener {
 		this.add(listScroll);
 		this.add(modifButton);
 		
+		
 		modifButton.addActionListener(e -> {
 			
 		});
 		addButton.addActionListener(e -> {
-			if(a_modifier.contentEquals("profession")) {
+			if(a_modifier.contentEquals("Profession")) {
 				try {
 					mySystem.mariaconnexion.addDBProfession(mySystem.current_client_id, profText.getText(),sdf.format(dateChooser.getDate()));
 				} catch (SQLException e1) {
@@ -96,10 +101,10 @@ public class ModifListePage  extends Default_Page implements ActionListener {
 	            JOptionPane.showMessageDialog(null, "Profession "+profText.getText()+" ajoutée avec succès !");
 	            profText.setText(" ");
 			}
-			else if(a_modifier.contentEquals("couple")) {
+			else if(a_modifier.contentEquals("Couple")) {
 				
 			}
-			else if(a_modifier.contentEquals("type")) {
+			else if(a_modifier.contentEquals("Type")) {
 				
 			}
 		

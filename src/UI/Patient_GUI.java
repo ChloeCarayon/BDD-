@@ -55,7 +55,7 @@ public class Patient_GUI extends Default_Page implements ActionListener  {
         	});
         professionButton.addActionListener(e -> {
         	this.dispose(); 
-        	new ModifListePage("profession");
+        	new ModifListePage("Profession");
         });
     }
 

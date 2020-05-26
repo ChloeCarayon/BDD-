@@ -175,7 +175,7 @@ public class User {
 				+"<br> <br>  Email :  "+ this.Email
 				+"<br> <br>  Client depuis  :  " +this.anciennete.toString()
 				+"<br> <br>  Sexe : "+ this.getSexe() 
-				+" <br> <br>   Type  : "+ t
+				+" <br> <br>  Type  : "+ t
 				+" <br> <br>  Situation  : "+ c
 				+" <br> <br> Professions exercees : "+p;
 	}
