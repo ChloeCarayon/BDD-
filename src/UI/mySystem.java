@@ -6,7 +6,8 @@ public class mySystem {
     public static Log page1;
     public static Mariadb mariaconnexion = new Mariadb();
     public static User user;
-    public static int current_client_id ;
+    public static int current_client_id;
+    public static User current_client;
 
     public static ArrayList<User> patients = new ArrayList<>();
     public static ArrayList<Rdv> rdvListe = new ArrayList<>();
@@ -20,6 +21,6 @@ public class mySystem {
 
       //  new Psy_GUI();
         //new ProfessionPage(59);
-        new Patient_GUI(4);
+       // new Patient_GUI();
     }
 }

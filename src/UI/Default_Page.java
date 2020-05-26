@@ -104,9 +104,7 @@ public class Default_Page extends JFrame {
 	        	    Border compoundBorder =
 	        		BorderFactory.createCompoundBorder(etchedBorder, emptyBorder);
 	      
-	        	    calendar4.setBorder(compoundBorder);
-	        	    
-	        	    
+	        	    calendar4.setBorder(compoundBorder);	        	    
 	        	    this.add(calendar4);
 	       
 	 }
@@ -120,20 +118,6 @@ public class Default_Page extends JFrame {
 				e.printStackTrace();
 			}		
 	}
-    protected void getProfile(int index) {
-    	
-    	String infos;
-    	try {
-    		infos = mySystem.patients.get(index).toString();
-	    	
-    	}catch(ArrayIndexOutOfBoundsException aiobe) {
-    		infos = "Aucun profile selectionn� !";
-    	}
-    	catch(Exception e) {
-    		infos = "Impossible d'afficher le profile";
-    	}
-    	
-    	profile.setText(infos);
-    }
+
 
 }

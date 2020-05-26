@@ -83,6 +83,22 @@ public class MyPatientPage extends Default_Page implements ActionListener{
 	    	ShowButton.addActionListener(this);
 	    }
 	    
+	    protected void getProfile(int index) {    	
+	    	String infos;
+	    	try {
+	    		infos = mySystem.patients.get(index).toString();
+		    	
+	    	}catch(ArrayIndexOutOfBoundsException aiobe) {
+	    		infos = "Aucun profile selectionne !";
+	    	}
+	    	catch(Exception e) {
+	    		infos = "Impossible d'afficher le profile";
+	    		e.printStackTrace();
+	    	}
+	    	
+	    	profile.setText(infos);
+	    }
+	    
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource()==exitButton){

@@ -41,7 +41,7 @@ public final class Registration extends Default_Page implements ActionListener {
     
     private JButton registerButton = new JButton("REGISTER");
     private JButton modifButton = new JButton("MODIFIER");
-    private  User current_client;
+
     
     public Registration(boolean choice, int id) {
         LogorRegis = choice;
@@ -51,7 +51,6 @@ public final class Registration extends Default_Page implements ActionListener {
         else {
         	createWindow("Register", 500, 100, 380, 550);  
         	  if(id>0) {
-              	current_client = mySystem.patients.get(id);
               	modifPage();
               }
               else 
@@ -123,29 +122,17 @@ public final class Registration extends Default_Page implements ActionListener {
             }else {
             	this.add(registerButton);
               	registerButton.addActionListener(e -> { //log in page 
-            		  if ( emailText.getText().equals("") || passwordField.getText().equals("") )
-                          JOptionPane.showMessageDialog(null, "Veuillez remplir tous les champs.");
-                      else {
-                          try {
-                              String password = new String(passwordField.getPassword());
-                              mySystem.mariaconnexion.LogDB(emailText.getText(),password);
-                          } catch (SQLException throwables) {
-                              throwables.printStackTrace();
-                          }
-                          if (mySystem.user != null){
-                              if (mySystem.user.getId_User() == 1){
-                                  this.dispose();
-                                  new Psy_GUI();
-                              }
-                              else{
-                                  this.dispose();
-                                  new Patient_GUI(mySystem.user.getId_User());
-                              }
-                          }else {
-                              JOptionPane.showMessageDialog(null, "Erreur mot de passe ou email.");
-                          }
-                      }
+            		  Enter();
               	});
+              	
+              //Passer à la page suivante avec le boutton entrer              	
+              	passwordField.addKeyListener(new KeyAdapter() {
+                     public void keyPressed(KeyEvent e) {
+                         if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                            Enter();
+                         }
+                     }
+                 });              	
             }
             
             ///Commun aux trois pages 
@@ -158,15 +145,40 @@ public final class Registration extends Default_Page implements ActionListener {
             	});
         }
     
+    protected void Enter() {
+    	if ( emailText.getText().equals("") || passwordField.getText().equals("") )
+            JOptionPane.showMessageDialog(null, "Veuillez remplir tous les champs.");
+        else {
+            try {
+                String password = new String(passwordField.getPassword());
+                mySystem.mariaconnexion.LogDB(emailText.getText(),password);
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+            if (mySystem.user != null){
+                if (mySystem.user.getId_User() == 1){
+                    this.dispose();
+                    new Psy_GUI();
+                }
+                else{
+                    this.dispose();
+                    new Patient_GUI();
+                }
+            }else {
+                JOptionPane.showMessageDialog(null, "Erreur mot de passe ou email.");                              
+            }
+        }
+    }
+    
     protected void modifPage() {
-    	nomTextField.setText(current_client.getNom());
-    	 prenomTextField.setText(current_client.getPrenom());
-         passwordField.setText(current_client.getPassword());
-         emailText.setText(current_client.getEmail());
+    	nomTextField.setText(mySystem.user.getNom());
+    	 prenomTextField.setText(mySystem.user.getPrenom());
+         passwordField.setText(mySystem.user.getPassword());
+         emailText.setText(mySystem.user.getEmail());
          
-         SexeComboBox.setSelectedItem(current_client.getSexe());
+         SexeComboBox.setSelectedItem(mySystem.user.getSexe());
          for(String p  : pub)
-        	 if(p.equals(current_client.getPub())) PubComboBox.setSelectedItem(p);     
+        	 if(p.equals(mySystem.user.getPub())) PubComboBox.setSelectedItem(p);     
          
         this.add(modifButton); 
         modifButton.addActionListener(e-> {
@@ -175,10 +187,11 @@ public final class Registration extends Default_Page implements ActionListener {
         		boolean s=false;
         		if (SexeComboBox.getSelectedItem().toString().equals("Homme")) s = true;
            	 
-				mySystem.mariaconnexion.modifyClient(current_client.getId_User(),nomTextField.getText(), prenomTextField.getText(), new String(passwordField.getPassword()),
+				mySystem.mariaconnexion.modifyClient(mySystem.user.getId_User(),nomTextField.getText(), prenomTextField.getText(), new String(passwordField.getPassword()),
 				        emailText.getText(),PubComboBox.getSelectedItem().toString(),s);
 				JOptionPane.showMessageDialog(null, "Profile Modifier avec succès");
 				this.dispose();
+				new Patient_GUI();
 				
 			}  catch (SQLException  throwables) {
                 JOptionPane.showMessageDialog(null, "Impossible de modififer le profile");

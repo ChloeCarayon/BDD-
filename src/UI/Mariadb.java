@@ -94,38 +94,45 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
     	resultSet = preparedStatement.executeQuery();          
     }
     
-    
-    private void writeResultSet(ResultSet resultSet) throws SQLException {
-        // ResultSet is initially before the first data set
-        while (resultSet.next()) {
-            int Id = resultSet.getInt("Id_Client");
-            String nom = resultSet.getString("Nom_client");
-            String prenom = resultSet.getString("Prenom_client");
-            String mdp = resultSet.getString("mdp");
-            String mail = resultSet.getString("mail");
-            String pub = resultSet.getString("pub");
-            boolean sexe = resultSet.getBoolean("sexe");
-            java.lang.System.out.println("Id: " + Id);
-            java.lang.System.out.println("Nom: " + nom);
-            java.lang.System.out.println("Prenom: " + prenom);
-            java.lang.System.out.println("mdp: " + mdp);
-            java.lang.System.out.println("mail: " + mail);
-            java.lang.System.out.println("pub: " + pub);
-            java.lang.System.out.println("sexe: " + sexe);
-        }
-    }
+
 
     public void LogDB(String mail, String mdp) throws SQLException {
         preparedStatement = conn
                 .prepareStatement("select * from db.Client  where mail= ? and mdp =? ");
         preparedStatement.setString(1, mail); // nom
         preparedStatement.setString(2, mdp);   // prénom
+        ResultSet getlistes ;
         resultSet = preparedStatement.executeQuery();
+        int id = -1;
         while( resultSet.next()){
+        	id = resultSet.getInt("Id_Client");
             mySystem.user = new User(resultSet.getInt("Id_Client"),resultSet.getString("Nom_client"),
                     resultSet.getString("Prenom_client"),resultSet.getString("mdp"),resultSet.getString("mail"),
                     resultSet.getString("pub"),resultSet.getBoolean("sexe"), resultSet.getDate("Date_client"));
         }
+        
+        getlistes =  stmt.executeQuery("SELECT*FROM db.Prof_Client WHERE Id_Client = "+id);
+  	  //Recup�re les datas de la table profession_client correspondant au client 
+  	  while(getlistes.next()) {
+  		  String prof_name =  getlistes.getString("Nom_prof"); 
+  		  Date prof_date =  getlistes.getDate("Prof_date");
+  		  mySystem.user.addProfList(prof_date,prof_name);
+  	  }
+  	  
+  	  getlistes =  stmt.executeQuery("SELECT*FROM db.Couple WHERE Id_Client = "+id);
+  	  while(getlistes.next()) {
+  		  Boolean en_couple =  getlistes.getBoolean("en_couple"); 
+  		  Date couple_date =  getlistes.getDate("Date_couple");
+  		  mySystem.user.addCoupleList(couple_date,en_couple);
+  	  }
+  	  
+  	  getlistes =  stmt.executeQuery("SELECT*FROM db.type_p WHERE Id_Client = "+id);
+  	  while(getlistes.next()) {
+  		  String type_name =  getlistes.getString("Nom_type"); 
+  		  Date type_date =  getlistes.getDate("Date_type");
+  		 mySystem.user.addTypeList(type_date, type_name);
+  	  }
+  	  
     }
 
     public boolean Datecheck(String date,int rdv) throws SQLException {
@@ -188,6 +195,7 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
     	 return  list;
     }
     
+   
     public ArrayList<Rdv> getRdv() throws SQLException {
     	ArrayList<Rdv> list = new ArrayList<>();
     	Statement st = conn.createStatement();
@@ -292,8 +300,18 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
     	stmt = conn.createStatement(); 
     	resultSet = stmt.executeQuery(
     			"UPDATE db.client SET "
-    					+ "Nom_client= ' "+nom+"' ,Prenom_client = ' "+prenom+" ' , mdp= ' "+mdp+" ', mail = ' "+mail+" ', pub = ' "+pub+" ', sexe = "+sexe
+    					+ "Nom_client='"+nom+"' ,Prenom_client = '"+prenom+"' , mdp= '"+mdp+"', mail =' "+mail+"', pub =' "+pub+"', sexe ="+sexe
     			+ " WHERE  Id_Client="+id+"; ");
+    }
+    
+    public void modifyProfession(String profession, String date, int id) throws SQLException {
+    	java.sql.Date sqlDate = java.sql.Date.valueOf(date);
+    	stmt = conn.createStatement(); 
+    	resultSet = stmt.executeQuery(
+    			"UPDATE db.prof_client SET "
+    					+"Nom_prof='"+profession+"',Prof_date ='"+sqlDate+"'"
+    			+ " WHERE  Id_Client="+id+"; "
+    	);    	
     }
 
     private void close() {

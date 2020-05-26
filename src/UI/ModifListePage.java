@@ -2,8 +2,12 @@ package UI;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Calendar;
 import java.util.Map;
 
@@ -23,7 +27,8 @@ public class ModifListePage  extends Default_Page implements ActionListener {
 	private JTextField profText = new JTextField(); 
 	private JLabel profLabel;
 	private JButton addButton = new JButton("Add");	
-	private JButton modifButton = new JButton("Modify");	
+	private JButton modifButton = new JButton("Modify");
+	private JButton selectButton = new JButton("Selectionner");
 	private JLabel clientLabel = new JLabel();
 
 	private JLabel dateLabel = new JLabel("Date : ");
@@ -39,15 +44,12 @@ public class ModifListePage  extends Default_Page implements ActionListener {
 	public ModifListePage( String a_modifier) {
 		
 		createWindow(a_modifier,500, 100, 380, 300);
-		setList(mySystem.patients.get(mySystem.current_client_id).getProfList());
+		setList(mySystem.user.getProfList());
 	
-		profLabel = new JLabel(a_modifier);
+		profLabel = new JLabel(a_modifier+" : ");
 		setLocationAndSize();
 		addComponentsToFrame();
-		this.a_modifier = a_modifier;
-
-	
-		
+		this.a_modifier = a_modifier;	
 		setVisible(true);
 	}
 	
@@ -68,12 +70,20 @@ public class ModifListePage  extends Default_Page implements ActionListener {
 		if(infos.size()==0) list.addElement("Aucune profession enregistée");
 		
 		for(Map.Entry<Date, T> mapentry : infos.entrySet())
-			list.addElement((mapentry.getKey()+ "  "+mapentry.getValue()));
+			list.addElement((mapentry.getKey()+ " : "+mapentry.getValue()));
 		
 		selectlist = new JList<>(list);
 		selectlist.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		selectlist.setVisibleRowCount(-1);
-        listScroll = new JScrollPane(selectlist);	        
+        listScroll = new JScrollPane(selectlist);
+        
+        selectlist.addMouseListener(new MouseAdapter() {//Récupère les valeurs quand clique sur l'item de la liste
+	        	public void mouseClicked(MouseEvent e) {
+		        		if (e.getClickCount() == 1) {	        			
+		        			profText.setText(selectlist.getSelectedValue().substring(13));		        			
+		              }
+	        	}        		
+        	});
 	}
 	
 	protected void addComponentsToFrame() {
@@ -87,15 +97,24 @@ public class ModifListePage  extends Default_Page implements ActionListener {
 		this.add(listScroll);
 		this.add(modifButton);
 		
-		
+				
 		modifButton.addActionListener(e -> {
-			
+			try {
+				mySystem.mariaconnexion.modifyProfession(profText.getText(),sdf.format(dateChooser.getDate()),mySystem.user.getId_User());
+				
+			} catch (SQLIntegrityConstraintViolationException icve) {
+	            JOptionPane.showMessageDialog(null,"Vous avez déjà rentré cette profession !");
+			}catch (SQLException e1) {
+				e1.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Impossible de modifier ");
+			}
 		});
 		addButton.addActionListener(e -> {
 			if(a_modifier.contentEquals("Profession")) {
 				try {
-					mySystem.mariaconnexion.addDBProfession(mySystem.current_client_id, profText.getText(),sdf.format(dateChooser.getDate()));
-				} catch (SQLException e1) {
+					mySystem.mariaconnexion.addDBProfession(mySystem.user.getId_User(), profText.getText(),sdf.format(dateChooser.getDate()));
+				} 
+				catch (SQLException e1) {
 		            JOptionPane.showMessageDialog(null,"Impossible d'ajouter l'élément");
 				}
 	            JOptionPane.showMessageDialog(null, "Profession "+profText.getText()+" ajoutée avec succès !");
@@ -111,7 +130,7 @@ public class ModifListePage  extends Default_Page implements ActionListener {
 		});
 		backButton.addActionListener(e -> {
 			this.dispose();
-			new Patient_GUI(mySystem.current_client_id);
+			new Patient_GUI();
 		});
 	}
 	
@@ -121,5 +140,6 @@ public class ModifListePage  extends Default_Page implements ActionListener {
 		// TODO Auto-generated method stub
 		
 	}
+
 
 }

@@ -13,13 +13,12 @@ public class Patient_GUI extends Default_Page implements ActionListener  {
     private JButton professionButton = new JButton("Modifier ma profession");
    
     
-    public Patient_GUI(int id) {
+    public Patient_GUI() {
         createWindow("Patient Side",500, 100, 500, 500);
         setLocationAndSize();
         addComponentsToFrame();
         addImage(200,250);
-        getProfile(id);
-        mySystem.current_client_id = id;
+        getProfile();
         this.setVisible(true);
     }
 
@@ -45,7 +44,7 @@ public class Patient_GUI extends Default_Page implements ActionListener  {
 
         modifButton.addActionListener(e-> {
         	this.dispose();
-        	new Registration(true,mySystem.current_client_id);
+        	new Registration(true,mySystem.user.getId_User());
         	});
         rdvButton.addActionListener(e-> {
         	this.dispose();
@@ -57,6 +56,22 @@ public class Patient_GUI extends Default_Page implements ActionListener  {
         	this.dispose(); 
         	new ModifListePage("Profession");
         });
+    }
+    
+    protected void getProfile() {    	
+    	String infos;
+    	try {
+    		infos = mySystem.user.toString();
+	    	
+    	}catch(ArrayIndexOutOfBoundsException aiobe) {
+    		infos = "Aucun profile selectionne !";
+    	}
+    	catch(Exception e) {
+    		infos = "Impossible d'afficher le profile";
+    		e.printStackTrace();
+    	}
+    	
+    	profile.setText(infos);
     }
 
     @Override
