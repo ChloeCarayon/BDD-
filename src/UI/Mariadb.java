@@ -300,7 +300,7 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
     	stmt = conn.createStatement(); 
     	resultSet = stmt.executeQuery(
     			"UPDATE db.client SET "
-    					+ "Nom_client='"+nom+"' ,Prenom_client = '"+prenom+"' , mdp= '"+mdp+"', mail =' "+mail+"', pub =' "+pub+"', sexe ="+sexe
+    					+ "Nom_client='"+nom+"' ,Prenom_client = '"+prenom+"' , mdp= '"+mdp+"', mail ='"+mail+"', pub ='"+pub+"', sexe ="+sexe
     			+ " WHERE  Id_Client="+id+"; ");
     }
     
@@ -308,10 +308,17 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
     	java.sql.Date sqlDate = java.sql.Date.valueOf(date);
     	stmt = conn.createStatement(); 
     	resultSet = stmt.executeQuery(
-    			"UPDATE db.prof_client SET "
-    					+"Nom_prof='"+profession+"',Prof_date ='"+sqlDate+"'"
-    			+ " WHERE  Id_Client="+id+"; "
-    	);    	
+        			"UPDATE db.prof_client SET "
+        					+"Nom_prof='"+profession+"',Prof_date ='"+sqlDate+"'"
+        			+ " WHERE  Id_Client="+id+ "AND 'Nom_prof'='"+profession+"'; " //2 primary key
+        	);   	 	
+    }
+    
+    public void deleteProfession(String profession,  int id) throws SQLException {
+    	stmt = conn.createStatement(); 
+    	resultSet = stmt.executeQuery(
+        			"DELETE FROM db.prof_client  WHERE  Id_Client="+id+ ", 'Nom_prof'='"+profession+"' ;" //2 primary keys
+        	);   	
     }
 
     private void close() {

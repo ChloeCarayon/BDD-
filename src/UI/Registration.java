@@ -192,6 +192,7 @@ public final class Registration extends Default_Page implements ActionListener {
 				JOptionPane.showMessageDialog(null, "Profile Modifier avec succès");
 				this.dispose();
 				new Patient_GUI();
+				mySystem.mariaconnexion.LogDB(mySystem.user.getEmail(), mySystem.user.getPassword()); //actualise les infos du client actuel
 				
 			}  catch (SQLException  throwables) {
                 JOptionPane.showMessageDialog(null, "Impossible de modififer le profile");

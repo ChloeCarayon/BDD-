@@ -28,7 +28,7 @@ public class ModifListePage  extends Default_Page implements ActionListener {
 	private JLabel profLabel;
 	private JButton addButton = new JButton("Add");	
 	private JButton modifButton = new JButton("Modify");
-	private JButton selectButton = new JButton("Selectionner");
+	private JButton deleteButton = new JButton("Supprimer");
 	private JLabel clientLabel = new JLabel();
 
 	private JLabel dateLabel = new JLabel("Date : ");
@@ -62,6 +62,7 @@ public class ModifListePage  extends Default_Page implements ActionListener {
 		 addButton.setBounds(30, 200, 70, 35); 
 		 backButton.setBounds(250, 200, 70, 35);
 		 modifButton.setBounds(100,200, 70, 35);
+		 deleteButton.setBounds(200,200,70,35);
 		 
 		 listScroll.setBounds(80,20,200,50);
 	}
@@ -80,7 +81,11 @@ public class ModifListePage  extends Default_Page implements ActionListener {
         selectlist.addMouseListener(new MouseAdapter() {//Récupère les valeurs quand clique sur l'item de la liste
 	        	public void mouseClicked(MouseEvent e) {
 		        		if (e.getClickCount() == 1) {	        			
-		        			profText.setText(selectlist.getSelectedValue().substring(13));		        			
+		        			profText.setText(selectlist.getSelectedValue().substring(13));	
+		        			for(Map.Entry<Date, T> mapentry : infos.entrySet()) {
+		        				if (profText.getText() == mapentry.getValue())
+		        					dateChooser.setDate(mapentry.getKey());
+		        			}		        				
 		              }
 	        	}        		
         	});
@@ -96,12 +101,24 @@ public class ModifListePage  extends Default_Page implements ActionListener {
 		this.add(clientLabel);
 		this.add(listScroll);
 		this.add(modifButton);
+		this.add(deleteButton);
 		
+		
+		deleteButton.addActionListener(e -> {
+			try {
+				mySystem.mariaconnexion.deleteProfession(profText.getText(),mySystem.user.getId_User());
+				
+			} catch (SQLException e1) {
+				JOptionPane.showMessageDialog(null, "Impossible de supprimer");
+				e1.printStackTrace();
+			}
+		});
 				
 		modifButton.addActionListener(e -> {
 			try {
 				mySystem.mariaconnexion.modifyProfession(profText.getText(),sdf.format(dateChooser.getDate()),mySystem.user.getId_User());
-				
+				mySystem.mariaconnexion.LogDB(mySystem.user.getEmail(), mySystem.user.getPassword()); //actualise les infos du client actuel
+				setList(mySystem.user.getProfList());				
 			} catch (SQLIntegrityConstraintViolationException icve) {
 	            JOptionPane.showMessageDialog(null,"Vous avez déjà rentré cette profession !");
 			}catch (SQLException e1) {
@@ -119,6 +136,12 @@ public class ModifListePage  extends Default_Page implements ActionListener {
 				}
 	            JOptionPane.showMessageDialog(null, "Profession "+profText.getText()+" ajoutée avec succès !");
 	            profText.setText(" ");
+	            try {
+					mySystem.mariaconnexion.LogDB(mySystem.user.getEmail(), mySystem.user.getPassword()); //actualise les infos du client actuel
+					setList(mySystem.user.getProfList());
+				} catch (SQLException e1) {
+					JOptionPane.showMessageDialog(null,"Impossible de mettre à jour vos information");
+				}
 			}
 			else if(a_modifier.contentEquals("Couple")) {
 				
