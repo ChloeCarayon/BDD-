@@ -3,6 +3,7 @@ package UI;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 public class Consultation_GUI extends Default_Page implements ActionListener {
 
@@ -26,10 +27,11 @@ public class Consultation_GUI extends Default_Page implements ActionListener {
 
         ShowButton.setBounds(20,200,175,30);
         CreateConsButton.setBounds(20,250,175,30);
-        exitButton.setBounds(20,300,100,23);
+        exitButton.setBounds(20,350,100,30);
         listScroll.setBounds(20,50,170,70);
         consult_title.setBounds(200,50,150,30);
         consult.setBounds(250,30,150,300);
+        backButton.setBounds(20,300,100,30);
     }
 
     protected void addComponentsToFrame() {
@@ -39,10 +41,12 @@ public class Consultation_GUI extends Default_Page implements ActionListener {
         this.add(ShowButton);
         this.add(CreateConsButton);
         this.add(consult);
+        this.add(backButton);
         CreateConsButton.setVisible(false);
         CreateConsButton.addActionListener(this);
         exitButton.addActionListener(this);
         ShowButton.addActionListener(this);
+        backButton.addActionListener(this);
     }
 
     protected void getConsult() {
@@ -81,6 +85,13 @@ public class Consultation_GUI extends Default_Page implements ActionListener {
 	    	PrintListClient();
 	   }
 
+    private  void getCons_create() throws SQLException{
+        if (patientList.getSelectedIndex() != -1){
+            String pat = patientList.getModel().getElementAt(patientList.getSelectedIndex());
+            String[] id_string = pat.split(" ", 2);
+            new CreateConsultation_GUI(Integer.parseInt(id_string[0]), currentRdv);
+        }
+    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -88,6 +99,16 @@ public class Consultation_GUI extends Default_Page implements ActionListener {
             getConsult();
         }
         if(e.getSource()==CreateConsButton && patientList.getSelectedIndex() != -1 ){
+           try {
+               getCons_create();
+           } catch (SQLException throwables) { throwables.printStackTrace(); }
+           this.dispose();
+        }
+        if (e.getSource() == backButton){
+            this.dispose();
+            new Cons_ModifRDV();
+        }
+        if (e.getSource() == exitButton){
             this.dispose();
         }
     }

@@ -13,7 +13,6 @@ public class Cons_ModifRDV extends Default_Page implements ActionListener {
     private DefaultListModel<String> listfutur = new DefaultListModel<>();
     private final JButton ModifButton = new JButton("Modifier RDV futur");
     private final JButton SupprButton = new JButton("Supprimer RDV futur");
-    private final JButton ConsButton = new JButton("Ajouter consult ");
     private final JButton SeeConsButton = new JButton("Voir consult ");
     private final JButton SeeRdvButton = new JButton("Voir Rdv ");
     private final JLabel Rdv_Passe = new JLabel("RDV Passés : ");
@@ -77,8 +76,7 @@ public class Cons_ModifRDV extends Default_Page implements ActionListener {
     protected void setLocationAndSize() {
         Rdv_Passe.setBounds(20, 20, 150, 30);
         Rdv_Futurs.setBounds(20, 170, 150, 30);
-        ConsButton.setBounds(425, 65, 170, 23);
-        SeeConsButton.setBounds(425,90,170,23 );
+        SeeConsButton.setBounds(425,75,170,23 );
         exitButton.setBounds(425, 400, 170, 23);
         ModifButton.setBounds(425, 210, 170, 23);
         SupprButton.setBounds(425, 235, 170, 23);
@@ -94,12 +92,10 @@ public class Cons_ModifRDV extends Default_Page implements ActionListener {
         this.add(listScrollRdv);
         this.add(exitButton);
         this.add(ModifButton);
-        this.add(ConsButton);
         this.add(SupprButton);
         this.add(SeeConsButton);
         this.add(SeeRdvButton);
         ModifButton.addActionListener(this);
-        ConsButton.addActionListener(this);
         SupprButton.addActionListener(this);
         exitButton.addActionListener(this);
         SeeRdvButton.addActionListener(this);
@@ -138,12 +134,11 @@ public class Cons_ModifRDV extends Default_Page implements ActionListener {
         }
     }
 
-    private  void getCons(boolean type) throws SQLException{
+    private  void getCons() throws SQLException{
         if (cons_List_.getSelectedIndex() != -1){
             String rdvId = cons_List_.getModel().getElementAt(cons_List_.getSelectedIndex());
             String[] id_string = rdvId.split("  ", 2);
-            if (type ) new CreateConsultation_GUI(Integer.parseInt(id_string[0]));
-            else new Consultation_GUI(Integer.parseInt(id_string[0]));
+            new Consultation_GUI(Integer.parseInt(id_string[0]));
         }
     }
 
@@ -152,7 +147,7 @@ public class Cons_ModifRDV extends Default_Page implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if ((e.getSource() == ModifButton || e.getSource() == SeeRdvButton ||e.getSource() == SupprButton  ) && (rdv_List.getSelectedIndex() == -1 || rdv_List.getSelectedValue().equals("Pas de RDV pour l'instant à ce jour.")))
             JOptionPane.showMessageDialog(null, "Veuillez sélectionner un RDV.");
-        if ((e.getSource() == ConsButton || e.getSource() == SeeConsButton  ) && (cons_List_.getSelectedIndex() == -1 || cons_List_.getSelectedValue().equals("Pas de RDV pour l'instant à ce jour.")))
+        if( (e.getSource() == SeeConsButton ) && (cons_List_.getSelectedIndex() == -1 || cons_List_.getSelectedValue().equals("Pas de RDV pour l'instant à ce jour.")))
             JOptionPane.showMessageDialog(null, "Veuillez sélectionner un RDV.");
 
         else {
@@ -164,17 +159,9 @@ public class Cons_ModifRDV extends Default_Page implements ActionListener {
                     throwables.printStackTrace();
                 }
             }
-            if (e.getSource() == ConsButton) {
-                try {
-                    getCons(true);
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-                this.dispose();
-            }
             if (e.getSource() == SeeConsButton) {
                 try {
-                    getCons(false);
+                    getCons();
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
                 }
