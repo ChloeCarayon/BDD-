@@ -291,6 +291,8 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
         stmt = conn.createStatement();
         resultSet= stmt.executeQuery("DELETE FROM db.rdv WHERE Id_rdv =" + id);
         mySystem.rdvListe.remove(mySystem.rdvListe.stream().filter(r -> (r.getId()== id)).findFirst().get());
+      //  resultSet = stmt.executeQuery("SELECT * db.client_consultation WHERE Id_RDV =" + id);
+      //  while()
             // RAJOUTER LA SUPPRESSION DE LA CONSULTATION
 
     }

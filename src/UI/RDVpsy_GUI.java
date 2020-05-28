@@ -141,10 +141,10 @@ public class RDVpsy_GUI extends Default_Page implements ActionListener {
                 if (mySystem.patients.size() == 1) {
                     JOptionPane.showMessageDialog(null, "Vous n'avez pas encore de patients.");
                 } else {
-                    this.dispose();
                     try {
-                      if (calendar.getCalendar().get(Calendar.DAY_OF_WEEK) !=Calendar.SUNDAY)
+                      if (calendar.getCalendar().get(Calendar.DAY_OF_WEEK) !=Calendar.SUNDAY){
                             new CreatRdv_GUI(sdf.format(calendar.getDate()));
+                          this.dispose();}
                       else  JOptionPane.showMessageDialog(null, "Vous ne pouvez pas avoir de rendez-vous le dimanche.");
                     } catch (SQLException throwables) {
                         throwables.printStackTrace();
