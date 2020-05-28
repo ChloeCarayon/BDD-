@@ -2,12 +2,9 @@ package UI;
 
 import java.sql.*;
 import javax.swing.*;
-import javax.swing.border.Border;
 
 import java.awt.Color;
 import java.awt.event.*;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 
 public final class Registration extends Default_Page implements ActionListener {
     boolean LogorRegis;
@@ -45,7 +42,6 @@ public final class Registration extends Default_Page implements ActionListener {
     
     public Registration(boolean choice, int id) {
         LogorRegis = choice;
-      
         if (!LogorRegis)
         	  createWindow("Log In", 500, 100, 380, 250);
         else {
@@ -125,7 +121,7 @@ public final class Registration extends Default_Page implements ActionListener {
             		  Enter();
               	});
               	
-              //Passer à la page suivante avec le boutton entrer              	
+              //Passer ï¿½ la page suivante avec le boutton entrer              	
               	passwordField.addKeyListener(new KeyAdapter() {
                      public void keyPressed(KeyEvent e) {
                          if (e.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -189,7 +185,7 @@ public final class Registration extends Default_Page implements ActionListener {
            	 
 				mySystem.mariaconnexion.modifyClient(mySystem.user.getId_User(),nomTextField.getText(), prenomTextField.getText(), new String(passwordField.getPassword()),
 				        emailText.getText(),PubComboBox.getSelectedItem().toString(),s);
-				JOptionPane.showMessageDialog(null, "Profile Modifier avec succès");
+				JOptionPane.showMessageDialog(null, "Profile Modifier avec succï¿½s");
 				this.dispose();
 				new Patient_GUI();
 				mySystem.mariaconnexion.LogDB(mySystem.user.getEmail(), mySystem.user.getPassword()); //actualise les infos du client actuel
@@ -211,13 +207,13 @@ public final class Registration extends Default_Page implements ActionListener {
          this.add(checkCelib);
          this.add(registerButton);
          
-         checkCouple.addActionListener(e->{ //ne peut selectionner qu'un seul à la fois 
+         checkCouple.addActionListener(e->{ //ne peut selectionner qu'un seul ï¿½ la fois 
         	 	checkCelib.setSelected(false);
           		choice_celib = false;
           		choice_couple = true;  
           	});
          
-         checkCelib.addActionListener(e -> {  //ne peut selectionner qu'un seul à la fois 
+         checkCelib.addActionListener(e -> {  //ne peut selectionner qu'un seul ï¿½ la fois 
 	        	checkCouple.setSelected(false);
 	           	choice_celib = true;
 	           	choice_couple = false;  
@@ -257,7 +253,7 @@ public final class Registration extends Default_Page implements ActionListener {
 		                 	JOptionPane.showMessageDialog(null, "Cette addresse Email existe dï¿½jï¿½");
 		                 }
 		                 catch (SQLException  throwables) {
-		                    JOptionPane.showMessageDialog(null, "Impossible de crééer le patient");
+		                    JOptionPane.showMessageDialog(null, "Impossible de crï¿½ï¿½er le patient");
 		                    throwables.printStackTrace();
 		                 }
 	             }

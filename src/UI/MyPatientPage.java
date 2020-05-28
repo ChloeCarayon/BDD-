@@ -13,9 +13,6 @@ import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 
 public class MyPatientPage extends Default_Page implements ActionListener{
-	
-  
-
 	   	private JButton ShowButton = new JButton("Voir le profile");
 	   	private JButton RDVButton = new JButton("Voir les RDV ");
 	   	private final JLabel profile_title = new JLabel("Profile : ");
@@ -52,24 +49,6 @@ public class MyPatientPage extends Default_Page implements ActionListener{
 	    	profile.setBounds(250,30,150,300);
 	    }    
 
-	    	
-	    private void getProfile() {
-	    	int index = patientList.getSelectedIndex(); 
-	    	String infos;
-	    	try {
-	    		infos = mySystem.patients.get(index).toString();
-		    	
-	    	}catch(ArrayIndexOutOfBoundsException aiobe) {
-	    		infos = "Aucun profile selectionn� !";
-	    	}
-	    	catch(Exception e) {
-	    		infos = "Impossible d'afficher le profile";
-	    	}
-	    	
-	    	profile.setText(infos);
-	    }
-
-	    
 	    protected void addComponentsToFrame() {
 	    	this.add(listScroll);	      
 	    	this.add(exitButton);

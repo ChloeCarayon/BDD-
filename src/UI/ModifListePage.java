@@ -68,7 +68,7 @@ public class ModifListePage  extends Default_Page implements ActionListener {
 	}
 	
 	protected <T> void setList(Map<Date, T> infos) {//T = string (profession ou type) ou boolean (en couple ou non)
-		if(infos.size()==0) list.addElement("Aucune profession enregistée");
+		if(infos.size()==0) list.addElement("Aucune profession enregistï¿½e");
 		
 		for(Map.Entry<Date, T> mapentry : infos.entrySet())
 			list.addElement((mapentry.getKey()+ " : "+mapentry.getValue()));
@@ -78,7 +78,7 @@ public class ModifListePage  extends Default_Page implements ActionListener {
 		selectlist.setVisibleRowCount(-1);
         listScroll = new JScrollPane(selectlist);
         
-        selectlist.addMouseListener(new MouseAdapter() {//Récupère les valeurs quand clique sur l'item de la liste
+        selectlist.addMouseListener(new MouseAdapter() {//Rï¿½cupï¿½re les valeurs quand clique sur l'item de la liste
 	        	public void mouseClicked(MouseEvent e) {
 		        		if (e.getClickCount() == 1) {	        			
 		        			profText.setText(selectlist.getSelectedValue().substring(13));	
@@ -120,7 +120,7 @@ public class ModifListePage  extends Default_Page implements ActionListener {
 				mySystem.mariaconnexion.LogDB(mySystem.user.getEmail(), mySystem.user.getPassword()); //actualise les infos du client actuel
 				setList(mySystem.user.getProfList());				
 			} catch (SQLIntegrityConstraintViolationException icve) {
-	            JOptionPane.showMessageDialog(null,"Vous avez déjà rentré cette profession !");
+	            JOptionPane.showMessageDialog(null,"Vous avez dï¿½jï¿½ rentrï¿½ cette profession !");
 			}catch (SQLException e1) {
 				e1.printStackTrace();
 				JOptionPane.showMessageDialog(null, "Impossible de modifier ");
@@ -132,15 +132,15 @@ public class ModifListePage  extends Default_Page implements ActionListener {
 					mySystem.mariaconnexion.addDBProfession(mySystem.user.getId_User(), profText.getText(),sdf.format(dateChooser.getDate()));
 				} 
 				catch (SQLException e1) {
-		            JOptionPane.showMessageDialog(null,"Impossible d'ajouter l'élément");
+		            JOptionPane.showMessageDialog(null,"Impossible d'ajouter l'ï¿½lï¿½ment");
 				}
-	            JOptionPane.showMessageDialog(null, "Profession "+profText.getText()+" ajoutée avec succès !");
+	            JOptionPane.showMessageDialog(null, "Profession "+profText.getText()+" ajoutï¿½e avec succï¿½s !");
 	            profText.setText(" ");
 	            try {
 					mySystem.mariaconnexion.LogDB(mySystem.user.getEmail(), mySystem.user.getPassword()); //actualise les infos du client actuel
 					setList(mySystem.user.getProfList());
 				} catch (SQLException e1) {
-					JOptionPane.showMessageDialog(null,"Impossible de mettre à jour vos information");
+					JOptionPane.showMessageDialog(null,"Impossible de mettre ï¿½ jour vos information");
 				}
 			}
 			else if(a_modifier.contentEquals("Couple")) {

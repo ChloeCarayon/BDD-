@@ -19,7 +19,7 @@ public class mySystem {
         page1 = new Log();    
         page1.setVisible(true);
 
-      //  new Psy_GUI();
+      new Psy_GUI();
         //new ProfessionPage(59);
        // new Patient_GUI();
     }

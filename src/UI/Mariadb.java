@@ -12,7 +12,7 @@ public class Mariadb {
 
     //  Database credentials
     static final String USER = "root";
-    static final String PASS = "bdd";
+    static final String PASS = "new_password";
 
     private Connection conn = null;
     private Statement stmt = null;
@@ -42,7 +42,6 @@ public class Mariadb {
 
 public int readDBClient(String nom, String prenom, String mdp, String mail, String pub, boolean sexe) throws SQLException { 
   resultSet = stmt .executeQuery("select * from db.Client");
-
    preparedStatement = conn .prepareStatement("insert into db.Client values (default, ?, ?, ?, ? , ?,?,NOW())");
    preparedStatement.setString(1, nom);
    preparedStatement.setString(2, prenom); // prÃ©nom
@@ -315,10 +314,58 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
     }
     
     public void deleteProfession(String profession,  int id) throws SQLException {
-    	stmt = conn.createStatement(); 
+    	stmt = conn.createStatement();
     	resultSet = stmt.executeQuery(
         			"DELETE FROM db.prof_client  WHERE  Id_Client="+id+ ", 'Nom_prof'='"+profession+"' ;" //2 primary keys
-        	);   	
+        	);
+    }
+
+    public void Consult(String patient, String anxiete, String posture, String Mot, int rdv_id) throws SQLException {
+        stmt = conn.createStatement();
+        String[] splitClient1 = patient.split(" ", 3);
+        int anx= Integer.parseInt(anxiete);
+        int client = Integer.parseInt(splitClient1[0]);
+        resultSet = stmt.executeQuery(
+                "SELECT * FROM db.client_consultation  WHERE  Id_Client="+ client+ " AND Id_RDV=" + rdv_id  //2 primary keys
+                 );
+        if (resultSet.next()){
+            preparedStatement= conn.prepareStatement("UPDATE db.Consultation t SET t.Anxiete = ?, t.Mots_cles = ?," +
+                    " t.Posture = ? WHERE t.Id_consultation = ?");
+            preparedStatement.setInt(1,anx);
+            preparedStatement.setString(2,Mot);
+            preparedStatement.setString(3,posture);
+            preparedStatement.setInt(4, resultSet.getInt("Id_consultation"));
+            preparedStatement.executeUpdate();
+        }
+        else {
+            preparedStatement = conn.prepareStatement("insert into db.Consultation values (default, ? , ? , ?)");
+            preparedStatement.setInt(1,anx);
+            preparedStatement.setString(2,Mot);
+            preparedStatement.setString(3,posture);
+            preparedStatement.executeUpdate();
+            resultSet =preparedStatement.executeQuery("Select LAST_INSERT_ID()");
+            if (resultSet.next()){
+                preparedStatement = conn.prepareStatement("insert into db.client_consultation values ( ? , ? , ?)");
+                preparedStatement.setInt(1,resultSet.getInt(1));
+                preparedStatement.setInt(2,client);
+                preparedStatement.setInt(3,rdv_id);
+                preparedStatement.executeUpdate();
+            }
+       }
+    }
+
+    public String getConsultation(int id_client, int id_rdv) throws SQLException {
+        stmt = conn.createStatement(); String info ="";
+        resultSet = stmt.executeQuery(
+                "SELECT * FROM db.client_consultation  WHERE  Id_Client="+ id_client+ " AND Id_RDV=" + id_rdv);
+        if ( resultSet.next()){
+            ResultSet res = stmt.executeQuery("SELECT * FROM db.Consultation WHERE Id_consultation = "+ resultSet.getInt("Id_consultation"));
+            if (res.next()){
+                info = "<html>Niveau d anxiete:  " + res.getInt("Anxiete") + "<br><br>Mots cles:<br>  "
+                        + res.getString("Mots_cles") + "<br><br>Posture: <br>" + res.getString("Posture") + "</html>";
+            }
+        }
+        return(info);
     }
 
     private void close() {
