@@ -138,7 +138,7 @@ public class Cons_ModifRDV extends Default_Page implements ActionListener {
         if (cons_List_.getSelectedIndex() != -1){
             String rdvId = cons_List_.getModel().getElementAt(cons_List_.getSelectedIndex());
             String[] id_string = rdvId.split("  ", 2);
-            new Consultation_GUI(Integer.parseInt(id_string[0]));
+            new Consultation_GUI(Integer.parseInt(id_string[0]),true);
         }
     }
 

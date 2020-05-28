@@ -11,9 +11,10 @@ public class Consultation_GUI extends Default_Page implements ActionListener {
     private JButton CreateConsButton = new JButton("Créer une consultation ");
     private final JLabel consult_title = new JLabel("Consultation : ");
     private final JLabel consult = new JLabel("Selectionnez un patient");
-    private Rdv currentRdv;
+    private Rdv currentRdv; private boolean type;
 
-    public Consultation_GUI(int ID_rdv) {
+    public Consultation_GUI(int ID_rdv, boolean tip) {
+        type = tip;
         currentRdv =  mySystem.rdvListe.stream().filter(r -> r.getId() == ID_rdv).findFirst().get();
         createWindow("Consultation " + currentRdv.getDate() + "  " + currentRdv.getHeure(),400, 150, 500, 500);
         setListClient();
@@ -89,7 +90,7 @@ public class Consultation_GUI extends Default_Page implements ActionListener {
         if (patientList.getSelectedIndex() != -1){
             String pat = patientList.getModel().getElementAt(patientList.getSelectedIndex());
             String[] id_string = pat.split(" ", 2);
-            new CreateConsultation_GUI(Integer.parseInt(id_string[0]), currentRdv);
+            new CreateConsultation_GUI(Integer.parseInt(id_string[0]), currentRdv, type);
         }
     }
 
@@ -106,7 +107,8 @@ public class Consultation_GUI extends Default_Page implements ActionListener {
         }
         if (e.getSource() == backButton){
             this.dispose();
-            new Cons_ModifRDV();
+            if(type )new Cons_ModifRDV();
+            else new RDVpsy_GUI();
         }
         if (e.getSource() == exitButton){
             this.dispose();

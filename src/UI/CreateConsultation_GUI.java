@@ -17,11 +17,11 @@ public class CreateConsultation_GUI extends Default_Page implements ActionListen
     private JTextField PostField = new JTextField();
     private JTextArea MotField = new JTextArea();
     private JButton addButton = new JButton("Ajouter");
-    private Rdv rdv_cons;
+    private Rdv rdv_cons; private boolean type;
 
-    CreateConsultation_GUI(int client, Rdv id_RDV) throws SQLException {
+    CreateConsultation_GUI(int client, Rdv id_RDV, boolean tip ) throws SQLException {
         createWindow("Consultation", 500, 100, 380, 480);
-        rdv_cons = id_RDV;
+        rdv_cons = id_RDV; type = tip;
         GetClientCombo(client);
         this.getContentPane().setBackground(Color.getHSBColor(188,16,100));
         setLocationAndSize();
@@ -91,7 +91,7 @@ public class CreateConsultation_GUI extends Default_Page implements ActionListen
         }
         if (e.getSource() == backButton) {
             this.dispose();
-            new Consultation_GUI(rdv_cons.getId());
+            new Consultation_GUI(rdv_cons.getId(), type);
         }
         if (e.getSource() == exitButton) {
             this.dispose();
