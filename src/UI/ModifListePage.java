@@ -34,7 +34,7 @@ public class ModifListePage  extends Default_Page implements ActionListener {
 	private JLabel dateLabel = new JLabel("Date : ");
 	
 	 private JList<String> selectlist;
-	 private ListModel<String> list = new ListModel<>();
+	 private DefaultListModel<String> list = new DefaultListModel<>();
 	
 	private Calendar cal = Calendar.getInstance();
 	private JDateChooser dateChooser = new JDateChooser(cal.getTime());
@@ -179,13 +179,7 @@ public class ModifListePage  extends Default_Page implements ActionListener {
 			new Patient_GUI();
 		});
 	}
-	
-	class ListModel<T> extends DefaultListModel<T>
-    {
-    	public void update(int index) {
-    		fireContentsChanged(this, index, index);
-    	}
-    }
+
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
