@@ -1,16 +1,11 @@
 package UI;
 
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JScrollPane;
-import javax.swing.ListSelectionModel;
 
 public class MyPatientPage extends Default_Page implements ActionListener{
 	   	private JButton ShowButton = new JButton("Voir le profile");
@@ -92,7 +87,7 @@ public class MyPatientPage extends Default_Page implements ActionListener{
 		if(e.getSource()==RDVButton && patientList.getSelectedIndex() != -1 ){
 			mySystem.current_client_id = patientList.getSelectedIndex();
 			this.dispose();
-			new Cons_ModifRDV();
+			new ViewRDV(true);
 		}
 	}
 }

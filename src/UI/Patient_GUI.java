@@ -7,7 +7,7 @@ import java.awt.*;
 public class Patient_GUI extends Default_Page implements ActionListener  {
 
     private JButton modifButton=new JButton("Modifier mon profile");
-    private JButton rdvButton=new JButton("Rdv a venir");
+    private JButton rdvButton=new JButton("Historique RDV");
     private JButton coupleButton = new JButton("Modifier ma situation");
     private JButton typeButton = new JButton("Modifier mon type");
     private JButton professionButton = new JButton("Modifier ma profession");
@@ -47,8 +47,9 @@ public class Patient_GUI extends Default_Page implements ActionListener  {
         	new Registration(true,mySystem.user.getId_User());
         	});
         rdvButton.addActionListener(e-> {
-        	this.dispose();
-        	});
+            this.dispose();
+        	new ViewRDV(false);
+        });
         exitButton.addActionListener(e-> {
         	this.dispose();
         	});

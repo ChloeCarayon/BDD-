@@ -82,7 +82,7 @@ public class CreateConsultation_GUI extends Default_Page implements ActionListen
                     mySystem.mariaconnexion.Consult(patientSelect.getText(),AnxComboBox.getSelectedItem().toString(),PostField.getText(),MotField.getText(),rdv_cons.getId());
                     JOptionPane.showMessageDialog(null, "Ajout effectué.");
                     this.dispose();
-                    new Cons_ModifRDV();
+                    new ViewRDV(true);
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
                 }

@@ -107,7 +107,7 @@ public class Consultation_GUI extends Default_Page implements ActionListener {
         }
         if (e.getSource() == backButton){
             this.dispose();
-            if(type )new Cons_ModifRDV();
+            if(type )new ViewRDV(true);
             else new RDVpsy_GUI();
         }
         if (e.getSource() == exitButton){
