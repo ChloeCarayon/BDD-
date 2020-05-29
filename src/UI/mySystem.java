@@ -22,5 +22,6 @@ public class mySystem {
       //  new Psy_GUI();
         //new ProfessionPage(59);
        // new Patient_GUI();
+       
     }
 }

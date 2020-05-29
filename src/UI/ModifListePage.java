@@ -34,7 +34,7 @@ public class ModifListePage  extends Default_Page implements ActionListener {
 	private JLabel dateLabel = new JLabel("Date : ");
 	
 	 private JList<String> selectlist;
-	 private DefaultListModel<String> list = new DefaultListModel<>();
+	 private ListModel<String> list = new ListModel<>();
 	
 	private Calendar cal = Calendar.getInstance();
 	private JDateChooser dateChooser = new JDateChooser(cal.getTime());
@@ -44,7 +44,7 @@ public class ModifListePage  extends Default_Page implements ActionListener {
 	public ModifListePage( String a_modifier) {
 		
 		createWindow(a_modifier,500, 100, 380, 300);
-		setList(mySystem.user.getProfList());
+		setList(mySystem.user.getProfList(),true);
 	
 		profLabel = new JLabel(a_modifier+" : ");
 		setLocationAndSize();
@@ -62,34 +62,44 @@ public class ModifListePage  extends Default_Page implements ActionListener {
 		 addButton.setBounds(30, 200, 70, 35); 
 		 backButton.setBounds(250, 200, 70, 35);
 		 modifButton.setBounds(100,200, 70, 35);
-		 deleteButton.setBounds(200,200,70,35);
-		 
-		 listScroll.setBounds(80,20,200,50);
+		 deleteButton.setBounds(200,200,70,35);	 
+		
 	}
 	
-	protected <T> void setList(Map<Date, T> infos) {//T = string (profession ou type) ou boolean (en couple ou non)
+	protected <T> void setList(Map<Date, T> infos, boolean choice) {//T = string (profession ou type) ou boolean (en couple ou non)
 		if(infos.size()==0) list.addElement("Aucune profession enregistée");
 		
-		for(Map.Entry<Date, T> mapentry : infos.entrySet())
-			list.addElement((mapentry.getKey()+ " : "+mapentry.getValue()));
+		for(Map.Entry<Date, T> mapentry : infos.entrySet()) {
+			list.addElement((mapentry.getKey()+ " : "+mapentry.getValue()));	
+			System.out.print(infos.size());
+		}
+			
 		
-		selectlist = new JList<>(list);
-		selectlist.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		selectlist.setVisibleRowCount(-1);
-        listScroll = new JScrollPane(selectlist);
         
-        selectlist.addMouseListener(new MouseAdapter() {//Récupère les valeurs quand clique sur l'item de la liste
-	        	public void mouseClicked(MouseEvent e) {
-		        		if (e.getClickCount() == 1) {	        			
-		        			profText.setText(selectlist.getSelectedValue().substring(13));	
-		        			for(Map.Entry<Date, T> mapentry : infos.entrySet()) {
-		        				if (profText.getText() == mapentry.getValue())
-		        					dateChooser.setDate(mapentry.getKey());
-		        			}		        				
-		              }
-	        	}        		
-        	});
+        if(choice) {
+        	selectlist = new JList<>(list);
+    		selectlist.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    		selectlist.setVisibleRowCount(-1);
+            listScroll = new JScrollPane(selectlist);
+            
+            selectlist.addMouseListener(new MouseAdapter() {//Récupère les valeurs quand clique sur l'item de la liste
+    	        	public void mouseClicked(MouseEvent e) {
+    		        		if (e.getClickCount() == 1) {	        			
+    		        			profText.setText(selectlist.getSelectedValue().substring(13));	
+    		        			for(Map.Entry<Date, T> mapentry : infos.entrySet()) {
+    		        				if (profText.getText().equals(mapentry.getValue())) 
+    		        					dateChooser.setDate(mapentry.getKey());	  		
+    		        			}		        				
+    		              }
+    	        	}        		
+            	});
+
+            listScroll.setBounds(80,20,200,50);
+            this.add(listScroll);
+        }
 	}
+	
+
 	
 	protected void addComponentsToFrame() {
 		this.add(profLabel);
@@ -98,8 +108,7 @@ public class ModifListePage  extends Default_Page implements ActionListener {
 		this.add(backButton); 
 		this.add(dateChooser);
 		this.add(dateLabel);
-		this.add(clientLabel);
-		this.add(listScroll);
+		this.add(clientLabel);		
 		this.add(modifButton);
 		this.add(deleteButton);
 		
@@ -107,7 +116,12 @@ public class ModifListePage  extends Default_Page implements ActionListener {
 		deleteButton.addActionListener(e -> {
 			try {
 				mySystem.mariaconnexion.deleteProfession(profText.getText(),mySystem.user.getId_User());
+				mySystem.mariaconnexion.LogDB(mySystem.user.getEmail(), mySystem.user.getPassword()); //actualise les infos du client actuel
 				
+				//Supprime la liste, update et réaffiche 
+				setList(mySystem.user.getProfList(),false);	
+				
+				JOptionPane.showMessageDialog(null, "Supprimé avec succes");
 			} catch (SQLException e1) {
 				JOptionPane.showMessageDialog(null, "Impossible de supprimer");
 				e1.printStackTrace();
@@ -116,9 +130,13 @@ public class ModifListePage  extends Default_Page implements ActionListener {
 				
 		modifButton.addActionListener(e -> {
 			try {
-				mySystem.mariaconnexion.modifyProfession(profText.getText(),sdf.format(dateChooser.getDate()),mySystem.user.getId_User());
+				//update avec l'ancien nom de profession en primary key
+				mySystem.mariaconnexion.modifyProfession(selectlist.getSelectedValue().substring(13),profText.getText(),sdf.format(dateChooser.getDate()),mySystem.user.getId_User());
 				mySystem.mariaconnexion.LogDB(mySystem.user.getEmail(), mySystem.user.getPassword()); //actualise les infos du client actuel
-				setList(mySystem.user.getProfList());				
+				
+				//Supprime la liste, update et réaffiche 
+				setList(mySystem.user.getProfList(), false);
+			
 			} catch (SQLIntegrityConstraintViolationException icve) {
 	            JOptionPane.showMessageDialog(null,"Vous avez déjà rentré cette profession !");
 			}catch (SQLException e1) {
@@ -128,20 +146,25 @@ public class ModifListePage  extends Default_Page implements ActionListener {
 		});
 		addButton.addActionListener(e -> {
 			if(a_modifier.contentEquals("Profession")) {
-				try {
+				try {					
 					mySystem.mariaconnexion.addDBProfession(mySystem.user.getId_User(), profText.getText(),sdf.format(dateChooser.getDate()));
-				} 
+					mySystem.mariaconnexion.LogDB(mySystem.user.getEmail(), mySystem.user.getPassword()); //actualise les infos du client actuel
+
+					//Supprime la liste, update et réaffiche 
+					list.removeAllElements();
+					setList(mySystem.user.getProfList(), false);
+					
+					 JOptionPane.showMessageDialog(null, "Profession "+profText.getText()+" ajoutée avec succès !");
+			         profText.setText(" ");
+				} catch (SQLIntegrityConstraintViolationException icve) {
+		            JOptionPane.showMessageDialog(null,"Vous avez déjà rentré cette profession !");
+				}
 				catch (SQLException e1) {
 		            JOptionPane.showMessageDialog(null,"Impossible d'ajouter l'élément");
+		            e1.printStackTrace();
 				}
-	            JOptionPane.showMessageDialog(null, "Profession "+profText.getText()+" ajoutée avec succès !");
-	            profText.setText(" ");
-	            try {
-					mySystem.mariaconnexion.LogDB(mySystem.user.getEmail(), mySystem.user.getPassword()); //actualise les infos du client actuel
-					setList(mySystem.user.getProfList());
-				} catch (SQLException e1) {
-					JOptionPane.showMessageDialog(null,"Impossible de mettre à jour vos information");
-				}
+	           
+	           
 			}
 			else if(a_modifier.contentEquals("Couple")) {
 				
@@ -157,6 +180,12 @@ public class ModifListePage  extends Default_Page implements ActionListener {
 		});
 	}
 	
+	class ListModel<T> extends DefaultListModel<T>
+    {
+    	public void update(int index) {
+    		fireContentsChanged(this, index, index);
+    	}
+    }
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {

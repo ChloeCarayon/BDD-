@@ -57,7 +57,7 @@ public class RDVpsy_GUI extends Default_Page implements ActionListener {
                 }
             }
             if (list.size() < 1) {
-                list.addElement("Pas de RDV pour l'instant à ce jour.");
+                list.addElement("Pas de RDV pour l'instant a ce jour.");
             }
         } catch (Exception e) {
         }
@@ -124,7 +124,7 @@ public class RDVpsy_GUI extends Default_Page implements ActionListener {
             new Psy_GUI();
         }
         if ( (e.getSource() == SuprButton || e.getSource() == AddConsButton) && (rdv_List.getSelectedIndex() == -1 || rdv_List.getSelectedValue().equals("Pas de RDV pour l'instant à ce jour.")))
-            JOptionPane.showMessageDialog(null, "Veuillez sélectionner un RDV.");
+            JOptionPane.showMessageDialog(null, "Veuillez selectionner un RDV.");
         else {
             if (e.getSource() == SuprButton)
                 SupprRDV();

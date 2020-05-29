@@ -117,21 +117,16 @@ public class User {
 	
 	public void addCoupleList(Date d, Boolean c) {
 		this.coupleList.put(d, c);
-	}
-	
+	}	
 
 	public void addProfList(Date d, String p) {
 		this.profList.put(d, p);
-	}
-	
-	
-	
-	
+		System.out.println(Id_User+"  "+profList.size());
+	}	
 	
 ////// Methode to String
 	
 	public String toString() {
-		
 		String p = " "; 
 		if(this.profList.size()==0) 
 			p = "Aucune profession enregistree";
@@ -140,7 +135,7 @@ public class User {
 				p += profList.get(d);
 				p +=" en ";
 				p += d;
-				p +=" <br>";
+				p +=" <br>";				
 			}
 		}
 		

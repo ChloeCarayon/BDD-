@@ -117,6 +117,8 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
   		  String prof_name =  getlistes.getString("Nom_prof"); 
   		  Date prof_date =  getlistes.getDate("Prof_date");
   		  mySystem.user.addProfList(prof_date,prof_name);
+  		 System.out.println(prof_name);
+  		  System.out.println(mySystem.user.getProfList().size());
   	  }
   	  
   	  getlistes =  stmt.executeQuery("SELECT*FROM db.Couple WHERE Id_Client = "+id);
@@ -304,20 +306,20 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
     			+ " WHERE  Id_Client="+id+"; ");
     }
     
-    public void modifyProfession(String profession, String date, int id) throws SQLException {
+    public void modifyProfession(String oldItem, String newItem, String date, int id) throws SQLException {
     	java.sql.Date sqlDate = java.sql.Date.valueOf(date);
     	stmt = conn.createStatement(); 
     	resultSet = stmt.executeQuery(
         			"UPDATE db.prof_client SET "
-        					+"Nom_prof='"+profession+"',Prof_date ='"+sqlDate+"'"
-        			+ " WHERE  Id_Client="+id+ "AND 'Nom_prof'='"+profession+"'; " //2 primary key
+        					+"Nom_prof='"+newItem+"',Prof_date ='"+sqlDate+"'"
+        			+ " WHERE  Id_Client"+id+ "AND Nom_prof='"+oldItem+"'; " //2 primary key
         	);   	 	
     }
     
     public void deleteProfession(String profession,  int id) throws SQLException {
     	stmt = conn.createStatement(); 
     	resultSet = stmt.executeQuery(
-        			"DELETE FROM db.prof_client  WHERE  Id_Client="+id+ ", 'Nom_prof'='"+profession+"' ;" //2 primary keys
+        			"DELETE FROM db.prof_client  WHERE  Id_Client="+id+ " AND Nom_prof='"+profession+"' ;" //2 primary keys
         	);   	
     }
 

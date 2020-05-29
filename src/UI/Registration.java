@@ -254,7 +254,7 @@ public final class Registration extends Default_Page implements ActionListener {
 		                 } catch(java.sql.SQLIntegrityConstraintViolationException icve) {
 		                 	emailText.setText(" ");
 		                 	emailText.setBorder(BorderFactory.createLineBorder(Color.red));
-		                 	JOptionPane.showMessageDialog(null, "Cette addresse Email existe dï¿½jï¿½");
+		                 	JOptionPane.showMessageDialog(null, "Cette addresse Email existe deja");
 		                 }
 		                 catch (SQLException  throwables) {
 		                    JOptionPane.showMessageDialog(null, "Impossible de crééer le patient");
