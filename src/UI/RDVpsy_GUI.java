@@ -123,13 +123,8 @@ public class RDVpsy_GUI extends Default_Page implements ActionListener {
             this.dispose();
             new Psy_GUI();
         }
-<<<<<<< HEAD
-        if ( (e.getSource() == SuprButton || e.getSource() == AddConsButton) && (rdv_List.getSelectedIndex() == -1 || rdv_List.getSelectedValue().equals("Pas de RDV pour l'instant à ce jour.")))
-            JOptionPane.showMessageDialog(null, "Veuillez selectionner un RDV.");
-=======
         if ( (e.getSource() == SuprButton || e.getSource() == ConsButton) && (rdv_List.getSelectedIndex() == -1 || rdv_List.getSelectedValue().equals("Pas de RDV pour l'instant à ce jour.")))
             JOptionPane.showMessageDialog(null, "Veuillez sélectionner un RDV.");
->>>>>>> 685ae98aec5533fd00c712a77c555391c96ae8a5
         else {
             if (e.getSource() == SuprButton)
                 SupprRDV();

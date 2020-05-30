@@ -218,10 +218,3 @@ public class ViewRDV extends Default_Page implements ActionListener {
             }
         }
     }
-<<<<<<< HEAD:src/UI/Cons_ModifRDV.java
-    
-}
-=======
-
-
->>>>>>> 685ae98aec5533fd00c712a77c555391c96ae8a5:src/UI/ViewRDV.java

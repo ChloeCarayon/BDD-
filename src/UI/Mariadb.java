@@ -57,7 +57,7 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
     return id_nouveau_client;
     }
     
-    public void LogDB(String mail, String mdp) throws SQLException { //sert aussi pour update le client quand il a modfifé ses infos
+    public void LogDB(String mail, String mdp) throws SQLException { //sert aussi pour update le client quand il a modfifï¿½ ses infos
         preparedStatement = conn
                 .prepareStatement("select * from db.Client  where mail= ? and mdp =? ");
         preparedStatement.setString(1, mail); // nom
@@ -301,23 +301,24 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
     
 
     public void deleteItem(String date, String a_supprimer,  int id, String item) throws SQLException {
-    	stmt = conn.createStatement(); 
-    	java.sql.Date sqlDate = java.sql.Date.valueOf(date);
-    	if(item.equals(mySystem.PROSSESSION)) {
-    		resultSet = stmt.executeQuery(
-        			"DELETE FROM db.prof_client  WHERE  Id_Client="+id+ " AND Nom_prof='"+a_supprimer+"' ;" //2 primary keys
-        	);   
-    	}
-    	if(item.equals(mySystem.TYPE)) {
-    		resultSet = stmt.executeQuery(
-        			"DELETE FROM db.type_p  WHERE  Id_Client="+id+ " AND Date_type='"+date+"' ;" //2 primary keys
-        	);   
-    	}
-    	if(item.equals(mySystem.COUPLE)) {
-    		resultSet = stmt.executeQuery(
-        			"DELETE FROM db.couple  WHERE  Id_Client="+id +" AND Date_Couple='"+date+"' ;"        
-        	);   
-    	}    		
+        stmt = conn.createStatement();
+        java.sql.Date sqlDate = java.sql.Date.valueOf(date);
+        if (item.equals(mySystem.PROSSESSION)) {
+            resultSet = stmt.executeQuery(
+                    "DELETE FROM db.prof_client  WHERE  Id_Client=" + id + " AND Nom_prof='" + a_supprimer + "' ;" //2 primary keys
+            );
+        }
+        if (item.equals(mySystem.TYPE)) {
+            resultSet = stmt.executeQuery(
+                    "DELETE FROM db.type_p  WHERE  Id_Client=" + id + " AND Date_type='" + date + "' ;" //2 primary keys
+            );
+        }
+        if (item.equals(mySystem.COUPLE)) {
+            resultSet = stmt.executeQuery(
+                    "DELETE FROM db.couple  WHERE  Id_Client=" + id + " AND Date_Couple='" + date + "' ;"
+            );
+        }
+    }
 
     public void deleteProfession(String profession,  int id) throws SQLException {
     	stmt = conn.createStatement();
@@ -383,7 +384,7 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
     	}
     	
     	if(item.equals(mySystem.TYPE)) {
-    		if(date == null) {//Pour la création, la date se met automatiquement a celle d'aujourd'hui dan
+    		if(date == null) {//Pour la crï¿½ation, la date se met automatiquement a celle d'aujourd'hui dan
                 preparedStatement = conn
                         .prepareStatement("INSERT INTO `db`.`type_p` (`Date_type`, `Nom_type`, `Id_Client`) VALUES (default,'"+a_ajouter+"'," + id_client + ")");
         	}else 
