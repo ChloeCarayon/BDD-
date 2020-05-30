@@ -131,30 +131,8 @@ public class ModifListePage  extends Default_Page implements ActionListener {
     		selectlist.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     		selectlist.setVisibleRowCount(-1);
             listScroll = new JScrollPane(selectlist);
-            
-            selectlist.addMouseListener(new MouseAdapter() {//R�cup�re les valeurs quand clique sur l'item de la liste
-    	        	public void mouseClicked(MouseEvent e) {
-    		        		if (e.getClickCount() == 1) {	        			
-    		        			profText.setText(selectlist.getSelectedValue().substring(13));	
-    		        			for(Map.Entry<Date, T > mapentry : infos.entrySet()) {
-    		        				if (profText.getText().equals(mapentry.getValue())) {
-    		        					dateChooser.setDate(mapentry.getKey());	 
-    		        					oldDate = mapentry.getKey();
-    		        				}
-    		        				else if((boolean) mapentry.getValue()) {
-    		        					checkCouple.setSelected(true);
-    		        					dateChooser.setDate(mapentry.getKey());	 
-    		        					oldDate = mapentry.getKey();
-    		        				}
-    		        				else if(!(boolean) mapentry.getValue()) {
-    		        					checkCelib.setSelected(true);
-    		        					dateChooser.setDate(mapentry.getKey());	 
-    		        					oldDate = mapentry.getKey();
-    		        				}
-    		        			}
-    		              }
-    	        	}        		
-            	});
+
+
 
             listScroll.setBounds(80,20,200,50);
             this.add(listScroll);
@@ -191,12 +169,12 @@ public class ModifListePage  extends Default_Page implements ActionListener {
 	        			
 	        			for(Map.Entry<Date, Boolean> mapentry : infos.entrySet()) {	        					        				
 	        			
-	        				if((boolean) mapentry.getValue()) {
+	        				if( mapentry.getValue()) {
 	        					checkCouple.setSelected(true);
 	        					dateChooser.setDate(mapentry.getKey());	 
 	        					oldDate = mapentry.getKey();
 	        				}
-	        				else if(!(boolean) mapentry.getValue()) {
+	        				else if(!mapentry.getValue()) {
 	        					checkCelib.setSelected(true);
 	        					dateChooser.setDate(mapentry.getKey());	 
 	        					oldDate = mapentry.getKey();
