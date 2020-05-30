@@ -124,6 +124,11 @@ public class User {
 		System.out.println(Id_User+"  "+profList.size());
 	}	
 	
+	public String CoupleToString(Date key) {
+		if(this.coupleList.get(key))
+			return "En Couple"; 
+		return "Celibataire";
+	}
 ////// Methode to String
 	
 	public String toString() {
@@ -173,7 +178,5 @@ public class User {
 				+" <br> <br>  Type  : "+ t
 				+" <br> <br>  Situation  : "+ c
 				+" <br> <br> Professions exercees : "+p;
-	}
-
-	
+	}	
 }	

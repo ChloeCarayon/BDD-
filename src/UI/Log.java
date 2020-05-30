@@ -45,6 +45,7 @@ public class Log extends Default_Page implements ActionListener {
         } else{
             /*                                   EXIT                                        */
             mySystem.page1.dispose();
+            this.dispose();
         }
     }
 }

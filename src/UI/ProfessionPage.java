@@ -66,7 +66,7 @@ public class ProfessionPage extends Default_Page implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == addButton) {
 			try {
-				mySystem.mariaconnexion.addDBProfession(current, profText.getText(),sdf.format(dateChooser.getDate()));
+				mySystem.mariaconnexion.addItem(current, profText.getText(),sdf.format(dateChooser.getDate()),mySystem.PROSSESSION);
                 JOptionPane.showMessageDialog(null, "Profession "+profText.getText()+" ajoutée avec succès !");
                 profText.setText(" ");
 			} catch (SQLException throwables) {

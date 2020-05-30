@@ -142,6 +142,10 @@ public final class Registration extends Default_Page implements ActionListener {
             backButton.addActionListener(e -> {
 	            	this.dispose(); 
 	            	mySystem.page1.setVisible(true);
+	            	if(mySystem.backPage == 1)
+	    				new MyPatientPage();
+	    			else 
+	    				new Patient_GUI();
             	});
         }
     
@@ -181,8 +185,7 @@ public final class Registration extends Default_Page implements ActionListener {
         	 if(p.equals(mySystem.user.getPub())) PubComboBox.setSelectedItem(p);     
          
         this.add(modifButton); 
-        modifButton.addActionListener(e-> {
-        	
+        modifButton.addActionListener(e-> {        	
         	try {
         		boolean s=false;
         		if (SexeComboBox.getSelectedItem().toString().equals("Homme")) s = true;
@@ -239,8 +242,8 @@ public final class Registration extends Default_Page implements ActionListener {
 	                     int id_nouveau_client = mySystem.mariaconnexion.readDBClient(nomTextField.getText(), prenomTextField.getText(),password,
 	                             emailText.getText(),PubComboBox.getSelectedItem().toString() ,sexe);
 	                     
-	                     mySystem.mariaconnexion.addDBCouple(id_nouveau_client, null, couple);
-	                     mySystem.mariaconnexion.addDBType(id_nouveau_client, null, TypeComboBox.getSelectedItem().toString() );
+	                     mySystem.mariaconnexion.addItem(id_nouveau_client, couple, null, mySystem.COUPLE);
+	                     mySystem.mariaconnexion.addItem(id_nouveau_client,TypeComboBox.getSelectedItem().toString(), null, mySystem.TYPE );
 	
 	                    //Actualise la liste de Patient
 	                     mySystem.patients.clear();

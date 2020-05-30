@@ -58,45 +58,7 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
     return id_nouveau_client;
     }
     
-    public void addDBCouple(int id_client, Date date, boolean couple) throws SQLException{
-    	resultSet = stmt
-                .executeQuery("select * from db.couple");
-    	
-    	if(date == null) {
-            preparedStatement = conn
-                    .prepareStatement("insert into  db.couple values (default," + couple + "," + id_client + ")");
-    	}else 
-          preparedStatement = conn
-                  .prepareStatement("insert into  db.couple values (" + date + "," + couple + "," + id_client + ")");
-         
-    	resultSet = preparedStatement.executeQuery();          
-    }
-    
-    public void addDBProfession(int id_client, String prof_name, String date) throws SQLException{
-    	java.sql.Date sqlDate = java.sql.Date.valueOf(date);
-    	preparedStatement = conn
-                .prepareStatement("INSERT INTO `db`.`prof_client` (`Nom_prof`, `Id_Client`, `Prof_date`) VALUES ('"+prof_name+"',"+id_client+",'" + sqlDate + "')");
-         
-    	resultSet = preparedStatement.executeQuery();   
-    }
-
-    //TODO remplacer type date, voir pageProfesion 
-    public void addDBType(int id_client, Date date, String type) throws SQLException{
-    	resultSet = stmt.executeQuery("select * from db.type_p");
-
-    	if(date == null) {
-            preparedStatement = conn
-                    .prepareStatement("INSERT INTO `db`.`type_p` (`Date_type`, `Nom_type`, `Id_Client`) VALUES (default,'"+type+"'," + id_client + ")");
-    	}else 
-          preparedStatement = conn
-                  .prepareStatement("INSERT INTO `db`.`type_p` (`Date_type`, `Nom_type`, `Id_Client`) VALUES ('"+date+"','"+type+"'," + id_client + ")");
-
-    	resultSet = preparedStatement.executeQuery();          
-    }
-    
-
-
-    public void LogDB(String mail, String mdp) throws SQLException {
+    public void LogDB(String mail, String mdp) throws SQLException { //sert aussi pour update le client quand il a modfifé ses infos
         preparedStatement = conn
                 .prepareStatement("select * from db.Client  where mail= ? and mdp =? ");
         preparedStatement.setString(1, mail); // nom
@@ -112,12 +74,12 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
         }
         
         getlistes =  stmt.executeQuery("SELECT*FROM db.Prof_Client WHERE Id_Client = "+id);
-  	  //Recupï¿½re les datas de la table profession_client correspondant au client 
+  
   	  while(getlistes.next()) {
   		  String prof_name =  getlistes.getString("Nom_prof"); 
   		  Date prof_date =  getlistes.getDate("Prof_date");
   		  mySystem.user.addProfList(prof_date,prof_name);
-  		 System.out.println(prof_name);
+  		  System.out.println(prof_name);
   		  System.out.println(mySystem.user.getProfList().size());
   	  }
   	  
@@ -134,7 +96,6 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
   		  Date type_date =  getlistes.getDate("Date_type");
   		 mySystem.user.addTypeList(type_date, type_name);
   	  }
-  	  
     }
 
     public boolean Datecheck(String date,int rdv) throws SQLException {
@@ -306,22 +267,86 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
     			+ " WHERE  Id_Client="+id+"; ");
     }
     
-    public void modifyProfession(String oldItem, String newItem, String date, int id) throws SQLException {
-    	java.sql.Date sqlDate = java.sql.Date.valueOf(date);
+    public <T> void modifyItem(String oldString, T newString, String oldDate,  String newDate,  int id, String item) throws SQLException {
+    	
     	stmt = conn.createStatement(); 
-    	resultSet = stmt.executeQuery(
+    	java.sql.Date newsqlDate = java.sql.Date.valueOf(newDate);
+    	java.sql.Date oldsqlDate = java.sql.Date.valueOf(oldDate);
+    	
+    	if(item.equals(mySystem.PROSSESSION)) {
+    		resultSet = stmt.executeQuery(
         			"UPDATE db.prof_client SET "
-        					+"Nom_prof='"+newItem+"',Prof_date ='"+sqlDate+"'"
-        			+ " WHERE  Id_Client"+id+ "AND Nom_prof='"+oldItem+"'; " //2 primary key
-        	);   	 	
+        					+"Nom_prof='"+newString+"',Prof_date ='"+newsqlDate+"'"
+        			+ " WHERE  Id_Client="+id+ "AND Nom_prof='"+oldString+"'; " //2 primary key
+        	);   
+    	}
+    	
+    	if(item.equals(mySystem.TYPE)) {
+    		resultSet = stmt.executeQuery(
+        			"UPDATE db.type_p SET "
+        					+"Nom_type='"+newString+"', Date_type ='"+newsqlDate+"'"
+        			+ " WHERE  Id_Client="+id+ "AND Date_type='"+oldsqlDate+"';" //2 primary key
+        	);   
+    	}
+    	
+    	if(item.equals(mySystem.COUPLE)) {
+    		resultSet = stmt.executeQuery(
+        			"UPDATE db.couple SET "
+        					+"Nom_type='"+newString+"', Date_Couple='"+newsqlDate+"'"
+        			+ " WHERE  Id_Client="+id+ "AND Date_Couple='"+oldsqlDate+"';" //2 primary key
+        	);   
+    	}    		 	
     }
     
-    public void deleteProfession(String profession,  int id) throws SQLException {
+    public void deleteItem(String date, String a_supprimer,  int id, String item) throws SQLException {
     	stmt = conn.createStatement(); 
-    	resultSet = stmt.executeQuery(
-        			"DELETE FROM db.prof_client  WHERE  Id_Client="+id+ " AND Nom_prof='"+profession+"' ;" //2 primary keys
-        	);   	
+    	java.sql.Date sqlDate = java.sql.Date.valueOf(date);
+    	if(item.equals(mySystem.PROSSESSION)) {
+    		resultSet = stmt.executeQuery(
+        			"DELETE FROM db.prof_client  WHERE  Id_Client="+id+ " AND Nom_prof='"+a_supprimer+"' ;" //2 primary keys
+        	);   
+    	}
+    	if(item.equals(mySystem.TYPE)) {
+    		resultSet = stmt.executeQuery(
+        			"DELETE FROM db.type_p  WHERE  Id_Client="+id+ " AND Date_type='"+date+"' ;" //2 primary keys
+        	);   
+    	}
+    	if(item.equals(mySystem.COUPLE)) {
+    		resultSet = stmt.executeQuery(
+        			"DELETE FROM db.couple  WHERE  Id_Client="+id +" AND Date_Couple='"+date+"' ;"        
+        	);   
+    	}    		
     }
+    
+    public <T> void addItem(int id_client, T a_ajouter, String date, String item) throws SQLException{
+    	java.sql.Date sqlDate = java.sql.Date.valueOf(date);  	 
+    	
+    	if(item.equals(mySystem.PROSSESSION)) {
+    		preparedStatement = conn
+                    .prepareStatement("INSERT INTO `db`.`prof_client` (`Nom_prof`, `Id_Client`, `Prof_date`) VALUES ('"+a_ajouter+"',"+id_client+",'" + sqlDate + "')");   		   
+    	}
+    	
+    	if(item.equals(mySystem.TYPE)) {
+    		if(date == null) {//Pour la création, la date se met automatiquement a celle d'aujourd'hui dan
+                preparedStatement = conn
+                        .prepareStatement("INSERT INTO `db`.`type_p` (`Date_type`, `Nom_type`, `Id_Client`) VALUES (default,'"+a_ajouter+"'," + id_client + ")");
+        	}else 
+              preparedStatement = conn
+                      .prepareStatement("INSERT INTO `db`.`type_p` (`Date_type`, `Nom_type`, `Id_Client`) VALUES ('"+date+"','"+a_ajouter+"'," + id_client + ")");	
+    	}
+    	
+    	if(item.equals(mySystem.COUPLE)) {
+    		if(date == null) {
+                preparedStatement = conn
+                        .prepareStatement("insert into  db.couple values (default," + a_ajouter + "," + id_client + ")");
+        	}else 
+              preparedStatement = conn
+                      .prepareStatement("insert into  db.couple values ('" + date + "'," + a_ajouter + "," + id_client + ")");
+    	}    	
+    	resultSet = preparedStatement.executeQuery();  
+    }
+    
+    
 
     private void close() {
         try {
