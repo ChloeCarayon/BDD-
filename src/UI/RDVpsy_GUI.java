@@ -145,8 +145,7 @@ public class RDVpsy_GUI extends Default_Page implements ActionListener {
                             new CreatRdv_GUI(sdf.format(calendar.getDate()));
                           this.dispose();}
                       else  JOptionPane.showMessageDialog(null, "Vous ne pouvez pas avoir de rendez-vous le dimanche.");
-                    } catch (SQLException throwables) {
-                        throwables.printStackTrace();
+                    } catch (Exception ex) {
                         JOptionPane.showMessageDialog(null, "Impossible d'ouvrir cette page.");
                     }
                 }

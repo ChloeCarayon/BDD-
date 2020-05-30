@@ -169,51 +169,54 @@ public class ViewRDV extends Default_Page implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if ((e.getSource() == ModifButton || e.getSource() == SeeRdvButton ||e.getSource() == SupprButton  ) && (rdv_List.getSelectedIndex() == -1 || rdv_List.getSelectedValue().equals("Pas de RDV pour l'instant à ce jour.")))
+        if ((e.getSource() == ModifButton || e.getSource() == SeeRdvButton || e.getSource() == SupprButton) && (rdv_List.getSelectedIndex() == -1 || rdv_List.getSelectedValue().equals("Pas de RDV passés pour l'instant.")))
             JOptionPane.showMessageDialog(null, "Veuillez sélectionner un RDV.");
-        if( (e.getSource() == SeeConsButton ) && (cons_List_.getSelectedIndex() == -1 || cons_List_.getSelectedValue().equals("Pas de RDV futurs pour l'instant.")))
-            JOptionPane.showMessageDialog(null, "Veuillez sélectionner un RDV.");
-
         else {
-            if (e.getSource() == ModifButton) {
-                try {
-                    ModifRDV();
-                    this.dispose();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
-            if (e.getSource() == SeeConsButton) {
-                if(type){
+            if ((e.getSource() == SeeConsButton) && (cons_List_.getSelectedIndex() == -1 || cons_List_.getSelectedValue().equals("Pas de RDV futurs pour l'instant.")))
+                JOptionPane.showMessageDialog(null, "Veuillez sélectionner un RDV.");
+            else {
+                if (e.getSource() == ModifButton) {
                     try {
-                        getCons();
-                    } catch (SQLException throwables) {
-                        throwables.printStackTrace();
-                    }
-                    this.dispose();
-                }
-                else {
-                    try {
-                        seeRDV(false);
+                        ModifRDV();
+                        this.dispose();
                     } catch (SQLException throwables) {
                         throwables.printStackTrace();
                     }
                 }
-            }
-            if(e.getSource() == SeeRdvButton){
-                try {
-                    seeRDV(true);
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
+                if (e.getSource() == SeeConsButton) {
+                    if (type) {
+                        try {
+                            getCons();
+                        } catch (SQLException throwables) {
+                            throwables.printStackTrace();
+                        }
+                        this.dispose();
+                    } else {
+                         try {
+                             seeRDV(false);
+                        } catch (Exception ex) {
+                         JOptionPane.showMessageDialog(null, "Veuillez sélectionner un RDV.");
+                     }
+                       }
+                    }
                 }
-            }
-            if (e.getSource() == SupprButton) {
-               SupprRDV();
-            }
-            if (e.getSource() == exitButton) {
-                this.dispose();
-               if(type) new MyPatientPage(); else new Patient_GUI();
+                if (e.getSource() == SeeRdvButton) {
+                   try {
+                        seeRDV(true);
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(null, "Veuillez sélectionner un RDV.");
+                    }
+                }
+                if (e.getSource() == SupprButton) {
+                    SupprRDV();
+                }
+                if (e.getSource() == exitButton) {
+                    this.dispose();
+                    if (type) new MyPatientPage();
+                    else new Patient_GUI();
+                }
             }
         }
     }
-}
+
+
