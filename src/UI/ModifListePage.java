@@ -98,12 +98,12 @@ public class ModifListePage  extends Default_Page implements ActionListener {
 				 this.add(checkCelib);
 		         this.add(checkCouple);
 		         
-		         checkCouple.addActionListener(e->{ //ne peut selectionner qu'un seul à la fois 
+		         checkCouple.addActionListener(e->{ //ne peut selectionner qu'un seul ï¿½ la fois 
 		        	 	checkCelib.setSelected(false);
 		          		choice_couple = true;  
 		          	});
 		         
-		         checkCelib.addActionListener(e -> {  //ne peut selectionner qu'un seul à la fois 
+		         checkCelib.addActionListener(e -> {  //ne peut selectionner qu'un seul ï¿½ la fois 
 			        	checkCouple.setSelected(false);
 			           	choice_couple = false;  
 		         	});	         
@@ -112,8 +112,8 @@ public class ModifListePage  extends Default_Page implements ActionListener {
 				profText.setBounds(180, 110, 165, 23);
 	}
 	
-	protected <T> void setList(Map<Date, T> infos, boolean choice) {//T = string (profession ou type) ou boolean (en couple ou non)
-		if(infos.size()==0) list.addElement("Aucun.e  "+a_modifier+" enregisté.es");
+	protected <T > void setList(Map<Date, T> infos, boolean choice) {//T = string (profession ou type) ou boolean (en couple ou non)
+		if(infos.size()==0) list.addElement("Aucun.e  "+a_modifier+" enregistï¿½.es");
 	
 		for(Map.Entry<Date, T> mapentry : infos.entrySet()) {
 			if(a_modifier.contentEquals(mySystem.COUPLE)) {
@@ -130,15 +130,15 @@ public class ModifListePage  extends Default_Page implements ActionListener {
     		selectlist.setVisibleRowCount(-1);
             listScroll = new JScrollPane(selectlist);
             
-            selectlist.addMouseListener(new MouseAdapter() {//Récupère les valeurs quand clique sur l'item de la liste
+            selectlist.addMouseListener(new MouseAdapter() {//Rï¿½cupï¿½re les valeurs quand clique sur l'item de la liste
     	        	public void mouseClicked(MouseEvent e) {
     		        		if (e.getClickCount() == 1) {	        			
     		        			profText.setText(selectlist.getSelectedValue().substring(13));	
-    		        			for(Map.Entry<Date, T> mapentry : infos.entrySet()) {
+    		        			for(Map.Entry<Date, T > mapentry : infos.entrySet()) {
     		        				if (profText.getText().equals(mapentry.getValue())) {
     		        					dateChooser.setDate(mapentry.getKey());	 
     		        					oldDate = mapentry.getKey();
-    		        				} 
+    		        				}
     		        				else if((boolean) mapentry.getValue()) {
     		        					checkCouple.setSelected(true);
     		        					dateChooser.setDate(mapentry.getKey());	 
@@ -180,7 +180,7 @@ public class ModifListePage  extends Default_Page implements ActionListener {
 					mySystem.mariaconnexion.deleteItem(sdf.format(dateChooser.getDate()).toString(), profText.getText(),mySystem.user.getId_User(), a_modifier);
 					mySystem.mariaconnexion.LogDB(mySystem.user.getEmail(), mySystem.user.getPassword()); //actualise les infos du client actuel
 					
-					//Supprime la liste, update et réaffiche 
+					//Supprime la liste, update et rï¿½affiche 
 					list.removeAllElements();
 					choice(false);					
 					JOptionPane.showMessageDialog(null, "Supprime avec succes");
@@ -195,17 +195,17 @@ public class ModifListePage  extends Default_Page implements ActionListener {
 			try {
 				if(a_modifier.contentEquals(mySystem.COUPLE))
 					mySystem.mariaconnexion.modifyItem(null, choice_couple,  //La nouvelle valeur du boolean
-													sdf.format(oldDate).toString(), sdf.format(dateChooser.getDate()), 	 //Les dates initiales et modifiées
+													sdf.format(oldDate).toString(), sdf.format(dateChooser.getDate()), 	 //Les dates initiales et modifiï¿½es
 													mySystem.user.getId_User(), a_modifier); 							 //L'id et la table a update dans la db
 				else 
 					mySystem.mariaconnexion.modifyItem(selectlist.getSelectedValue().substring(13), choice_couple,  //La nouvelle valeur du boolean
-							sdf.format(oldDate).toString(), sdf.format(dateChooser.getDate()), 	 //Les dates initiales et modifiées
+							sdf.format(oldDate).toString(), sdf.format(dateChooser.getDate()), 	 //Les dates initiales et modifiï¿½es
 							mySystem.user.getId_User(), a_modifier); 
 					
 					
 				mySystem.mariaconnexion.LogDB(mySystem.user.getEmail(), mySystem.user.getPassword()); //actualise les infos du client actuel
 				
-				//Supprime la liste, update et réaffiche 
+				//Supprime la liste, update et rï¿½affiche 
 				list.removeAllElements();
 				choice(false);			
 			} catch (SQLIntegrityConstraintViolationException icve) {
@@ -227,16 +227,16 @@ public class ModifListePage  extends Default_Page implements ActionListener {
 
 				mySystem.mariaconnexion.LogDB(mySystem.user.getEmail(), mySystem.user.getPassword()); //actualise les infos du client actuel
 
-				//Supprime la liste, update et réaffiche 
+				//Supprime la liste, update et rï¿½affiche 
 				list.removeAllElements();
 				choice(false);
 
 			
 				
-				 JOptionPane.showMessageDialog(null, a_modifier+" "+profText.getText()+" ajouté.e avec succès !");
+				 JOptionPane.showMessageDialog(null, a_modifier+" "+profText.getText()+" ajoutï¿½.e avec succï¿½s !");
 		         profText.setText(" ");
 			} catch (SQLIntegrityConstraintViolationException icve) {
-	            JOptionPane.showMessageDialog(null,"Vous avez déjà rentré cet element !");
+	            JOptionPane.showMessageDialog(null,"Vous avez dï¿½jï¿½ rentrï¿½ cet element !");
 			}
 			catch (SQLException e1) {
 	            JOptionPane.showMessageDialog(null,"Impossible d'ajouter l'element");

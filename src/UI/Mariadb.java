@@ -12,7 +12,7 @@ public class Mariadb {
 
     //  Database credentials
     static final String USER = "root";
-    static final String PASS = "new_password";
+    static final String PASS = "bdd";
 
     private Connection conn = null;
     private Statement stmt = null;
@@ -276,25 +276,24 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
     	
     	if(item.equals(mySystem.PROSSESSION)) {
     		resultSet = stmt.executeQuery(
-        			"UPDATE db.prof_client SET "
-        					+"Nom_prof='"+newString+"',Prof_date ='"+newsqlDate+"'"
-        			+ " WHERE  Id_Client="+id+ "AND Nom_prof='"+oldString+"'; " //2 primary key
-        	);   
+        			"UPDATE db.prof_client c SET "
+        					+"c.Nom_prof='"+newString+"',c.Prof_date ='"+newsqlDate+"'"
+        			+ " WHERE  c.Id_Client="+id+ "AND c.Nom_prof='"+oldString+"'; ");
     	}
     	
     	if(item.equals(mySystem.TYPE)) {
     		resultSet = stmt.executeQuery(
-        			"UPDATE db.type_p SET "
-        					+"Nom_type='"+newString+"', Date_type ='"+newsqlDate+"'"
-        			+ " WHERE  Id_Client="+id+ "AND Date_type='"+oldsqlDate+"';" //2 primary key
+        			"UPDATE db.type_p t SET "
+        					+"t.Nom_type='"+newString+"', t.Date_type ='"+newsqlDate+"'"
+        			+ " WHERE  t.Id_Client="+id+ "AND t.Date_type='"+oldsqlDate+"';" //2 primary key
         	);   
     	}
     	
     	if(item.equals(mySystem.COUPLE)) {
     		resultSet = stmt.executeQuery(
-        			"UPDATE db.couple SET "
-        					+"Nom_type='"+newString+"', Date_Couple='"+newsqlDate+"'"
-        			+ " WHERE  Id_Client="+id+ "AND Date_Couple='"+oldsqlDate+"';" //2 primary key
+        			"UPDATE db.couple c SET "
+        					+"c.Nom_type='"+newString+"', c.Date_Couple='"+newsqlDate+"'"
+        			+ " WHERE  c.Id_Client="+id+ "AND c.Date_Couple='"+oldsqlDate+"';" //2 primary key
         	);   
     	}    		 	
     }
