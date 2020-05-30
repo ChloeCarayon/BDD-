@@ -84,7 +84,7 @@ public class Rdv {
 
 
 	public  int getClient2() {
-		return client2;
+		return client2; 
 	}
 
 

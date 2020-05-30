@@ -12,7 +12,7 @@ public class Mariadb {
 
     //  Database credentials
     static final String USER = "root";
-    static final String PASS = "new_password";
+    static final String PASS = "bdd";
 
     private Connection conn = null;
     private Statement stmt = null;
@@ -275,9 +275,10 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
     	java.sql.Date oldsqlDate = java.sql.Date.valueOf(oldDate);
     	
     	if(item.equals(mySystem.PROSSESSION)) {
+    		
     		resultSet = stmt.executeQuery(
         			"UPDATE db.prof_client SET "
-        					+"Nom_prof='"+newString+"',Prof_date ='"+newsqlDate+"'"
+        					+"Nom_prof='"+newString+"',Prof_date ='"+newDate+"'"
         			+ " WHERE  Id_Client="+id+ "AND Nom_prof='"+oldString+"'; " //2 primary key
         	);   
     	}
@@ -285,18 +286,19 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
     	if(item.equals(mySystem.TYPE)) {
     		resultSet = stmt.executeQuery(
         			"UPDATE db.type_p SET "
-        					+"Nom_type='"+newString+"', Date_type ='"+newsqlDate+"'"
-        			+ " WHERE  Id_Client="+id+ "AND Date_type='"+oldsqlDate+"';" //2 primary key
+        					+"Nom_type='"+newString+"', Date_type ='"+newDate+"'"
+        			+ " WHERE  Id_Client="+id+ "AND Date_type='"+oldDate+"';" //2 primary key
         	);   
     	}
     	
     	if(item.equals(mySystem.COUPLE)) {
     		resultSet = stmt.executeQuery(
         			"UPDATE db.couple SET "
-        					+"Nom_type='"+newString+"', Date_Couple='"+newsqlDate+"'"
-        			+ " WHERE  Id_Client="+id+ "AND Date_Couple='"+oldsqlDate+"';" //2 primary key
+        					+"Nom_type='"+newString+"', Date_Couple='"+newDate+"'"
+        			+ " WHERE  Id_Client="+id+ "AND Date_Couple='"+oldDate+"';" //2 primary key
         	);   
-    	}    		 	
+    	}   
+    	resultSet = preparedStatement.executeQuery(); 
     }
     
 
@@ -304,7 +306,7 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
         stmt = conn.createStatement();
         java.sql.Date sqlDate = java.sql.Date.valueOf(date);
         if (item.equals(mySystem.PROSSESSION)) {
-            resultSet = stmt.executeQuery(
+            preparedStatement= conn.prepareStatement(
                     "DELETE FROM db.prof_client  WHERE  Id_Client=" + id + " AND Nom_prof='" + a_supprimer + "' ;" //2 primary keys
             );
         }
@@ -320,12 +322,7 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
         }
     }
 
-    public void deleteProfession(String profession,  int id) throws SQLException {
-    	stmt = conn.createStatement();
-    	resultSet = stmt.executeQuery(
-        			"DELETE FROM db.prof_client  WHERE  Id_Client="+id+ ", 'Nom_prof'='"+profession+"' ;" //2 primary keys
-        	);
-    }
+
 
     public void Consult(String patient, String anxiete, String posture, String Mot, int rdv_id) throws SQLException {
         stmt = conn.createStatement();
@@ -384,7 +381,7 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
     	}
     	
     	if(item.equals(mySystem.TYPE)) {
-    		if(date == null) {//Pour la cr�ation, la date se met automatiquement a celle d'aujourd'hui dan
+    		if(date == null) {//Pour la creation, la date se met automatiquement a celle d'aujourd'hui dan
                 preparedStatement = conn
                         .prepareStatement("INSERT INTO `db`.`type_p` (`Date_type`, `Nom_type`, `Id_Client`) VALUES (default,'"+a_ajouter+"'," + id_client + ")");
         	}else 
