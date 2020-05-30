@@ -74,16 +74,19 @@ public class ModifListePage  extends Default_Page implements ActionListener {
 		if(a_modifier.equals(mySystem.PROSSESSION)) {
 			setList(mySystem.user.getProfList(),c);
 			afficheCouple(c,false);
+			getStringMap(mySystem.user.getProfList());
 		}	
 
 		else if(a_modifier.equals(mySystem.TYPE)) {
 			setList(mySystem.user.getTypeList(),c);
 			afficheCouple(c,false);
+			getStringMap(mySystem.user.getTypeList());
 		}
 		
 		else if(a_modifier.equals(mySystem.COUPLE)) {
 			setList(mySystem.user.getCoupleList(),c);
 			afficheCouple(c,true);
+			getBooleanMap(mySystem.user.getCoupleList());
 		}
 			
 	}
@@ -123,7 +126,6 @@ public class ModifListePage  extends Default_Page implements ActionListener {
 				list.addElement((mapentry.getKey()+ " : "+mapentry.getValue()));	
 		}	
         
-
         if(choice) {
         	selectlist = new JList<>(list);
     		selectlist.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -159,6 +161,53 @@ public class ModifListePage  extends Default_Page implements ActionListener {
         }
 
 	}
+	
+	protected void getStringMap(Map <Date, String> infos){
+		selectlist.addMouseListener(new MouseAdapter() {//R�cup�re les valeurs quand clique sur l'item de la liste
+        	public void mouseClicked(MouseEvent e) {
+	        		if (e.getClickCount() == 1) {	        			
+	        			profText.setText(selectlist.getSelectedValue().substring(13));	
+	        			
+	        			for(Map.Entry<Date, String> mapentry : infos.entrySet()) {
+	        				
+	        				if (mapentry.getValue().equals(profText.getText())) {
+	        					dateChooser.setDate(mapentry.getKey());	 
+	        					oldDate = mapentry.getKey();
+	        					System.out.println(mapentry.getValue());
+	        				}     		        				
+	        			
+	        			}
+	              }
+        	}        		
+    	});
+	}
+	
+	
+	protected void getBooleanMap(Map <Date, Boolean> infos){
+		selectlist.addMouseListener(new MouseAdapter() {//R�cup�re les valeurs quand clique sur l'item de la liste
+        	public void mouseClicked(MouseEvent e) {
+	        		if (e.getClickCount() == 1) {	        			
+	        			profText.setText(selectlist.getSelectedValue().substring(13));	
+	        			
+	        			for(Map.Entry<Date, Boolean> mapentry : infos.entrySet()) {	        					        				
+	        			
+	        				if((boolean) mapentry.getValue()) {
+	        					checkCouple.setSelected(true);
+	        					dateChooser.setDate(mapentry.getKey());	 
+	        					oldDate = mapentry.getKey();
+	        				}
+	        				else if(!(boolean) mapentry.getValue()) {
+	        					checkCelib.setSelected(true);
+	        					dateChooser.setDate(mapentry.getKey());	 
+	        					oldDate = mapentry.getKey();
+	        				}
+	        			}
+	              }
+        	}        		
+    	});
+	}
+	
+	
 	
 
 	

@@ -275,6 +275,7 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
     	java.sql.Date oldsqlDate = java.sql.Date.valueOf(oldDate);
     	
     	if(item.equals(mySystem.PROSSESSION)) {
+    		
     		resultSet = stmt.executeQuery(
         			"UPDATE db.prof_client c SET "
         					+"c.Nom_prof='"+newString+"',c.Prof_date ='"+newsqlDate+"'"
@@ -295,7 +296,8 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
         					+"c.Nom_type='"+newString+"', c.Date_Couple='"+newsqlDate+"'"
         			+ " WHERE  c.Id_Client="+id+ "AND c.Date_Couple='"+oldsqlDate+"';" //2 primary key
         	);   
-    	}    		 	
+    	}   
+    	resultSet = preparedStatement.executeQuery(); 
     }
     
 
@@ -303,7 +305,7 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
         stmt = conn.createStatement();
         java.sql.Date sqlDate = java.sql.Date.valueOf(date);
         if (item.equals(mySystem.PROSSESSION)) {
-            resultSet = stmt.executeQuery(
+            preparedStatement= conn.prepareStatement(
                     "DELETE FROM db.prof_client  WHERE  Id_Client=" + id + " AND Nom_prof='" + a_supprimer + "' ;" //2 primary keys
             );
         }
@@ -319,12 +321,7 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
         }
     }
 
-    public void deleteProfession(String profession,  int id) throws SQLException {
-    	stmt = conn.createStatement();
-    	resultSet = stmt.executeQuery(
-        			"DELETE FROM db.prof_client  WHERE  Id_Client="+id+ ", 'Nom_prof'='"+profession+"' ;" //2 primary keys
-        	);
-    }
+
 
     public void Consult(String patient, String anxiete, String posture, String Mot, int rdv_id) throws SQLException {
         stmt = conn.createStatement();
@@ -383,7 +380,7 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
     	}
     	
     	if(item.equals(mySystem.TYPE)) {
-    		if(date == null) {//Pour la cr�ation, la date se met automatiquement a celle d'aujourd'hui dan
+    		if(date == null) {//Pour la creation, la date se met automatiquement a celle d'aujourd'hui dan
                 preparedStatement = conn
                         .prepareStatement("INSERT INTO `db`.`type_p` (`Date_type`, `Nom_type`, `Id_Client`) VALUES (default,'"+a_ajouter+"'," + id_client + ")");
         	}else 

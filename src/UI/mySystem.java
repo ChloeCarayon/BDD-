@@ -24,7 +24,7 @@ public class mySystem {
         page1 = new Log();    
         page1.setVisible(true);
 
-        new MyPatientPage(); 
+       // new MyPatientPage(); 
 
     }
 }

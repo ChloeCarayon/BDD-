@@ -127,7 +127,7 @@ public class User {
 	public String CoupleToString(Date key) {
 		if(this.coupleList.get(key))
 			return "En Couple"; 
-		return "Celibataire";
+		return "Celibataire"; 
 	}
 ////// Methode to String
 	
