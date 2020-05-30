@@ -2,15 +2,16 @@ package UI;
 
 import java.awt.Color;
 import java.awt.Font;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -18,7 +19,7 @@ import javax.swing.ListSelectionModel;
 
 public class MyPatientPage extends Default_Page implements ActionListener{ 
 
-	   	private JButton RDVButton = new JButton("Voir les RDV ");
+	private JButton RDVButton = new JButton("Voir les RDV ");
 	   	private final JLabel profile_title = new JLabel("Profile");
 	   	private final JLabel profile = new JLabel("Selectionnez un profile");
 	 
@@ -39,6 +40,7 @@ public class MyPatientPage extends Default_Page implements ActionListener{
 	    }
 	        
 	    protected void setLocationAndSize() {
+
 			RDVButton.setBounds(40,230,170,23);
 			modifButton.setBounds(40,270,170,23);			
 			coupleButton.setBounds(40,310,170,23);
@@ -55,7 +57,7 @@ public class MyPatientPage extends Default_Page implements ActionListener{
 	    	profile_title.setForeground(new Color(159 , 232 , 85));
 	    }    
 
-	    	
+
 	    protected void addComponentsToFrame() {
 	    	this.add(listScroll);	      
 	    	this.add(exitButton);
@@ -69,7 +71,7 @@ public class MyPatientPage extends Default_Page implements ActionListener{
 	    		if(patientList.getSelectedIndex() != -1) {
 	    			mySystem.current_client_id = patientList.getSelectedIndex();
 	    			this.dispose();
-	    			new Cons_ModifRDV();
+	    			new ViewRDV(true);
 	    		}
 	    	});
 			
@@ -105,6 +107,8 @@ public class MyPatientPage extends Default_Page implements ActionListener{
 	    }
 	    
 	@Override
+
 	public void actionPerformed(ActionEvent e) {	
+
 	}
 }

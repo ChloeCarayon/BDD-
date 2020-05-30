@@ -75,7 +75,7 @@ public class ModifListePage  extends Default_Page implements ActionListener {
 			setList(mySystem.user.getProfList(),c);
 			afficheCouple(c,false);
 		}	
-		
+
 		else if(a_modifier.equals(mySystem.TYPE)) {
 			setList(mySystem.user.getTypeList(),c);
 			afficheCouple(c,false);
@@ -123,6 +123,7 @@ public class ModifListePage  extends Default_Page implements ActionListener {
 				list.addElement((mapentry.getKey()+ " : "+mapentry.getValue()));	
 		}	
         
+
         if(choice) {
         	selectlist = new JList<>(list);
     		selectlist.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -156,6 +157,7 @@ public class ModifListePage  extends Default_Page implements ActionListener {
             listScroll.setBounds(80,20,200,50);
             this.add(listScroll);
         }
+
 	}
 	
 
@@ -207,7 +209,7 @@ public class ModifListePage  extends Default_Page implements ActionListener {
 				list.removeAllElements();
 				choice(false);			
 			} catch (SQLIntegrityConstraintViolationException icve) {
-	            JOptionPane.showMessageDialog(null,"Vous avez déjà rentré cette profession !");
+	            JOptionPane.showMessageDialog(null,"Vous avez dï¿½jï¿½ rentrï¿½ cette profession !");
 			}catch (SQLException e1) {
 				e1.printStackTrace();
 				JOptionPane.showMessageDialog(null, "Impossible de modifier ");
@@ -216,6 +218,7 @@ public class ModifListePage  extends Default_Page implements ActionListener {
 		
 		
 		addButton.addActionListener(e -> {
+
 			try {
 				if(a_modifier.contentEquals(mySystem.COUPLE))
 					mySystem.mariaconnexion.addItem(mySystem.user.getId_User(), choice_couple ,sdf.format(dateChooser.getDate()).toString(), a_modifier);
@@ -227,6 +230,8 @@ public class ModifListePage  extends Default_Page implements ActionListener {
 				//Supprime la liste, update et réaffiche 
 				list.removeAllElements();
 				choice(false);
+
+			
 				
 				 JOptionPane.showMessageDialog(null, a_modifier+" "+profText.getText()+" ajouté.e avec succès !");
 		         profText.setText(" ");

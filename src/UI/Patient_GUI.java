@@ -6,6 +6,7 @@ import java.awt.*;
 
 public class Patient_GUI extends Default_Page implements ActionListener  {
 
+
     private JButton rdvButton=new JButton("Rdv a venir");
    
     
@@ -38,8 +39,11 @@ public class Patient_GUI extends Default_Page implements ActionListener  {
         addModificationButtons();
         
         rdvButton.addActionListener(e-> {
-        		this.dispose();
-        	});
+
+            this.dispose();
+        	new ViewRDV(false);
+        });
+        
         exitButton.addActionListener(e-> {
         		this.dispose();
         		new Log();

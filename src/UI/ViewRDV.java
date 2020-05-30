@@ -6,18 +6,22 @@ import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.Calendar;
 
-public class Cons_ModifRDV extends Default_Page implements ActionListener {
+public class ViewRDV extends Default_Page implements ActionListener {
     private JScrollPane listScrollRdv, listScrollCons ;
     private JList<String> rdv_List, cons_List_;
     private DefaultListModel<String> listpasse = new DefaultListModel<>();
     private DefaultListModel<String> listfutur = new DefaultListModel<>();
     private final JButton ModifButton = new JButton("Modifier RDV futur");
     private final JButton SupprButton = new JButton("Supprimer RDV futur");
-    private final JButton ConsButton = new JButton("Ajouter consult ");
+    private final JButton SeeConsButton = new JButton("Voir consult ");
+    private final JButton SeeRdvButton = new JButton("Voir Rdv ");
     private final JLabel Rdv_Passe = new JLabel("RDV Passés : ");
     private final JLabel Rdv_Futurs = new JLabel("RDV Futurs : ");
+    private final JLabel rdv_contenu = new JLabel("Selectionnez un RDV");
+    private boolean type;
 
-    public Cons_ModifRDV() {
+    public ViewRDV(boolean typ) {
+        type= typ;
         createWindow("Consulter les RDV", 400, 50, 600, 470);
         setList(true);
         setLocationAndSize();
@@ -75,12 +79,14 @@ public class Cons_ModifRDV extends Default_Page implements ActionListener {
     protected void setLocationAndSize() {
         Rdv_Passe.setBounds(20, 20, 150, 30);
         Rdv_Futurs.setBounds(20, 170, 150, 30);
-        ConsButton.setBounds(425, 75, 170, 23);
+        SeeConsButton.setBounds(425,75,170,23 );
         exitButton.setBounds(425, 400, 170, 23);
-        ModifButton.setBounds(425, 225, 170, 23);
-        SupprButton.setBounds(425, 255, 170, 23);
+        ModifButton.setBounds(425, 210, 170, 23);
+        SupprButton.setBounds(425, 235, 170, 23);
+        SeeRdvButton.setBounds(425,265,170,23);
         listScrollRdv.setBounds(20, 200, 400, 100);
         listScrollCons.setBounds(20, 50, 400, 100);
+        rdv_contenu.setBounds(20, 290,400,160);
     }
 
     protected void addComponentsToFrame() {
@@ -89,13 +95,24 @@ public class Cons_ModifRDV extends Default_Page implements ActionListener {
         this.add(listScrollCons);
         this.add(listScrollRdv);
         this.add(exitButton);
-        this.add(ModifButton);
-        this.add(ConsButton);
-        this.add(SupprButton);
-        ModifButton.addActionListener(this);
-        ConsButton.addActionListener(this);
-        SupprButton.addActionListener(this);
+        this.add(SeeConsButton);
+        this.add(SeeRdvButton);
+        this.add(rdv_contenu);
+        SeeRdvButton.addActionListener(this);
+        SeeConsButton.addActionListener(this);
+        if(type){
+            this.add(ModifButton);
+            this.add(SupprButton);
+            ModifButton.addActionListener(this);
+            SupprButton.addActionListener(this);
+        }
+        else {
+            SeeConsButton.setText("Voir RDV anterieur");
+            SeeRdvButton.setText("Voir RDV futur");
+        }
+
         exitButton.addActionListener(this);
+
     }
 
     private void SupprRDV() {
@@ -128,34 +145,83 @@ public class Cons_ModifRDV extends Default_Page implements ActionListener {
                 new ModifRdv_Patientpage(id_string[0], Calendar.getInstance().getTime(), true);
             }
         }
-
     }
+
+    private  void getCons() throws SQLException{
+        if (cons_List_.getSelectedIndex() != -1){
+            String rdvId = cons_List_.getModel().getElementAt(cons_List_.getSelectedIndex());
+            String[] id_string = rdvId.split("  ", 2);
+            new Consultation_GUI(Integer.parseInt(id_string[0]),true);
+        }
+    }
+
+    private void seeRDV(boolean choice) throws SQLException {
+        String rdvId, info;
+        if(choice){  rdvId = rdv_List.getModel().getElementAt(rdv_List.getSelectedIndex()); info = "<html>RDV futur<br>"; }
+        else  {rdvId = cons_List_.getModel().getElementAt(cons_List_.getSelectedIndex()); info = "<html>RDV passe<br>";}
+        String[] id_string = rdvId.split("  ", 2);
+        Rdv currentRdv =  mySystem.rdvListe.stream().filter(r -> r.getId() == Integer.parseInt(id_string[0])).findFirst().get();
+        info += "Date : " + currentRdv.getDate() + " - " + currentRdv.getHeure() + "<br>Patient(s) : " +
+                mySystem.mariaconnexion.getClient(currentRdv.getClient1()) +"  " +  mySystem.mariaconnexion.getClient(currentRdv.getClient2())
+                +"  "+  mySystem.mariaconnexion.getClient(currentRdv.getClient3()) + "<br>Prix : " + currentRdv.getPrix() + "€  en " + currentRdv.getPayement() + "</html>";
+        rdv_contenu.setText(info);
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
-        if ((e.getSource() == ModifButton ) && (rdv_List.getSelectedIndex() == -1 || rdv_List.getSelectedValue().equals("Pas de RDV pour l'instant à ce jour.")))
-            JOptionPane.showMessageDialog(null, "Veuillez sélectionner un RDV.");
-        if ((e.getSource() == ConsButton ) && (cons_List_.getSelectedIndex() == -1 || cons_List_.getSelectedValue().equals("Pas de RDV pour l'instant à ce jour.")))
+        if ((e.getSource() == ModifButton || e.getSource() == SeeRdvButton || e.getSource() == SupprButton) && (rdv_List.getSelectedIndex() == -1 || rdv_List.getSelectedValue().equals("Pas de RDV passés pour l'instant.")))
             JOptionPane.showMessageDialog(null, "Veuillez sélectionner un RDV.");
         else {
-            if (e.getSource() == ModifButton) {
-                try {
-                    ModifRDV();
-                    this.dispose();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
+            if ((e.getSource() == SeeConsButton) && (cons_List_.getSelectedIndex() == -1 || cons_List_.getSelectedValue().equals("Pas de RDV futurs pour l'instant.")))
+                JOptionPane.showMessageDialog(null, "Veuillez sélectionner un RDV.");
+            else {
+                if (e.getSource() == ModifButton) {
+                    try {
+                        ModifRDV();
+                        this.dispose();
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
                 }
-            }
-            if (e.getSource() == ConsButton) {
-               this.dispose();
-            }
-            if (e.getSource() == SupprButton) {
-               SupprRDV();
-            }
-            if (e.getSource() == exitButton) {
-                this.dispose();
-                new MyPatientPage();
+                if (e.getSource() == SeeConsButton) {
+                    if (type) {
+                        try {
+                            getCons();
+                        } catch (SQLException throwables) {
+                            throwables.printStackTrace();
+                        }
+                        this.dispose();
+                    } else {
+                         try {
+                             seeRDV(false);
+                        } catch (Exception ex) {
+                         JOptionPane.showMessageDialog(null, "Veuillez sélectionner un RDV.");
+                     }
+                       }
+                    }
+                }
+                if (e.getSource() == SeeRdvButton) {
+                   try {
+                        seeRDV(true);
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(null, "Veuillez sélectionner un RDV.");
+                    }
+                }
+                if (e.getSource() == SupprButton) {
+                    SupprRDV();
+                }
+                if (e.getSource() == exitButton) {
+                    this.dispose();
+                    if (type) new MyPatientPage();
+                    else new Patient_GUI();
+                }
             }
         }
     }
+<<<<<<< HEAD:src/UI/Cons_ModifRDV.java
     
 }
+=======
+
+
+>>>>>>> 685ae98aec5533fd00c712a77c555391c96ae8a5:src/UI/ViewRDV.java
