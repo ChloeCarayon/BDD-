@@ -8,7 +8,7 @@ public class Mariadb {
     // JDBC driver name and database URL
 
     static final String JDBC_DRIVER = "org.mariadb.jdbc.Driver";
-    static final String DB_URL = "jdbc:mariadb://127.0.0.1/db";
+    static final String DB_URL = "jdbc:mariadb://127.0.0.1/psy";
 
     //  Database credentials
     static final String USER = "root";
@@ -41,8 +41,8 @@ public class Mariadb {
     }
 
 public int readDBClient(String nom, String prenom, String mdp, String mail, String pub, boolean sexe) throws SQLException { 
-  resultSet = stmt .executeQuery("select * from db.Client");
-   preparedStatement = conn .prepareStatement("insert into db.Client values (default, ?, ?, ?, ? , ?,?,NOW())");
+  resultSet = stmt .executeQuery("select * from psy.Client");
+   preparedStatement = conn .prepareStatement("insert into psy.Client values (default, ?, ?, ?, ? , ?,?,NOW())");
    preparedStatement.setString(1, nom);
    preparedStatement.setString(2, prenom); // prÃ©nom
   preparedStatement.setString(3, mdp); // mdp 
@@ -59,7 +59,7 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
     
     public void LogDB(String mail, String mdp) throws SQLException { //sert aussi pour update le client quand il a modfif� ses infos
         preparedStatement = conn
-                .prepareStatement("select * from db.Client  where mail= ? and mdp =? ");
+                .prepareStatement("select * from psy.Client  where mail= ? and mdp =? ");
         preparedStatement.setString(1, mail); // nom
         preparedStatement.setString(2, mdp);   // prénom
         ResultSet getlistes ;
@@ -72,7 +72,7 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
                     resultSet.getString("pub"),resultSet.getBoolean("sexe"), resultSet.getDate("Date_client"));
         }
         
-        getlistes =  stmt.executeQuery("SELECT*FROM db.Prof_Client WHERE Id_Client = "+id);
+        getlistes =  stmt.executeQuery("SELECT*FROM psy.Prof_Client WHERE Id_Client = "+id);
   
   	  while(getlistes.next()) {
   		  String prof_name =  getlistes.getString("Nom_prof"); 
@@ -82,14 +82,14 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
   		  System.out.println(mySystem.user.getProfList().size());
   	  }
   	  
-  	  getlistes =  stmt.executeQuery("SELECT*FROM db.Couple WHERE Id_Client = "+id);
+  	  getlistes =  stmt.executeQuery("SELECT*FROM psy.Couple WHERE Id_Client = "+id);
   	  while(getlistes.next()) {
   		  Boolean en_couple =  getlistes.getBoolean("en_couple"); 
   		  Date couple_date =  getlistes.getDate("Date_couple");
   		  mySystem.user.addCoupleList(couple_date,en_couple);
   	  }
   	  
-  	  getlistes =  stmt.executeQuery("SELECT*FROM db.type_p WHERE Id_Client = "+id);
+  	  getlistes =  stmt.executeQuery("SELECT*FROM psy.type_p WHERE Id_Client = "+id);
   	  while(getlistes.next()) {
   		  String type_name =  getlistes.getString("Nom_type"); 
   		  Date type_date =  getlistes.getDate("Date_type");
@@ -101,7 +101,7 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
         int count=0;
         java.sql.Date sqlDate = java.sql.Date.valueOf(date);
         preparedStatement = conn
-                .prepareStatement("select * from db.rdv  where Date= ?");
+                .prepareStatement("select * from psy.rdv  where Date= ?");
         preparedStatement.setDate(1, sqlDate); // nom
         resultSet = preparedStatement.executeQuery();
         while( resultSet.next()){
@@ -115,7 +115,7 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
     public ArrayList<User> getPatient() throws SQLException {
     	ArrayList<User> list = new ArrayList<>();
     	Statement st = conn.createStatement();
-    	 ResultSet rs = st.executeQuery("SELECT*FROM db.Client");
+    	 ResultSet rs = st.executeQuery("SELECT*FROM psy.Client");
     	 ResultSet getlistes ;
          while(rs.next()) {
     	  int id = rs.getInt("Id_Client"); 
@@ -129,7 +129,7 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
     	  User client  = new  User(id, name, prenom, mdp, mail, pub, sexe, client_date);
     	  
     	  
-    	  getlistes =  st.executeQuery("SELECT*FROM db.Prof_Client WHERE Id_Client = "+id);
+    	  getlistes =  st.executeQuery("SELECT*FROM psy.Prof_Client WHERE Id_Client = "+id);
     	  //Recup�re les datas de la table profession_client correspondant au client 
     	  while(getlistes.next()) {
     		  String prof_name =  getlistes.getString("Nom_prof"); 
@@ -137,14 +137,14 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
     		  client.addProfList(prof_date,prof_name);
     	  }
     	  
-    	  getlistes =  st.executeQuery("SELECT*FROM db.Couple WHERE Id_Client = "+id);
+    	  getlistes =  st.executeQuery("SELECT*FROM psy.Couple WHERE Id_Client = "+id);
     	  while(getlistes.next()) {
     		  Boolean en_couple =  getlistes.getBoolean("en_couple"); 
     		  Date couple_date =  getlistes.getDate("Date_couple");
     		  client.addCoupleList(couple_date,en_couple);
     	  }
     	  
-    	  getlistes =  st.executeQuery("SELECT*FROM db.type_p WHERE Id_Client = "+id);
+    	  getlistes =  st.executeQuery("SELECT*FROM psy.type_p WHERE Id_Client = "+id);
     	  while(getlistes.next()) {
     		  String type_name =  getlistes.getString("Nom_type"); 
     		  Date type_date =  getlistes.getDate("Date_type");
@@ -161,7 +161,7 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
     public ArrayList<Rdv> getRdv() throws SQLException {
     	ArrayList<Rdv> list = new ArrayList<>();
     	Statement st = conn.createStatement();
-    	 ResultSet rs = st.executeQuery("SELECT*FROM db.rdv");
+    	 ResultSet rs = st.executeQuery("SELECT*FROM psy.rdv");
     	 while(rs.next()) { 
     	  int id = rs.getInt("Id_rdv");
     	  Date jour= rs.getDate("Date");
@@ -180,7 +180,7 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
     private Integer FindClient(String Cl) throws SQLException {
         if ( !Cl.equals("null")){
             String[] splitClient1 = Cl.split(" . ", 5);
-            preparedStatement = conn.prepareStatement("select * from db.Client  where Nom_client= ? and Prenom_client =? ");
+            preparedStatement = conn.prepareStatement("select * from psy.Client  where Nom_client= ? and Prenom_client =? ");
             preparedStatement.setString(1, splitClient1[0]);
             preparedStatement.setString(2, splitClient1[1]);
             resultSet = preparedStatement.executeQuery();
@@ -190,7 +190,7 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
     }
 
     public String getClient(int Cl) throws SQLException {
-        preparedStatement = conn.prepareStatement("select * from db.Client  where Id_client=" + Cl);
+        preparedStatement = conn.prepareStatement("select * from psy.Client  where Id_client=" + Cl);
         resultSet = preparedStatement.executeQuery();
         String Client="";
         while( resultSet.next()){
@@ -205,7 +205,7 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
         Integer c1, c2, c3;
         c1 = FindClient(cl1); c2 = FindClient(cl2); c3 = FindClient(cl3);
         preparedStatement = conn
-                .prepareStatement("insert into  db.rdv values (default, ?, ?, ?, ? , ?, ?, ?,?)");
+                .prepareStatement("insert into  psy.rdv values (default, ?, ?, ?, ? , ?, ?, ?,?)");
 
         preparedStatement.setDate(1, sqlDate); 
         preparedStatement.setString(2, heure);
@@ -222,7 +222,7 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
         ResultSet rs = preparedStatement.executeQuery("Select LAST_INSERT_ID()");
         if(rs.next()) {
            int id = rs.getInt(1);
-           rs = preparedStatement.executeQuery("Select * from db.rdv where Id_rdv=" +id);
+           rs = preparedStatement.executeQuery("Select * from psy.rdv where Id_rdv=" +id);
             while(rs.next()) {
                 int c_1 = rs.getInt("Id_Client");
                 int c_2 = rs.getInt("Id_Client_2");
@@ -237,7 +237,7 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
     public void ModifRDV_sql(Rdv rdv_m,String date )  throws SQLException{
         java.sql.Date sqlDate = java.sql.Date.valueOf(date);
         preparedStatement = conn
-                .prepareStatement("UPDATE db.rdv t SET t.Date = ?, t.Heure = ?, t.Prix = ?, t.Payement = ? WHERE t.Id_rdv = ?");
+                .prepareStatement("UPDATE psy.rdv t SET t.Date = ?, t.Heure = ?, t.Prix = ?, t.Payement = ? WHERE t.Id_rdv = ?");
         preparedStatement.setDate(1, sqlDate);
         preparedStatement.setString(2, rdv_m.getHeure());
         preparedStatement.setFloat(3, rdv_m.getPrix());
@@ -252,9 +252,9 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
 
     public void DeleteRdv(int id) throws SQLException {
         stmt = conn.createStatement();
-        resultSet= stmt.executeQuery("DELETE FROM db.rdv WHERE Id_rdv =" + id);
+        resultSet= stmt.executeQuery("DELETE FROM psy.rdv WHERE Id_rdv =" + id);
         mySystem.rdvListe.remove(mySystem.rdvListe.stream().filter(r -> (r.getId()== id)).findFirst().get());
-      //  resultSet = stmt.executeQuery("SELECT * db.client_consultation WHERE Id_RDV =" + id);
+      //  resultSet = stmt.executeQuery("SELECT * psy.client_consultation WHERE Id_RDV =" + id);
       //  while()
             // RAJOUTER LA SUPPRESSION DE LA CONSULTATION
 
@@ -263,7 +263,7 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
     public void modifyClient(int id, String nom, String prenom, String mdp, String mail, String pub, boolean sexe) throws SQLException {
     	stmt = conn.createStatement(); 
     	resultSet = stmt.executeQuery(
-    			"UPDATE db.client SET "
+    			"UPDATE psy.client SET "
     					+ "Nom_client='"+nom+"' ,Prenom_client = '"+prenom+"' , mdp= '"+mdp+"', mail ='"+mail+"', pub ='"+pub+"', sexe ="+sexe
     			+ " WHERE  Id_Client="+id+"; ");
     }
@@ -275,7 +275,7 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
     	java.sql.Date oldsqlDate = java.sql.Date.valueOf(oldDate);
     	System.out.println("---"+newsqlDate+"---"+newString);
     	if(item.equals(mySystem.PROSSESSION)) {
-            preparedStatement= conn.prepareStatement("UPDATE db.prof_client t SET t.Prof_date = ?, t.Nom_prof = ? " +
+            preparedStatement= conn.prepareStatement("UPDATE psy.prof_client t SET t.Prof_date = ?, t.Nom_prof = ? " +
                     "WHERE t.Id_Client = ? AND t.Nom_prof=?");
             preparedStatement.setDate(1,newsqlDate);
             preparedStatement.setString(2, String.valueOf(newString));
@@ -287,7 +287,7 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
     	
     	if(item.equals(mySystem.TYPE)) {
     		resultSet = stmt.executeQuery(
-        			"UPDATE db.type_p t SET "
+        			"UPDATE psy.type_p t SET "
         					+"t.Nom_type='"+newString+"', t.Date_type ='"+newsqlDate+"'"
         			+ " WHERE  t.Id_Client="+id+ "AND t.Date_type='"+oldsqlDate+"';" //2 primary key
         	);   
@@ -295,7 +295,7 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
     	
     	if(item.equals(mySystem.COUPLE)) {
     		resultSet = stmt.executeQuery(
-        			"UPDATE db.couple c SET "
+        			"UPDATE psy.couple c SET "
         					+"c.Nom_type='"+newString+"', c.Date_Couple='"+newsqlDate+"'"
         			+ " WHERE  c.Id_Client="+id+ "AND c.Date_Couple='"+oldsqlDate+"';" //2 primary key
         	);   
@@ -309,17 +309,17 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
         java.sql.Date sqlDate = java.sql.Date.valueOf(date);
         if (item.equals(mySystem.PROSSESSION)) {
             preparedStatement= conn.prepareStatement(
-                    "DELETE FROM db.prof_client  WHERE  Id_Client=" + id + " AND Nom_prof='" + a_supprimer + "' ;" //2 primary keys
+                    "DELETE FROM psy.prof_client  WHERE  Id_Client=" + id + " AND Nom_prof='" + a_supprimer + "' ;" //2 primary keys
             );
         }
         if (item.equals(mySystem.TYPE)) {
             resultSet = stmt.executeQuery(
-                    "DELETE FROM db.type_p  WHERE  Id_Client=" + id + " AND Date_type='" + date + "' ;" //2 primary keys
+                    "DELETE FROM psy.type_p  WHERE  Id_Client=" + id + " AND Date_type='" + date + "' ;" //2 primary keys
             );
         }
         if (item.equals(mySystem.COUPLE)) {
             resultSet = stmt.executeQuery(
-                    "DELETE FROM db.couple  WHERE  Id_Client=" + id + " AND Date_Couple='" + date + "' ;"
+                    "DELETE FROM psy.couple  WHERE  Id_Client=" + id + " AND Date_Couple='" + date + "' ;"
             );
         }
     }
@@ -332,10 +332,10 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
         int anx= Integer.parseInt(anxiete);
         int client = Integer.parseInt(splitClient1[0]);
         resultSet = stmt.executeQuery(
-                "SELECT * FROM db.client_consultation  WHERE  Id_Client="+ client+ " AND Id_RDV=" + rdv_id  //2 primary keys
+                "SELECT * FROM psy.client_consultation  WHERE  Id_Client="+ client+ " AND Id_RDV=" + rdv_id  //2 primary keys
                  );
         if (resultSet.next()){
-            preparedStatement= conn.prepareStatement("UPDATE db.Consultation t SET t.Anxiete = ?, t.Mots_cles = ?," +
+            preparedStatement= conn.prepareStatement("UPDATE psy.Consultation t SET t.Anxiete = ?, t.Mots_cles = ?," +
                     " t.Posture = ? WHERE t.Id_consultation = ?");
             preparedStatement.setInt(1,anx);
             preparedStatement.setString(2,Mot);
@@ -344,14 +344,14 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
             preparedStatement.executeUpdate();
         }
         else {
-            preparedStatement = conn.prepareStatement("insert into db.Consultation values (default, ? , ? , ?)");
+            preparedStatement = conn.prepareStatement("insert into psy.Consultation values (default, ? , ? , ?)");
             preparedStatement.setInt(1,anx);
             preparedStatement.setString(2,Mot);
             preparedStatement.setString(3,posture);
             preparedStatement.executeUpdate();
             resultSet =preparedStatement.executeQuery("Select LAST_INSERT_ID()");
             if (resultSet.next()){
-                preparedStatement = conn.prepareStatement("insert into db.client_consultation values ( ? , ? , ?)");
+                preparedStatement = conn.prepareStatement("insert into psy.client_consultation values ( ? , ? , ?)");
                 preparedStatement.setInt(1,resultSet.getInt(1));
                 preparedStatement.setInt(2,client);
                 preparedStatement.setInt(3,rdv_id);
@@ -363,9 +363,9 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
     public String getConsultation(int id_client, int id_rdv) throws SQLException {
         stmt = conn.createStatement(); String info ="";
         resultSet = stmt.executeQuery(
-                "SELECT * FROM db.client_consultation  WHERE  Id_Client="+ id_client+ " AND Id_RDV=" + id_rdv);
+                "SELECT * FROM psy.client_consultation  WHERE  Id_Client="+ id_client+ " AND Id_RDV=" + id_rdv);
         if ( resultSet.next()){
-            ResultSet res = stmt.executeQuery("SELECT * FROM db.Consultation WHERE Id_consultation = "+ resultSet.getInt("Id_consultation"));
+            ResultSet res = stmt.executeQuery("SELECT * FROM psy.Consultation WHERE Id_consultation = "+ resultSet.getInt("Id_consultation"));
             if (res.next()){
                 info = "<html>Niveau d anxiete:  " + res.getInt("Anxiete") + "<br><br>Mots cles:<br>  "
                         + res.getString("Mots_cles") + "<br><br>Posture: <br>" + res.getString("Posture") + "</html>";
@@ -379,25 +379,25 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
     	
     	if(item.equals(mySystem.PROSSESSION)) {
     		preparedStatement = conn
-                    .prepareStatement("INSERT INTO `db`.`prof_client` (`Nom_prof`, `Id_Client`, `Prof_date`) VALUES ('"+a_ajouter+"',"+id_client+",'" + sqlDate + "')");   		   
+                    .prepareStatement("INSERT INTO `psy`.`prof_client` (`Nom_prof`, `Id_Client`, `Prof_date`) VALUES ('"+a_ajouter+"',"+id_client+",'" + sqlDate + "')");
     	}
     	
     	if(item.equals(mySystem.TYPE)) {
     		if(date == null) {//Pour la creation, la date se met automatiquement a celle d'aujourd'hui dan
                 preparedStatement = conn
-                        .prepareStatement("INSERT INTO `db`.`type_p` (`Date_type`, `Nom_type`, `Id_Client`) VALUES (default,'"+a_ajouter+"'," + id_client + ")");
+                        .prepareStatement("INSERT INTO `psy`.`type_p` (`Date_type`, `Nom_type`, `Id_Client`) VALUES (default,'"+a_ajouter+"'," + id_client + ")");
         	}else 
               preparedStatement = conn
-                      .prepareStatement("INSERT INTO `db`.`type_p` (`Date_type`, `Nom_type`, `Id_Client`) VALUES ('"+date+"','"+a_ajouter+"'," + id_client + ")");	
+                      .prepareStatement("INSERT INTO `psy`.`type_p` (`Date_type`, `Nom_type`, `Id_Client`) VALUES ('"+date+"','"+a_ajouter+"'," + id_client + ")");
     	}
     	
     	if(item.equals(mySystem.COUPLE)) {
     		if(date == null) {
                 preparedStatement = conn
-                        .prepareStatement("insert into  db.couple values (default," + a_ajouter + "," + id_client + ")");
+                        .prepareStatement("insert into  psy.couple values (default," + a_ajouter + "," + id_client + ")");
         	}else 
               preparedStatement = conn
-                      .prepareStatement("insert into  db.couple values ('" + date + "'," + a_ajouter + "," + id_client + ")");
+                      .prepareStatement("insert into  psy.couple values ('" + date + "'," + a_ajouter + "," + id_client + ")");
     	}    	
     	resultSet = preparedStatement.executeQuery();  
     }
