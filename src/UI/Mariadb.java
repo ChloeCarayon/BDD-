@@ -12,7 +12,7 @@ public class Mariadb {
 
     //  Database credentials
     static final String USER = "root";
-    static final String PASS = "bdd";
+    static final String PASS = "new_password";
 
     private Connection conn = null;
     private Statement stmt = null;
@@ -375,8 +375,8 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
     }
     
     public <T> void addItem(int id_client, T a_ajouter, String date, String item) throws SQLException{
-    	java.sql.Date sqlDate = java.sql.Date.valueOf(date);  	 
-    	
+    	java.sql.Date sqlDate = java.sql.Date.valueOf(date);
+
     	if(item.equals(mySystem.PROSSESSION)) {
     		preparedStatement = conn
                     .prepareStatement("INSERT INTO `psy`.`prof_client` (`Nom_prof`, `Id_Client`, `Prof_date`) VALUES ('"+a_ajouter+"',"+id_client+",'" + sqlDate + "')");

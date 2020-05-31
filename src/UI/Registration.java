@@ -5,6 +5,7 @@ import javax.swing.*;
 
 import java.awt.Color;
 import java.awt.event.*;
+import java.util.Calendar;
 
 public final class Registration extends Default_Page implements ActionListener {
     boolean LogorRegis;
@@ -78,7 +79,7 @@ public final class Registration extends Default_Page implements ActionListener {
             sexeLabel.setBounds(20, 180, 70, 70);
             pubLabel.setBounds(20, 240, 70, 70);
             
-            TypeComboBox.setBounds(180,310,70,30);
+            TypeComboBox.setBounds(180,310,165,30);
             checkCouple.setBounds(180,370,70,30);
             checkCelib.setBounds(250,370,70,30);
 
@@ -248,8 +249,8 @@ public final class Registration extends Default_Page implements ActionListener {
 	                     int id_nouveau_client = mySystem.mariaconnexion.readDBClient(nomTextField.getText(), prenomTextField.getText(),password,
 	                             emailText.getText(),PubComboBox.getSelectedItem().toString() ,sexe);
 	                     
-	                     mySystem.mariaconnexion.addItem(id_nouveau_client, couple, null, mySystem.COUPLE);
-	                     mySystem.mariaconnexion.addItem(id_nouveau_client,TypeComboBox.getSelectedItem().toString(), null, mySystem.TYPE );
+	                     mySystem.mariaconnexion.addItem(id_nouveau_client, couple, Calendar.getInstance().getTime().toString(), mySystem.COUPLE);
+	                     mySystem.mariaconnexion.addItem(id_nouveau_client,TypeComboBox.getSelectedItem().toString(), Calendar.getInstance().getTime().toString(), mySystem.TYPE );
 	
 	                    //Actualise la liste de Patient
 	                     mySystem.patients.clear();
