@@ -27,8 +27,8 @@ import com.toedter.calendar.JDateChooser;
 public class ModifListePage  extends Default_Page implements ActionListener {
 	private JTextField profText = new JTextField(); 
 	private JLabel profLabel;
-	private JButton addButton = new JButton("Add");	
-	private JButton modifButton = new JButton("Modify");
+	private JButton addButton = new JButton("Ajout");
+	private JButton modifButton = new JButton("Modifier");
 	private JButton deleteButton = new JButton("Supprimer");
 	private JLabel clientLabel = new JLabel();
 	
@@ -116,7 +116,7 @@ public class ModifListePage  extends Default_Page implements ActionListener {
 	}
 	
 	protected <T > void setList(Map<Date, T> infos, boolean choice) {//T = string (profession ou type) ou boolean (en couple ou non)
-		if(infos.size()==0) list.addElement("Aucun.e  "+a_modifier+" enregistï¿½.es");
+		if(infos.size()==0) list.addElement("Aucun.e  "+a_modifier+" enregistre.es");
 	
 		for(Map.Entry<Date, T> mapentry : infos.entrySet()) {
 			if(a_modifier.contentEquals(mySystem.COUPLE)) {
@@ -185,10 +185,6 @@ public class ModifListePage  extends Default_Page implements ActionListener {
     	});
 	}
 	
-	
-	
-
-	
 	protected void addComponentsToFrame() {
 		this.add(profLabel);
 		this.add(profText); 
@@ -233,7 +229,7 @@ public class ModifListePage  extends Default_Page implements ActionListener {
 				mySystem.mariaconnexion.LogDB(mySystem.user.getEmail(), mySystem.user.getPassword()); //actualise les infos du client actuel
 			
 
-	            JOptionPane.showMessageDialog(null,"Modifié avec succes !");
+	            JOptionPane.showMessageDialog(null,"Modifie avec succes !");
 				//Supprime la liste, update et reaffiche 
 				list.removeAllElements();
 				choice(false);			
@@ -262,10 +258,10 @@ public class ModifListePage  extends Default_Page implements ActionListener {
 
 			
 				
-				 JOptionPane.showMessageDialog(null, a_modifier+" "+profText.getText()+" ajoutï¿½.e avec succï¿½s !");
+				 JOptionPane.showMessageDialog(null, a_modifier+" "+profText.getText()+" ajoute.e avec succes !");
 		         profText.setText(" ");
 			} catch (SQLIntegrityConstraintViolationException icve) {
-	            JOptionPane.showMessageDialog(null,"Vous avez dï¿½jï¿½ rentrï¿½ cet element !");
+	            JOptionPane.showMessageDialog(null,"Vous avez deja rentre cet element !");
 			}
 			catch (SQLException e1) {
 	            JOptionPane.showMessageDialog(null,"Impossible d'ajouter l'element");

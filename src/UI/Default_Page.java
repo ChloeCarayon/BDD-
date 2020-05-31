@@ -40,7 +40,7 @@ public class Default_Page extends JFrame implements ActionListener{
 ///Boutons courrants
 	protected JButton exitButton = new JButton("Exit");
 	protected JButton backButton=new JButton("Back");
-   	protected JButton modifButton = new JButton("Mofifier");
+   	protected JButton modifButton = new JButton("Modifier");
     protected JButton coupleButton = new JButton("Modifier ma situation");
     protected JButton typeButton = new JButton("Modifier mon type");
     protected JButton professionButton = new JButton("Modifier ma profession");

@@ -37,16 +37,17 @@ public final class Registration extends Default_Page implements ActionListener {
 
     private boolean choice_celib, choice_couple;
     
-    private JButton registerButton = new JButton("REGISTER");
-    private JButton modifButton = new JButton("MODIFIER");
+    private JButton registerButton = new JButton("Enregistrer");
+    private JButton modifButton = new JButton("Modifier");
 
     
     public Registration(boolean choice, int id) {
         LogorRegis = choice;
-        if (!LogorRegis)
-        	  createWindow("Log In", 500, 100, 380, 250);
-        else {
-        	createWindow("Register", 500, 100, 380, 550);  
+        if (!LogorRegis) {
+            createWindow("Log In", 500, 100, 380, 250);
+            emailLabel.setText("Identifiant");
+        }else {
+        	createWindow("Creation", 500, 100, 380, 550);
         	  if(id>0) {
               	modifPage();
               }
@@ -189,7 +190,7 @@ public final class Registration extends Default_Page implements ActionListener {
            	 
 				mySystem.mariaconnexion.modifyClient(mySystem.user.getId_User(),nomTextField.getText(), prenomTextField.getText(), new String(passwordField.getPassword()),
 				        emailText.getText(),PubComboBox.getSelectedItem().toString(),s);
-				JOptionPane.showMessageDialog(null, "Profile Modifier avec succ�s");
+				JOptionPane.showMessageDialog(null, "Profile Modifier avec succes");
 				this.dispose();
 				
 				if(mySystem.backPage == 1) {
@@ -220,7 +221,7 @@ public final class Registration extends Default_Page implements ActionListener {
          this.add(TypeComboBox);
          this.add(checkCelib);
          this.add(registerButton);
-         
+
          checkCouple.addActionListener(e->{ //ne peut selectionner qu'un seul � la fois 
         	 	checkCelib.setSelected(false);
           		choice_celib = false;
@@ -249,8 +250,8 @@ public final class Registration extends Default_Page implements ActionListener {
 	                     int id_nouveau_client = mySystem.mariaconnexion.readDBClient(nomTextField.getText(), prenomTextField.getText(),password,
 	                             emailText.getText(),PubComboBox.getSelectedItem().toString() ,sexe);
 	                     
-	                     mySystem.mariaconnexion.addItem(id_nouveau_client, couple, Calendar.getInstance().getTime().toString(), mySystem.COUPLE);
-	                     mySystem.mariaconnexion.addItem(id_nouveau_client,TypeComboBox.getSelectedItem().toString(), Calendar.getInstance().getTime().toString(), mySystem.TYPE );
+	                     mySystem.mariaconnexion.addItem(id_nouveau_client, couple, sdf.format(Calendar.getInstance().getTime()), mySystem.COUPLE);
+	                     mySystem.mariaconnexion.addItem(id_nouveau_client,TypeComboBox.getSelectedItem().toString(), sdf.format(Calendar.getInstance().getTime()), mySystem.TYPE );
 	
 	                    //Actualise la liste de Patient
 	                     mySystem.patients.clear();
@@ -259,15 +260,17 @@ public final class Registration extends Default_Page implements ActionListener {
 	                     System.out.println(mySystem.patients.get(mySystem.patients.size()-1).getId_User());
 	
 	                     this.dispose();
-	                     new ProfessionPage(id_nouveau_client);
-	                     //new Psy_GUI();
+	                     if (id_nouveau_client != 1)
+	                        new ProfessionPage(id_nouveau_client);
+	                     else
+	                        new Psy_GUI();
 		                 } catch(java.sql.SQLIntegrityConstraintViolationException icve) {
 		                 	emailText.setText(" ");
 		                 	emailText.setBorder(BorderFactory.createLineBorder(Color.red));
 		                 	JOptionPane.showMessageDialog(null, "Cette addresse Email existe deja");
 		                 }
 		                 catch (SQLException  throwables) {
-		                    JOptionPane.showMessageDialog(null, "Impossible de cr��er le patient");
+		                    JOptionPane.showMessageDialog(null, "Impossible de creer le patient");
 		                    throwables.printStackTrace();
 		                 }
 	             }

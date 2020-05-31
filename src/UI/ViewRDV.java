@@ -14,7 +14,8 @@ public class ViewRDV extends Default_Page implements ActionListener {
     private final JButton ModifButton = new JButton("Modifier RDV futur");
     private final JButton SupprButton = new JButton("Supprimer RDV futur");
     private final JButton SeeConsButton = new JButton("Voir consult ");
-    private final JButton SeeRdvButton = new JButton("Voir Rdv ");
+    private final JButton SeeRdvButton = new JButton("Voir RDV futur");
+    private final JButton SeeRdvButton2 = new JButton("Voir RDV anterieur");
     private final JLabel Rdv_Passe = new JLabel("RDV Passés : ");
     private final JLabel Rdv_Futurs = new JLabel("RDV Futurs : ");
     private final JLabel rdv_contenu = new JLabel("Selectionnez un RDV");
@@ -22,7 +23,7 @@ public class ViewRDV extends Default_Page implements ActionListener {
 
     public ViewRDV(boolean typ) {
         type= typ;
-        createWindow("Consulter les RDV", 400, 50, 600, 470);
+        createWindow("Consulter les RDV", 500, 100, 600, 470);
         setList(true);
         setLocationAndSize();
         addComponentsToFrame();
@@ -37,7 +38,6 @@ public class ViewRDV extends Default_Page implements ActionListener {
                 if(mySystem.patients.get(mySystem.current_client_id).getId_User() == mySystem.rdvListe.get(i).getClient1() ||
                         mySystem.patients.get(mySystem.current_client_id).getId_User() == mySystem.rdvListe.get(i).getClient2() ||
                 mySystem.patients.get(mySystem.current_client_id).getId_User() == mySystem.rdvListe.get(i).getClient3()){
-                    // RDV auxquels on doit ajouter une consultation
                     if ((sdf.format(calendar.getDate())).compareTo(mySystem.rdvListe.get(i).getDate().toString()) >= 0){
                         Rdvpasse = String.valueOf(mySystem.rdvListe.get(i).getId()); Rdvpasse += "  ";
                         Rdvpasse += String.valueOf(mySystem.rdvListe.get(i).getDate()); Rdvpasse += "  ";
@@ -47,7 +47,6 @@ public class ViewRDV extends Default_Page implements ActionListener {
                         Rdvpasse += mySystem.mariaconnexion.getClient(mySystem.rdvListe.get(i).getClient3());
                         listpasse.addElement(Rdvpasse);
                     }
-                    // RDV qu'on peut modifier
                     if ((sdf.format(calendar.getDate())).compareTo(mySystem.rdvListe.get(i).getDate().toString()) < 0){
                         Rdvfutur = String.valueOf(mySystem.rdvListe.get(i).getId()); Rdvfutur += "  ";
                         Rdvfutur += String.valueOf(mySystem.rdvListe.get(i).getDate()); Rdvfutur += "  ";
@@ -61,7 +60,7 @@ public class ViewRDV extends Default_Page implements ActionListener {
 
             }
             if (listpasse.size() < 1) {
-                listpasse.addElement("Pas de RDV passés pour l'instant.");
+                listpasse.addElement("Pas de RDV passes pour l'instant.");
             } if (listfutur.size() < 1)listfutur.addElement("Pas de RDV futurs pour l'instant.");
         } catch (Exception e) {
         }
@@ -80,6 +79,7 @@ public class ViewRDV extends Default_Page implements ActionListener {
         Rdv_Passe.setBounds(20, 20, 150, 30);
         Rdv_Futurs.setBounds(20, 170, 150, 30);
         SeeConsButton.setBounds(425,75,170,23 );
+        SeeRdvButton2.setBounds(425,110,170,23 );
         exitButton.setBounds(425, 400, 170, 23);
         ModifButton.setBounds(425, 210, 170, 23);
         SupprButton.setBounds(425, 235, 170, 23);
@@ -95,22 +95,20 @@ public class ViewRDV extends Default_Page implements ActionListener {
         this.add(listScrollCons);
         this.add(listScrollRdv);
         this.add(exitButton);
-        this.add(SeeConsButton);
         this.add(SeeRdvButton);
         this.add(rdv_contenu);
+        this.add(SeeRdvButton2);
         SeeRdvButton.addActionListener(this);
-        SeeConsButton.addActionListener(this);
+        SeeRdvButton2.addActionListener(this);
+
         if(type){
             this.add(ModifButton);
             this.add(SupprButton);
+            this.add(SeeConsButton);
             ModifButton.addActionListener(this);
             SupprButton.addActionListener(this);
+            SeeConsButton.addActionListener(this);
         }
-        else {
-            SeeConsButton.setText("Voir RDV anterieur");
-            SeeRdvButton.setText("Voir RDV futur");
-        }
-
         exitButton.addActionListener(this);
 
     }
@@ -119,7 +117,7 @@ public class ViewRDV extends Default_Page implements ActionListener {
         System.out.println(rdv_List.getSelectedIndex());
         if (rdv_List.getSelectedIndex() != -1) {
             if ((sdf.format(calendar.getDate())).compareTo(sdf.format(java.util.Calendar.getInstance().getTime())) < 0){
-                JOptionPane.showMessageDialog(null, "Vous ne pouvez pas supprimer un RDV passé.");
+                JOptionPane.showMessageDialog(null, "Vous ne pouvez pas supprimer un RDV passe.");
             }
             else {
                 String rdvsup = rdv_List.getModel().getElementAt(rdv_List.getSelectedIndex());
@@ -137,7 +135,7 @@ public class ViewRDV extends Default_Page implements ActionListener {
         System.out.println(rdv_List.getSelectedIndex());
         if (rdv_List.getSelectedIndex() != -1) {
             if ((sdf.format(calendar.getDate())).compareTo(sdf.format(java.util.Calendar.getInstance().getTime())) < 0){
-                JOptionPane.showMessageDialog(null, "Vous ne pouvez pas modifier un RDV passé.");
+                JOptionPane.showMessageDialog(null, "Vous ne pouvez pas modifier un RDV passe.");
             }
             else {
                 String rdvmodif = rdv_List.getModel().getElementAt(rdv_List.getSelectedIndex());
@@ -169,11 +167,11 @@ public class ViewRDV extends Default_Page implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if ((e.getSource() == ModifButton || e.getSource() == SeeRdvButton || e.getSource() == SupprButton) && (rdv_List.getSelectedIndex() == -1 || rdv_List.getSelectedValue().equals("Pas de RDV passés pour l'instant.")))
-            JOptionPane.showMessageDialog(null, "Veuillez sélectionner un RDV.");
+        if ((e.getSource() == ModifButton || e.getSource() == SeeRdvButton || e.getSource() == SupprButton) && (rdv_List.getSelectedIndex() == -1 || rdv_List.getSelectedValue().equals("Pas de RDV futurs pour l'instant." )))
+            JOptionPane.showMessageDialog(null, "Veuillez selectionner un RDV.");
         else {
-            if ((e.getSource() == SeeConsButton) && (cons_List_.getSelectedIndex() == -1 || cons_List_.getSelectedValue().equals("Pas de RDV futurs pour l'instant.")))
-                JOptionPane.showMessageDialog(null, "Veuillez sélectionner un RDV.");
+            if ((e.getSource() == SeeConsButton) && (cons_List_.getSelectedIndex() == -1 || cons_List_.getSelectedValue().equals("Pas de RDV passes pour l'instant.")))
+                JOptionPane.showMessageDialog(null, "Veuillez selectionner un RDV.");
             else {
                 if (e.getSource() == ModifButton) {
                     try {
@@ -183,28 +181,28 @@ public class ViewRDV extends Default_Page implements ActionListener {
                         throwables.printStackTrace();
                     }
                 }
+                if (e.getSource() == SeeRdvButton2){
+                    try {
+                        seeRDV(false);
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(null, "Veuillez sélectionner un RDV.");
+                    }
+                }
+
                 if (e.getSource() == SeeConsButton) {
-                    if (type) {
                         try {
                             getCons();
                         } catch (SQLException throwables) {
                             throwables.printStackTrace();
                         }
                         this.dispose();
-                    } else {
-                         try {
-                             seeRDV(false);
-                        } catch (Exception ex) {
-                         JOptionPane.showMessageDialog(null, "Veuillez sélectionner un RDV.");
-                     }
-                       }
-                    }
+
                 }
                 if (e.getSource() == SeeRdvButton) {
                    try {
                         seeRDV(true);
                     } catch (Exception ex) {
-                        JOptionPane.showMessageDialog(null, "Veuillez sélectionner un RDV.");
+                        JOptionPane.showMessageDialog(null, "Veuillez selectionner un RDV.");
                     }
                 }
                 if (e.getSource() == SupprButton) {
@@ -218,3 +216,4 @@ public class ViewRDV extends Default_Page implements ActionListener {
             }
         }
     }
+}

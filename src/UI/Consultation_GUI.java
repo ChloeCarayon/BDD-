@@ -8,7 +8,7 @@ import java.sql.SQLException;
 public class Consultation_GUI extends Default_Page implements ActionListener {
 
     private JButton ShowButton = new JButton("Voir la consultation");
-    private JButton CreateConsButton = new JButton("Créer une consultation ");
+    private JButton CreateConsButton = new JButton("Creer une consultation ");
     private final JLabel consult_title = new JLabel("Consultation : ");
     private final JLabel consult = new JLabel("Selectionnez un patient");
     private Rdv currentRdv; private boolean type;
@@ -16,7 +16,7 @@ public class Consultation_GUI extends Default_Page implements ActionListener {
     public Consultation_GUI(int ID_rdv, boolean tip) {
         type = tip;
         currentRdv =  mySystem.rdvListe.stream().filter(r -> r.getId() == ID_rdv).findFirst().get();
-        createWindow("Consultation " + currentRdv.getDate() + "  " + currentRdv.getHeure(),400, 150, 500, 500);
+        createWindow("Consultation " + currentRdv.getDate() + "  " + currentRdv.getHeure(),500, 100, 500, 500);
         setListClient();
         setLocationAndSize();
         addComponentsToFrame();
@@ -28,7 +28,6 @@ public class Consultation_GUI extends Default_Page implements ActionListener {
 
         ShowButton.setBounds(20,200,175,30);
         CreateConsButton.setBounds(20,250,175,30);
-        exitButton.setBounds(20,350,100,30);
         listScroll.setBounds(20,50,170,70);
         consult_title.setBounds(200,50,150,30);
         consult.setBounds(250,30,150,300);
@@ -37,7 +36,6 @@ public class Consultation_GUI extends Default_Page implements ActionListener {
 
     protected void addComponentsToFrame() {
         this.add(listScroll);
-        this.add(exitButton);
         this.add(consult_title);
         this.add(ShowButton);
         this.add(CreateConsButton);
@@ -45,7 +43,6 @@ public class Consultation_GUI extends Default_Page implements ActionListener {
         this.add(backButton);
         CreateConsButton.setVisible(false);
         CreateConsButton.addActionListener(this);
-        exitButton.addActionListener(this);
         ShowButton.addActionListener(this);
         backButton.addActionListener(this);
     }
@@ -66,7 +63,7 @@ public class Consultation_GUI extends Default_Page implements ActionListener {
             infos = "Aucune consultation selectionnee !";
         }
         catch(Exception e) {
-            infos = "Vous devez créer la consultation";
+            infos = "Vous devez creer la consultation";
             e.printStackTrace();
         }
         consult.setText(infos);
@@ -109,9 +106,6 @@ public class Consultation_GUI extends Default_Page implements ActionListener {
             this.dispose();
             if(type )new ViewRDV(true);
             else new RDVpsy_GUI();
-        }
-        if (e.getSource() == exitButton){
-            this.dispose();
         }
     }
 }

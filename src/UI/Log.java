@@ -39,12 +39,13 @@ public class Log extends Default_Page implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if(e.getSource()==b1){
             /*                                 Log IN                                                     */
-            mySystem.page1.setVisible(false);
+           // mySystem.page1.setVisible(false);
+            this.dispose();
             new Registration(false,0);
 
         } else{
             /*                                   EXIT                                        */
-            mySystem.page1.dispose();
+           // mySystem.page1.dispose();
             this.dispose();
         }
     }

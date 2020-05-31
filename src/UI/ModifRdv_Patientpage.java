@@ -42,14 +42,14 @@ public final class ModifRdv_Patientpage extends Default_Page implements ActionLi
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
                 if ((sdf.format(calendar.getDate())).compareTo(sdf.format(dateChooser.getDate())) > 0){
-                    JOptionPane.showMessageDialog(null, "Vous ne pouvez pas choisir une date passée.");
+                    JOptionPane.showMessageDialog(null, "Vous ne pouvez pas choisir une date passee.");
                     dateChooser.setDate(rdv_actuel.getDate());
                 }
                 else{
                     try {
                         if (calendar.getCalendar().get(Calendar.DAY_OF_WEEK) !=Calendar.SUNDAY){
                             if (!mySystem.mariaconnexion.Datecheck(sdf.format(dateChooser.getDate()),rdv_actuel.getId())){
-                                JOptionPane.showMessageDialog(null, "Vous travaillez 10h à ce jour.\nVeuillez sélectionner une autre date");
+                                JOptionPane.showMessageDialog(null, "Vous travaillez 10h à ce jour.\nVeuillez selectionner une autre date");
                                 dateChooser.setDate(rdv_actuel.getDate());
                             }
                             else SetListHeure(false);

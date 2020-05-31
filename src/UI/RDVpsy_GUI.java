@@ -15,14 +15,13 @@ public class RDVpsy_GUI extends Default_Page implements ActionListener {
     private DefaultListModel<String> list = new DefaultListModel<>();
     private final JButton ConsButton = new JButton("Voir les consultations ");
     private final JButton CreateButton = new JButton("Creer ");
-   // private final JButton ModifButton = new JButton("Modifier ");
     private final JButton SuprButton = new JButton("Supprimer ");
     private int index = -1;
     private final JLabel profile_title = new JLabel("Profile : ");
     private final JLabel profile = new JLabel("Selectionnez un profile");
 
     public RDVpsy_GUI() {
-        createWindow("Consulter RDV", 400, 50, 600, 470);
+        createWindow("Consulter RDV", 500, 100, 600, 470);
         setList(true);
         setLocationAndSize();
         addComponentsToFrame();
@@ -89,12 +88,10 @@ public class RDVpsy_GUI extends Default_Page implements ActionListener {
         this.add(exitButton);
         this.add(CreateButton);
         this.add(SuprButton);
-   //     this.add(ModifButton);
         this.add(calendar);
         this.add(ConsButton);
         CreateButton.addActionListener(this);
         SuprButton.addActionListener(this);
-    //    ModifButton.addActionListener(this);
         ConsButton.addActionListener(this);
         exitButton.addActionListener(this);
     }
@@ -124,7 +121,7 @@ public class RDVpsy_GUI extends Default_Page implements ActionListener {
             new Psy_GUI();
         }
         if ( (e.getSource() == SuprButton || e.getSource() == ConsButton) && (rdv_List.getSelectedIndex() == -1 || rdv_List.getSelectedValue().equals("Pas de RDV pour l'instant à ce jour.")))
-            JOptionPane.showMessageDialog(null, "Veuillez sélectionner un RDV.");
+            JOptionPane.showMessageDialog(null, "Veuillez selectionner un RDV.");
         else {
             if (e.getSource() == SuprButton)
                 SupprRDV();
@@ -141,10 +138,13 @@ public class RDVpsy_GUI extends Default_Page implements ActionListener {
                     JOptionPane.showMessageDialog(null, "Vous n'avez pas encore de patients.");
                 } else {
                     try {
-                      if (calendar.getCalendar().get(Calendar.DAY_OF_WEEK) !=Calendar.SUNDAY){
+                        if ((sdf.format(calendar.getDate())).compareTo(sdf.format(java.util.Calendar.getInstance().getTime())) < 0){
+                            JOptionPane.showMessageDialog(null, "Vous ne pouvez pas creer un RDV dans le passé.");
+                        }
+                        else if (calendar.getCalendar().get(Calendar.DAY_OF_WEEK) !=Calendar.SUNDAY){
                             new CreatRdv_GUI(sdf.format(calendar.getDate()));
                           this.dispose();}
-                      else  JOptionPane.showMessageDialog(null, "Vous ne pouvez pas avoir de rendez-vous le dimanche.");
+                        else  JOptionPane.showMessageDialog(null, "Vous ne pouvez pas avoir de rendez-vous le dimanche.");
                     } catch (Exception ex) {
                         JOptionPane.showMessageDialog(null, "Impossible d'ouvrir cette page.");
                     }

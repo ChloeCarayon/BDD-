@@ -47,7 +47,7 @@ public final class CreatRdv_GUI extends Default_Page implements ActionListener  
         addComponentsToFrame();
         this.setVisible(true);
         if (!mySystem.mariaconnexion.Datecheck(date,-1)){
-            JOptionPane.showMessageDialog(null, "Vous travaillez 10h à ce jour.\nVeuillez sélectionner une autre date");
+            JOptionPane.showMessageDialog(null, "Vous travaillez 10h à ce jour.\nVeuillez selectionner une autre date");
             this.dispose();
             new RDVpsy_GUI();
         }
@@ -108,11 +108,6 @@ public final class CreatRdv_GUI extends Default_Page implements ActionListener  
             Patient1ComboBox = new JComboBox<>(ListPatient);Patient2ComboBox = new JComboBox<>(ListPatient);
             Patient2ComboBox = new JComboBox<>(ListPatient);
             Patient3ComboBox = new JComboBox<>(ListPatient);
-       // }
-       // catch(IndexOutOfBoundsException IOB) {
-         //   JOptionPane.showMessageDialog(null, "Vous n'avez pas encore de patients.");
-        //}
-
     }
 
     private void SetListHeure(){
@@ -139,7 +134,7 @@ public final class CreatRdv_GUI extends Default_Page implements ActionListener  
                 if ( (Patient1ComboBox.getSelectedItem().toString().equals(Patient2ComboBox.getSelectedItem().toString()) && !Patient1ComboBox.getSelectedItem().toString().equals("null"))
                         || (Patient1ComboBox.getSelectedItem().toString().equals(Patient3ComboBox.getSelectedItem().toString()) && !Patient3ComboBox.getSelectedItem().toString().equals("null"))
                         ||  (Patient2ComboBox.getSelectedItem().toString().equals(Patient3ComboBox.getSelectedItem().toString()) && !Patient2ComboBox.getSelectedItem().toString().equals("null")))
-                    JOptionPane.showMessageDialog(null, "Vous avez rentré plusieurs fois le même patient.");
+                    JOptionPane.showMessageDialog(null, "Vous avez rentre plusieurs fois le meme patient.");
                 else {
                     if (PrixField.getText().equals("")) JOptionPane.showMessageDialog(null, "Veuillez rentrer un prix.");
                     else {
@@ -172,4 +167,3 @@ public final class CreatRdv_GUI extends Default_Page implements ActionListener  
     }
 
 }
-//https://www.vogella.com/tutorials/MySQLJava/article.html

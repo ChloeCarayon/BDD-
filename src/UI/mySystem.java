@@ -23,8 +23,5 @@ public class mySystem {
         rdvListe = mariaconnexion.getRdv();
         page1 = new Log();    
         page1.setVisible(true);
-
-       // new MyPatientPage(); 
-
     }
 }

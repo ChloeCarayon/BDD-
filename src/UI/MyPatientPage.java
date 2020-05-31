@@ -25,7 +25,7 @@ public class MyPatientPage extends Default_Page implements ActionListener{
 	 
 	 public MyPatientPage() {
 		 	
-			createWindow("My Patients", 400, 150, 500, 500); 
+			createWindow("My Patients", 500, 100, 500, 500);
 			setListClient();
 			
 			patientList.setSelectedIndex(0);
@@ -79,7 +79,7 @@ public class MyPatientPage extends Default_Page implements ActionListener{
 	    		 	this.dispose();
 		            new Psy_GUI();
 	    	});
-	    	patientList.addMouseListener(new MouseAdapter() {//Récupère les valeurs quand clique sur l'item de la liste
+	    	patientList.addMouseListener(new MouseAdapter() {//Rï¿½cupï¿½re les valeurs quand clique sur l'item de la liste
 	        	public void mouseClicked(MouseEvent e) {
 	        		if (e.getClickCount() == 1 && patientList.getSelectedIndex() != -1) {
 	        			getProfile(patientList.getSelectedIndex());	  

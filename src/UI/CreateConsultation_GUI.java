@@ -23,19 +23,19 @@ public class CreateConsultation_GUI extends Default_Page implements ActionListen
         createWindow("Consultation", 500, 100, 380, 480);
         rdv_cons = id_RDV; type = tip;
         GetClientCombo(client);
-        this.getContentPane().setBackground(Color.getHSBColor(188,16,100));
         setLocationAndSize();
         addComponentsToFrame();
         this.setVisible(true);
     }
 
     private void GetClientCombo(int client) throws SQLException {
-        String pat = String.valueOf(client) + " ";
+        String pat = client + " ";
         pat += mySystem.mariaconnexion.getClient(client);
         patientSelect = new JLabel(pat);
     }
 
     protected void setLocationAndSize() {
+        MotField.setBackground(Color.getHSBColor(188,16,100));
         clientLabel.setBounds(20, 20, 70, 70);
         anxieteLabel.setBounds(20, 60, 70, 70);
         postureLabel.setBounds(20, 100, 70, 70);
@@ -80,7 +80,7 @@ public class CreateConsultation_GUI extends Default_Page implements ActionListen
             else {
                 try {
                     mySystem.mariaconnexion.Consult(patientSelect.getText(),AnxComboBox.getSelectedItem().toString(),PostField.getText(),MotField.getText(),rdv_cons.getId());
-                    JOptionPane.showMessageDialog(null, "Ajout effectué.");
+                    JOptionPane.showMessageDialog(null, "Ajout effectue.");
                     this.dispose();
                     new ViewRDV(true);
                 } catch (SQLException throwables) {

@@ -27,12 +27,6 @@ public class Rdv {
 		return id;
 	}
 
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-
 	public Date getDate() {
 		return date;
 	}
@@ -62,44 +56,24 @@ public class Rdv {
 		this.prix = prix;
 	}
 
-
 	public String getPayement() {
 		return payement;
 	}
-
 
 	public void setPayement(String payement) {
 		this.payement = payement;
 	}
 
-
 	public  int getClient1() {
 		return client1;
 	}
-
-
-	public void setClient1( int client1) {
-		this.client1 = client1;
-	}
-
 
 	public  int getClient2() {
 		return client2; 
 	}
 
-
-	public void setClient2( int client2) {
-		this.client2 = client2;
-	}
-
-
 	public int getClient3() {
 		return client3;
-	}
-
-	
-	public void setClient3(int client3) {
-		this.client3 = client3;
 	}
 
 	  

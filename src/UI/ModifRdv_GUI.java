@@ -140,10 +140,6 @@ public final class ModifRdv_GUI extends Default_Page implements ActionListener {
                     if (PrixField.getText().equals("")) JOptionPane.showMessageDialog(null, "Veuillez rentrer un prix.");
                     else {
                         try {
-                            String Client1, Client2, Client3;
-                            Client1 = Patient1ComboBox.getSelectedItem().toString();
-                            Client2 = Patient2ComboBox.getSelectedItem().toString();
-                            Client3 = Patient3ComboBox.getSelectedItem().toString();
                             mySystem.mariaconnexion.FillRDV(DateChoose.getText(),HeureComboBox.getSelectedItem().toString(),Float.parseFloat(PrixField.getText()),PaymentComboBox.getSelectedItem().toString(),
                                     Patient1ComboBox.getSelectedItem().toString(),Patient2ComboBox.getSelectedItem().toString(),Patient3ComboBox.getSelectedItem().toString(),null);
                             this.dispose();
