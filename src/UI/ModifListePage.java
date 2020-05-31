@@ -225,18 +225,20 @@ public class ModifListePage  extends Default_Page implements ActionListener {
 													sdf.format(oldDate).toString(), sdf.format(dateChooser.getDate()), 	 //Les dates initiales et modifiï¿½es
 													mySystem.user.getId_User(), a_modifier); 							 //L'id et la table a update dans la db
 				else 
-					mySystem.mariaconnexion.modifyItem(selectlist.getSelectedValue().substring(13), choice_couple,  //La nouvelle valeur du boolean
+					mySystem.mariaconnexion.modifyItem(selectlist.getSelectedValue().substring(13), profText.getText(),  //La nouvelle valeur du boolean
 							sdf.format(oldDate).toString(), sdf.format(dateChooser.getDate()), 	 //Les dates initiales et modifiï¿½es
 							mySystem.user.getId_User(), a_modifier); 
 					
 					
 				mySystem.mariaconnexion.LogDB(mySystem.user.getEmail(), mySystem.user.getPassword()); //actualise les infos du client actuel
-				
-				//Supprime la liste, update et rï¿½affiche 
+			
+
+	            JOptionPane.showMessageDialog(null,"Modifié avec succes !");
+				//Supprime la liste, update et reaffiche 
 				list.removeAllElements();
 				choice(false);			
 			} catch (SQLIntegrityConstraintViolationException icve) {
-	            JOptionPane.showMessageDialog(null,"Vous avez dï¿½jï¿½ rentrï¿½ cette profession !");
+	            JOptionPane.showMessageDialog(null,"Vous avez deja rentre cette profession !");
 			}catch (SQLException e1) {
 				e1.printStackTrace();
 				JOptionPane.showMessageDialog(null, "Impossible de modifier ");
@@ -270,10 +272,18 @@ public class ModifListePage  extends Default_Page implements ActionListener {
 	            e1.printStackTrace();
 			}	 		
 		});
+		
 		backButton.addActionListener(e -> {
 			this.dispose();
-			if(mySystem.backPage == 1)
+			if(mySystem.backPage == 1) {
 				new MyPatientPage();
+				try {
+					mySystem.patients=mySystem.mariaconnexion.getPatient();
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+			}
+				
 			else 
 				new Patient_GUI();
 		});

@@ -190,7 +190,17 @@ public final class Registration extends Default_Page implements ActionListener {
 				        emailText.getText(),PubComboBox.getSelectedItem().toString(),s);
 				JOptionPane.showMessageDialog(null, "Profile Modifier avec succ�s");
 				this.dispose();
-				new Patient_GUI();
+				
+				if(mySystem.backPage == 1) {
+					new MyPatientPage();
+					try {
+						mySystem.patients=mySystem.mariaconnexion.getPatient();
+					} catch (SQLException e1) {
+						e1.printStackTrace();
+					}
+				}
+				else 
+					new Patient_GUI();
 				mySystem.mariaconnexion.LogDB(mySystem.user.getEmail(), mySystem.user.getPassword()); //actualise les infos du client actuel
 				
 			}  catch (SQLException  throwables) {

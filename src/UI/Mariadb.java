@@ -12,7 +12,7 @@ public class Mariadb {
 
     //  Database credentials
     static final String USER = "root";
-    static final String PASS = "new_password";
+    static final String PASS = "bdd";
 
     private Connection conn = null;
     private Statement stmt = null;
@@ -270,10 +270,11 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
     
     public <T> void modifyItem(String oldString, T newString, String oldDate,  String newDate,  int id, String item) throws SQLException {
     	
-    	stmt = conn.createStatement(); 
-    	java.sql.Date newsqlDate = java.sql.Date.valueOf(newDate);
-    	java.sql.Date oldsqlDate = java.sql.Date.valueOf(oldDate);
-    	System.out.println("---"+newsqlDate+"---"+newString);
+    	    		stmt = conn.createStatement(); 
+    		java.sql.Date newsqlDate = java.sql.Date.valueOf(newDate);
+    		java.sql.Date oldsqlDate = java.sql.Date.valueOf(oldDate);
+    		System.out.println("---"+newsqlDate+"---"+newString);
+    		
     	if(item.equals(mySystem.PROSSESSION)) {
             preparedStatement= conn.prepareStatement("UPDATE psy.prof_client t SET t.Prof_date = ?, t.Nom_prof = ? " +
                     "WHERE t.Id_Client = ? AND t.Nom_prof=?");
@@ -282,14 +283,13 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
             preparedStatement.setInt(3,id);
             preparedStatement.setString(4,oldString);
             preparedStatement.executeUpdate();
-
-    	}
-    	
+    		}
     	if(item.equals(mySystem.TYPE)) {
     		resultSet = stmt.executeQuery(
         			"UPDATE psy.type_p t SET "
         					+"t.Nom_type='"+newString+"', t.Date_type ='"+newsqlDate+"'"
         			+ " WHERE  t.Id_Client="+id+ "AND t.Date_type='"+oldsqlDate+"';" //2 primary key
+
         	);   
     	}
     	
