@@ -124,7 +124,7 @@ public final class ModifRdv_Patientpage extends Default_Page implements ActionLi
         this.add(Patient2Label);
         this.add(Patient3Label);
         this.add(PrixLabel);
-        this.add(PaymentLabel);
+        this.add(PaymentLabel); 
         this.add(dateChooser);
         this.add(HeureComboBox);
         this.add(Patient1Text);

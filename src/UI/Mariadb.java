@@ -270,15 +270,23 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
     
     public <T> void modifyItem(String oldString, T newString, String oldDate,  String newDate,  int id, String item) throws SQLException {
     	
-    	stmt = conn.createStatement(); 
-    	
-    	if(item.equals(mySystem.PROSSESSION)) {    		
-    		resultSet = stmt.executeQuery(
-        			"UPDATE db.prof_client SET "
-        					+"Nom_prof='"+newString+"',Prof_date ='"+newDate+"'"
-        			+ " WHERE  Id_Client="+id+ "AND Nom_prof="+oldString+"; " //2 primary key
-        	);   
-    	}
+    	    		stmt = conn.createStatement(); 
+    		java.sql.Date newsqlDate = java.sql.Date.valueOf(newDate);
+    		java.sql.Date oldsqlDate = java.sql.Date.valueOf(oldDate);
+    		System.out.println("---"+newsqlDate+"---"+newString);
+    		
+    	if(item.equals(mySystem.PROSSESSION)) {
+    		       preparedStatement= conn.prepareStatement("UPDATE db.prof_client t SET t.Prof_date = ?, t.Nom_prof = ? " +
+    		               "WHERE t.Id_Client = ? AND t.Nom_prof=?");
+    		       preparedStatement.setDate(1,newsqlDate);
+    		       preparedStatement.setString(2, String.valueOf(newString));
+    		       preparedStatement.setInt(3,id);
+    		       preparedStatement.setString(4,oldString);
+    		       preparedStatement.executeUpdate();
+    		}
+
+
+
     	
     	if(item.equals(mySystem.TYPE)) {
     		resultSet = stmt.executeQuery(
