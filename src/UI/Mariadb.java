@@ -285,22 +285,27 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
             preparedStatement.executeUpdate();
     		}
     	if(item.equals(mySystem.TYPE)) {
-    		resultSet = stmt.executeQuery(
-        			"UPDATE psy.type_p t SET "
-        					+"t.Nom_type='"+newString+"', t.Date_type ='"+newsqlDate+"'"
-        			+ " WHERE  t.Id_Client="+id+ "AND t.Date_type='"+oldsqlDate+"';" //2 primary key
-
-        	);   
+            preparedStatement= conn.prepareStatement("UPDATE psy.type_p t SET t.Nom_type = ?, t.Date_type = ? " +
+                    "WHERE t.Id_Client = ? AND t.Date_type=?");
+            preparedStatement.setString(1, String.valueOf(newString));
+            preparedStatement.setDate(2,newsqlDate);
+            preparedStatement.setInt(3,id);
+            preparedStatement.setDate(4,oldsqlDate);
+            preparedStatement.executeUpdate();
     	}
     	
     	if(item.equals(mySystem.COUPLE)) {
-    		resultSet = stmt.executeQuery(
-        			"UPDATE psy.couple c SET "
-        					+"c.Nom_type='"+newString+"', c.Date_Couple='"+newsqlDate+"'"
-        			+ " WHERE  c.Id_Client="+id+ "AND c.Date_Couple='"+oldsqlDate+"';" //2 primary key
-        	);   
-    	}   
-    	resultSet = preparedStatement.executeQuery(); 
+            preparedStatement= conn.prepareStatement("UPDATE psy.couple t SET t.en_couple = ?, t.Date_Couple = ? " +
+                    "WHERE t.Id_Client = ? AND t.Date_Couple=?");
+            if(newString.equals("true"))
+                preparedStatement.setBoolean(1, true);
+            else
+                preparedStatement.setBoolean(1, false);
+            preparedStatement.setDate(2,newsqlDate);
+            preparedStatement.setInt(3,id);
+            preparedStatement.setDate(4,oldsqlDate);
+            preparedStatement.executeUpdate();
+    	}
     }
     
 
