@@ -2,7 +2,7 @@ CREATE DATABASE psy;
 USE psy;
 
 create table Client(
-    Id_Client     int auto_increment comment 'Nom'
+    Id_Client     int auto_increment 
         primary key,
     Nom_client    varchar(50) not null,
     Prenom_client varchar(50) not null,
@@ -31,9 +31,9 @@ create table rdv
     Heure           varchar(50) null,
     Prix            float       not null,
     Payement        varchar(50) not null,
-    Id_Client       int         not null comment 'Nom',
-    Id_Client_2     int         null comment 'Nom',
-    Id_Client_3     int         null comment 'Nom',
+    Id_Client       int         not null,
+    Id_Client_2     int         null,
+    Id_Client_3     int         null,
     constraint Rdv_Client_FK
         foreign key (Id_Client) references Client (Id_Client),
     constraint Rdv_Client_FK_2
@@ -45,7 +45,7 @@ create table rdv
 create table client_consultation
 (
     Id_consultation int not null,
-    Id_Client       int not null comment 'Nom',
+    Id_Client       int not null,
     Id_RDV          int not null,
     primary key (Id_consultation, Id_Client),
     constraint Id_Rdv_FK
@@ -79,9 +79,12 @@ create table couple
 create table prof_client
 (
     Nom_prof  varchar(50) not null,
-    Id_Client int         not null comment 'Nom',
+    Id_Client int         not null,
     Prof_date date        null,
     primary key (Nom_prof, Id_Client),
     constraint prof_client_Client0_FK
         foreign key (Id_Client) references Client (Id_Client)
 );
+
+INSERT INTO `psy`.`client` (`Nom_client`, `Prenom_client`, `mdp`, `mail`, `pub`, `sexe`, `Date_client`) 
+	VALUES ('admin', 'admin', 'admin', 'admin', 'NULL','0', '2020-06-01'); 
