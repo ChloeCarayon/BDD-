@@ -54,6 +54,11 @@ public class MyPatientPage extends Default_Page implements ActionListener{
 	    	
 	    	profile_title.setFont(new Font("INK FREE", 16, 20));
 	    	profile_title.setForeground(new Color(159 , 232 , 85));
+	    	
+	    	modifButton.setText("Modifier le profile");
+	    	coupleButton.setText("Modifier la situation");
+	    	typeButton.setText("Modifier le type");
+	    	professionButton.setText("Modifier la profession");
 	    }    
 
 
@@ -110,8 +115,7 @@ public class MyPatientPage extends Default_Page implements ActionListener{
 	    	catch(Exception e) {
 	    		infos = "Impossible d'afficher le profile";
 	    		//e.printStackTrace();
-	    	}
-	    	
+	    	}	    	
 	    	profile.setText(infos);
 	    }
 	    

@@ -47,7 +47,7 @@ public final class CreatRdv_GUI extends Default_Page implements ActionListener  
         addComponentsToFrame();
         this.setVisible(true);
         if (!mySystem.mariaconnexion.Datecheck(date,-1)){
-            JOptionPane.showMessageDialog(null, "Vous travaillez 10h Ã  ce jour.\nVeuillez selectionner une autre date");
+            JOptionPane.showMessageDialog(null, "Vous travaillez 10h a  ce jour.\nVeuillez selectionner une autre date");
             this.dispose();
             new RDVpsy_GUI();
         }
@@ -100,15 +100,18 @@ public final class CreatRdv_GUI extends Default_Page implements ActionListener  
     }
 
     private void SetListPatient(){
-       // try {
-            String[] ListPatient = new String[mySystem.patients.size()];
-            ListPatient[0] = "null";
-            for(int cnt=0;cnt<mySystem.patients.size()-1;cnt++)
-                ListPatient[cnt+1] = (mySystem.patients.get(cnt).getNom() + " . "+ mySystem.patients.get(cnt).getPrenom() ) ;
-            Patient1ComboBox = new JComboBox<>(ListPatient);Patient2ComboBox = new JComboBox<>(ListPatient);
-            Patient2ComboBox = new JComboBox<>(ListPatient);
-            Patient3ComboBox = new JComboBox<>(ListPatient);
-    }
+    	   // try {
+    	        String[] ListPatient = new String[mySystem.patients.size()+1];
+    	        ListPatient[0] = "null";
+    	   
+    	        for(int cnt=0;cnt<mySystem.patients.size();cnt++)
+    	            ListPatient[cnt+1] = (mySystem.patients.get(cnt).getNom() + " . "+ mySystem.patients.get(cnt).getPrenom() );
+    	        
+    	        Patient1ComboBox = new JComboBox<>(ListPatient);
+    	        Patient2ComboBox = new JComboBox<>(ListPatient);
+    	        Patient3ComboBox = new JComboBox<>(ListPatient);
+    	}
+
 
     private void SetListHeure(){
         String[] Heure = {"8h00","8h30", "9h00","9h30", "10h00","10h30", "11h00","11h30", "12h00","12h30", "13h00","13h30", "14h00",

@@ -17,6 +17,7 @@ public class Psy_GUI extends Default_Page implements ActionListener  {
         addComponentsToFrame();
         addImage(40,63);
         this.setVisible(true);
+        mySystem.backPage = 1;
     }
 
     protected void setLocationAndSize() {

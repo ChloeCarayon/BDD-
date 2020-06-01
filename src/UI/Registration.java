@@ -190,7 +190,7 @@ public final class Registration extends Default_Page implements ActionListener {
            	 
 				mySystem.mariaconnexion.modifyClient(mySystem.user.getId_User(),nomTextField.getText(), prenomTextField.getText(), new String(passwordField.getPassword()),
 				        emailText.getText(),PubComboBox.getSelectedItem().toString(),s);
-				JOptionPane.showMessageDialog(null, "Profile Modifier avec succes");
+				JOptionPane.showMessageDialog(null, "Profile modifie avec succes");
 				this.dispose();
 				
 				if(mySystem.backPage == 1) {
