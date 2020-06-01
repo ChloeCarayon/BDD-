@@ -16,7 +16,7 @@ public class ViewRDV extends Default_Page implements ActionListener {
     private final JButton SeeConsButton = new JButton("Voir consult ");
     private final JButton SeeRdvButton = new JButton("Voir RDV futur");
     private final JButton SeeRdvButton2 = new JButton("Voir RDV anterieur");
-    private final JLabel Rdv_Passe = new JLabel("RDV Passés : ");
+    private final JLabel Rdv_Passe = new JLabel("RDV Passes : ");
     private final JLabel Rdv_Futurs = new JLabel("RDV Futurs : ");
     private final JLabel rdv_contenu = new JLabel("Selectionnez un RDV");
     private boolean type;
