@@ -30,7 +30,6 @@ public class MyPatientPage extends Default_Page implements ActionListener{
 			
 			patientList.setSelectedIndex(0);
 			getProfile(0);
-	    	mySystem.user = mySystem.patients.get(patientList.getSelectedIndex());
 
 	        setLocationAndSize();
 	        addComponentsToFrame();
@@ -62,10 +61,14 @@ public class MyPatientPage extends Default_Page implements ActionListener{
 	    	this.add(listScroll);	      
 	    	this.add(exitButton);
 	    	this.add(profile_title);
-			this.add(RDVButton);
+			
 			this.add(profile);	
-						
-			addModificationButtons();
+			
+			if( mySystem.patients.size()>0) {
+
+				this.add(RDVButton);
+				addModificationButtons();
+			}
 			
 			RDVButton.addActionListener(e->{
 	    		if(patientList.getSelectedIndex() != -1) {
@@ -81,7 +84,7 @@ public class MyPatientPage extends Default_Page implements ActionListener{
 	    	});
 	    	patientList.addMouseListener(new MouseAdapter() {//R�cup�re les valeurs quand clique sur l'item de la liste
 	        	public void mouseClicked(MouseEvent e) {
-	        		if (e.getClickCount() == 1 && patientList.getSelectedIndex() != -1) {
+	        		if (e.getClickCount() == 1 && patientList.getSelectedIndex() != -1 && mySystem.patients.size()>0) {
 	        			getProfile(patientList.getSelectedIndex());	  
 	        	    	mySystem.user = mySystem.patients.get(patientList.getSelectedIndex());
 	        		}
@@ -92,15 +95,21 @@ public class MyPatientPage extends Default_Page implements ActionListener{
 	    
 	    protected void getProfile(int index) {    	
 	    	String infos;
-	    	try {
-	    		infos = mySystem.patients.get(index).toString();
-		    	
-	    	}catch(ArrayIndexOutOfBoundsException aiobe) {
+	    	try {    
+	   
+	    		infos = mySystem.patients.get(index).toString();	    		
+		    	mySystem.user = mySystem.patients.get(patientList.getSelectedIndex());
+	    	}
+	    	catch(ArrayIndexOutOfBoundsException aiobe) {
 	    		infos = "Aucun profile selectionne !";
 	    	}
+	    	catch(IndexOutOfBoundsException iobe) {
+	    		infos = "Vous n'avez pas encore de patients";
+	    	}
+	    	
 	    	catch(Exception e) {
 	    		infos = "Impossible d'afficher le profile";
-	    		e.printStackTrace();
+	    		//e.printStackTrace();
 	    	}
 	    	
 	    	profile.setText(infos);
