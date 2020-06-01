@@ -98,7 +98,7 @@ public class ViewRDV extends Default_Page implements ActionListener {
         this.add(SeeRdvButton);
         this.add(rdv_contenu);
         this.add(SeeRdvButton2);
-        this.add(ModifButton);
+         this.add(ModifButton);
         SeeRdvButton.addActionListener(this);
         SeeRdvButton2.addActionListener(this);
         ModifButton.addActionListener(this);
@@ -140,7 +140,8 @@ public class ViewRDV extends Default_Page implements ActionListener {
             else {
                 String rdvmodif = rdv_List.getModel().getElementAt(rdv_List.getSelectedIndex());
                 String[] id_string = rdvmodif.split("  ", 2);
-                new ModifRdv_Patientpage(id_string[0], Calendar.getInstance().getTime(), true);
+                if(type_v) new ModifRdv_Patientpage(id_string[0], Calendar.getInstance().getTime(), true, true);
+                else new ModifRdv_Patientpage(id_string[0], Calendar.getInstance().getTime(), true, false);
             }
         }
     }
