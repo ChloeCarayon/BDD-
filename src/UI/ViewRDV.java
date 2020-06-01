@@ -161,7 +161,7 @@ public class ViewRDV extends Default_Page implements ActionListener {
         Rdv currentRdv =  mySystem.rdvListe.stream().filter(r -> r.getId() == Integer.parseInt(id_string[0])).findFirst().get();
         info += "Date : " + currentRdv.getDate() + " - " + currentRdv.getHeure() + "<br>Patient(s) : " +
                 mySystem.mariaconnexion.getClient(currentRdv.getClient1()) +"  " +  mySystem.mariaconnexion.getClient(currentRdv.getClient2())
-                +"  "+  mySystem.mariaconnexion.getClient(currentRdv.getClient3()) + "<br>Prix : " + currentRdv.getPrix() + "€  en " + currentRdv.getPayement() + "</html>";
+                +"  "+  mySystem.mariaconnexion.getClient(currentRdv.getClient3()) + "<br>Prix : " + currentRdv.getPrix() + "euros en" + currentRdv.getPayement() + "</html>";
         rdv_contenu.setText(info);
     }
 
@@ -185,7 +185,7 @@ public class ViewRDV extends Default_Page implements ActionListener {
                     try {
                         seeRDV(false);
                     } catch (Exception ex) {
-                        JOptionPane.showMessageDialog(null, "Veuillez sélectionner un RDV.");
+                        JOptionPane.showMessageDialog(null, "Veuillez selectionner un RDV.");
                     }
                 }
 

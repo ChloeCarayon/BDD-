@@ -18,6 +18,7 @@ public class mySystem {
     public static ArrayList<Rdv> rdvListe = new ArrayList<>();
     
     public static void main(String[] args) throws Exception {
+    	System.setProperty("file.encoding","UTF-8");
         mariaconnexion.Connection();
         patients = mariaconnexion.getPatient();
         rdvListe = mariaconnexion.getRdv();

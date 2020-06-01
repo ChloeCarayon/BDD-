@@ -3,11 +3,12 @@ package UI;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 
 public class Consultation_GUI extends Default_Page implements ActionListener {
 
-    private JButton ShowButton = new JButton("Voir la consultation");
     private JButton CreateConsButton = new JButton("Creer une consultation ");
     private final JLabel consult_title = new JLabel("Consultation : ");
     private final JLabel consult = new JLabel("Selectionnez un patient");
@@ -26,7 +27,6 @@ public class Consultation_GUI extends Default_Page implements ActionListener {
 
     protected void setLocationAndSize() {
 
-        ShowButton.setBounds(20,200,175,30);
         CreateConsButton.setBounds(20,250,175,30);
         listScroll.setBounds(20,50,170,70);
         consult_title.setBounds(200,50,150,30);
@@ -37,14 +37,20 @@ public class Consultation_GUI extends Default_Page implements ActionListener {
     protected void addComponentsToFrame() {
         this.add(listScroll);
         this.add(consult_title);
-        this.add(ShowButton);
         this.add(CreateConsButton);
         this.add(consult);
         this.add(backButton);
         CreateConsButton.setVisible(false);
         CreateConsButton.addActionListener(this);
-        ShowButton.addActionListener(this);
         backButton.addActionListener(this);
+        
+        
+        patientList.addMouseListener(new MouseAdapter() {//Recupere les valeurs quand clique sur l'item de la liste
+        	public void mouseClicked(MouseEvent e) {
+        		 if( patientList.getSelectedIndex() != -1)
+        			 getConsult();
+        	}
+        	});
     }
 
     protected void getConsult() {
@@ -63,8 +69,7 @@ public class Consultation_GUI extends Default_Page implements ActionListener {
             infos = "Aucune consultation selectionnee !";
         }
         catch(Exception e) {
-            infos = "Vous devez creer la consultation";
-            e.printStackTrace();
+            infos = "Vous devez creer la consultation";           
         }
         consult.setText(infos);
     }
@@ -80,8 +85,9 @@ public class Consultation_GUI extends Default_Page implements ActionListener {
  		}catch(Exception e) {
  			list.addElement("Impossible d'afficher les clients");
  		}
-	    	PrintListClient();
-	   }
+	    	PrintListClient();  	
+	    
+    }
 
     private  void getCons_create() throws SQLException{
         if (patientList.getSelectedIndex() != -1){
@@ -93,9 +99,7 @@ public class Consultation_GUI extends Default_Page implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == ShowButton && patientList.getSelectedIndex() != -1 );{
-            getConsult();
-        }
+      
         if(e.getSource()==CreateConsButton && patientList.getSelectedIndex() != -1 ){
            try {
                getCons_create();
