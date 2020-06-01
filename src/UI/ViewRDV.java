@@ -16,7 +16,7 @@ public class ViewRDV extends Default_Page implements ActionListener {
     private final JButton SeeConsButton = new JButton("Voir consult ");
     private final JButton SeeRdvButton = new JButton("Voir RDV futur");
     private final JButton SeeRdvButton2 = new JButton("Voir RDV anterieur");
-    private final JLabel Rdv_Passe = new JLabel("RDV Passés : ");
+    private final JLabel Rdv_Passe = new JLabel("RDV Passes : ");
     private final JLabel Rdv_Futurs = new JLabel("RDV Futurs : ");
     private final JLabel rdv_contenu = new JLabel("Selectionnez un RDV");
     private boolean type;
@@ -161,7 +161,7 @@ public class ViewRDV extends Default_Page implements ActionListener {
         Rdv currentRdv =  mySystem.rdvListe.stream().filter(r -> r.getId() == Integer.parseInt(id_string[0])).findFirst().get();
         info += "Date : " + currentRdv.getDate() + " - " + currentRdv.getHeure() + "<br>Patient(s) : " +
                 mySystem.mariaconnexion.getClient(currentRdv.getClient1()) +"  " +  mySystem.mariaconnexion.getClient(currentRdv.getClient2())
-                +"  "+  mySystem.mariaconnexion.getClient(currentRdv.getClient3()) + "<br>Prix : " + currentRdv.getPrix() + "€  en " + currentRdv.getPayement() + "</html>";
+                +"  "+  mySystem.mariaconnexion.getClient(currentRdv.getClient3()) + "<br>Prix : " + currentRdv.getPrix() + "euros en" + currentRdv.getPayement() + "</html>";
         rdv_contenu.setText(info);
     }
 
@@ -185,7 +185,7 @@ public class ViewRDV extends Default_Page implements ActionListener {
                     try {
                         seeRDV(false);
                     } catch (Exception ex) {
-                        JOptionPane.showMessageDialog(null, "Veuillez sélectionner un RDV.");
+                        JOptionPane.showMessageDialog(null, "Veuillez selectionner un RDV.");
                     }
                 }
 

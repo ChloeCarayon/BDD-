@@ -17,7 +17,7 @@ public final class CreatRdv_GUI extends Default_Page implements ActionListener  
     private JLabel Patient1Label = new JLabel("Patient 1");
     private JLabel Patient2Label = new JLabel("Patient 2");
     private JLabel Patient3Label = new JLabel("Patient 3");
-    private JLabel PrixLabel = new JLabel("Prix ( € )");
+    private JLabel PrixLabel = new JLabel("Prix (euros)");
     private JLabel PaymentLabel = new JLabel("Payement");
     private String [] ListPayment = {"CB", "Cheques", "Espece"};
 
@@ -68,7 +68,8 @@ public final class CreatRdv_GUI extends Default_Page implements ActionListener  
         Patient2ComboBox. setBounds(150, 185, 200, 20);
         Patient3ComboBox. setBounds(150, 235, 200, 20);
         PrixField.setBounds(150, 285, 200, 23);
-        PaymentComboBox.setBounds(150, 310, 200, 70);
+        PaymentComboBox.setBounds(150, 330, 200, 23);
+        
 
         CreateButton.setBounds(20, 400, 100, 23);
         exitButton.setBounds(250, 400, 100, 23);
@@ -153,7 +154,6 @@ public final class CreatRdv_GUI extends Default_Page implements ActionListener  
                         }
                         catch (SQLException fe) {
                             JOptionPane.showMessageDialog(null, "Veuillez rentrer un patient pour patient 1.");
-                            fe.printStackTrace();
                         }
                     }
                 }
