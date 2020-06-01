@@ -32,7 +32,7 @@ public class ProfessionPage extends Default_Page implements ActionListener {
 			clientLabel.setText("Professions de  :  "+mySystem.mariaconnexion.getClient(id_client));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			clientLabel.setText("Aucun client selectionné");
+			clientLabel.setText("Aucun client selectionne");
 		}		
 		current = id_client; 
 		setVisible(true);
@@ -46,20 +46,20 @@ public class ProfessionPage extends Default_Page implements ActionListener {
 		 clientLabel.setBounds(20, 20, 250, 23);
 		 
 		 addButton.setBounds(80, 150, 70, 35); 
-		 backButton.setBounds(200, 150, 70, 35);
+		 exitButton.setBounds(200, 150, 70, 35);
 	}
 	
 	protected void addComponentsToFrame() {
 		this.add(profLabel);
 		this.add(profText); 
 		this.add(addButton); 
-		this.add(backButton); 
+		this.add(exitButton);
 		this.add(dateChooser);
 		this.add(dateLabel);
 		this.add(clientLabel);
 		
 		addButton.addActionListener(this);
-		backButton.addActionListener(this);
+		exitButton.addActionListener(this);
 	}
 	
 	@Override
@@ -67,14 +67,14 @@ public class ProfessionPage extends Default_Page implements ActionListener {
 		if(e.getSource() == addButton) {
 			try {
 				mySystem.mariaconnexion.addItem(current, profText.getText(),sdf.format(dateChooser.getDate()),mySystem.PROSSESSION);
-                JOptionPane.showMessageDialog(null, "Profession "+profText.getText()+" ajoutée avec succès !");
+                JOptionPane.showMessageDialog(null, "Profession "+profText.getText()+" ajoutee avec succes !");
                 profText.setText(" ");
 			} catch (SQLException throwables) {
 				// TODO Auto-generated catch block
                 JOptionPane.showMessageDialog(null, "Impossible d'ajouter "+profText.getText()+" pour le "+sdf.format(dateChooser.getDate()));
 			}
 		}
-		if(e.getSource() == backButton) {
+		if(e.getSource() == exitButton) {
 			this.dispose(); 
 			new Psy_GUI();
 		}

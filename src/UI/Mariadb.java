@@ -171,8 +171,7 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
     	  int cl1 = rs.getInt("Id_Client");
     	  int cl2 = rs.getInt("Id_Client_2");
     	  int cl3 = rs.getInt("Id_Client_3");
-    	  int consul = rs.getInt("Id_consultation");
-    	  list.add(new  Rdv(id, (java.sql.Date) jour, heure, prix, pay, cl1, cl2, cl3, consul));
+    	  list.add(new  Rdv(id, (java.sql.Date) jour, heure, prix, pay, cl1, cl2, cl3));
     	 }
     	 return  list; 
     }
@@ -205,7 +204,7 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
         Integer c1, c2, c3;
         c1 = FindClient(cl1); c2 = FindClient(cl2); c3 = FindClient(cl3);
         preparedStatement = conn
-                .prepareStatement("insert into  psy.rdv values (default, ?, ?, ?, ? , ?, ?, ?,?)");
+                .prepareStatement("insert into  psy.rdv values (default, ?, ?, ?, ? , ?, ?, ?)");
 
         preparedStatement.setDate(1, sqlDate); 
         preparedStatement.setString(2, heure);
@@ -217,7 +216,6 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
         else preparedStatement.setInt(6, c2);
         if(c3 == null) preparedStatement.setNull(7, Types.NULL);
         else preparedStatement.setInt(7, c3);
-        preparedStatement.setNull(8, Types.NULL);
         preparedStatement.executeUpdate();
         ResultSet rs = preparedStatement.executeQuery("Select LAST_INSERT_ID()");
         if(rs.next()) {
@@ -227,8 +225,7 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
                 int c_1 = rs.getInt("Id_Client");
                 int c_2 = rs.getInt("Id_Client_2");
                 int c_3 = rs.getInt("Id_Client_3");
-                int consul = rs.getInt("Id_consultation");
-                mySystem.rdvListe.add(new  Rdv(id,sqlDate , heure, prix, pay, c_1, c_2, c_3, consul));
+                mySystem.rdvListe.add(new  Rdv(id,sqlDate , heure, prix, pay, c_1, c_2, c_3));
             }
 
         }
@@ -254,10 +251,6 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
         stmt = conn.createStatement();
         resultSet= stmt.executeQuery("DELETE FROM psy.rdv WHERE Id_rdv =" + id);
         mySystem.rdvListe.remove(mySystem.rdvListe.stream().filter(r -> (r.getId()== id)).findFirst().get());
-      //  resultSet = stmt.executeQuery("SELECT * psy.client_consultation WHERE Id_RDV =" + id);
-      //  while()
-            // RAJOUTER LA SUPPRESSION DE LA CONSULTATION
-
     }
     
     public void modifyClient(int id, String nom, String prenom, String mdp, String mail, String pub, boolean sexe) throws SQLException {
@@ -266,6 +259,9 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
     			"UPDATE psy.client SET "
     					+ "Nom_client='"+nom+"' ,Prenom_client = '"+prenom+"' , mdp= '"+mdp+"', mail ='"+mail+"', pub ='"+pub+"', sexe ="+sexe
     			+ " WHERE  Id_Client="+id+"; ");
+    	mySystem.patients.stream().filter(p-> p.getId_User() == id).map(p->{
+    	    p.setPrenom(prenom); p.setNom(nom); p.setPassword(mdp); p.setEmail(mail); p.setPub(pub); p.setSexe(sexe);
+        return null;}).collect(Collectors.toList());
     }
     
     public <T> void modifyItem(String oldString, T newString, String oldDate,  String newDate,  int id, String item) throws SQLException {
@@ -273,7 +269,6 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
     	    		stmt = conn.createStatement(); 
     		java.sql.Date newsqlDate = java.sql.Date.valueOf(newDate);
     		java.sql.Date oldsqlDate = java.sql.Date.valueOf(oldDate);
-    		System.out.println("---"+newsqlDate+"---"+newString);
     		
     	if(item.equals(mySystem.PROSSESSION)) {
             preparedStatement= conn.prepareStatement("UPDATE psy.prof_client t SET t.Prof_date = ?, t.Nom_prof = ? " +

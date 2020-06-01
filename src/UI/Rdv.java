@@ -9,8 +9,7 @@ public class Rdv {
 	private String heure, payement;
 	private float prix;
 	private int client1, client2, client3;
-	private int id_consul;
-	public Rdv(int id, Date date, String heure, float prix, String payement, int client1, int client2, int client3, int id_consul) {
+	public Rdv(int id, Date date, String heure, float prix, String payement, int client1, int client2, int client3) {
 		super();
 		this.id = id;
 		this.date = date;
@@ -20,7 +19,6 @@ public class Rdv {
 		this.client1 = client1;
 		this.client2 = client2;
 		this.client3 = client3;
-		this.id_consul = id_consul;
 	}
 		
 	public int getId() {
