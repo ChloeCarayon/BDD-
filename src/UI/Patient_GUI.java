@@ -39,7 +39,7 @@ public class Patient_GUI extends Default_Page implements ActionListener  {
         addModificationButtons();
         
         rdvButton.addActionListener(e-> {
-
+            System.out.println("nmero" + mySystem.current_client_id );
             this.dispose();
         	new ViewRDV(false);
         });

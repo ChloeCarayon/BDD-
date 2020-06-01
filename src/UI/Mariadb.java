@@ -95,6 +95,7 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
   		  Date type_date =  getlistes.getDate("Date_type");
   		 mySystem.user.addTypeList(type_date, type_name);
   	  }
+  	  mySystem.current_client_id = mySystem.user.getId_User();
     }
 
     public boolean Datecheck(String date,int rdv) throws SQLException {
