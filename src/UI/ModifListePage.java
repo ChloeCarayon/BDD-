@@ -131,9 +131,6 @@ public class ModifListePage  extends Default_Page implements ActionListener {
     		selectlist.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     		selectlist.setVisibleRowCount(-1);
             listScroll = new JScrollPane(selectlist);
-
-
-
             listScroll.setBounds(80,20,200,50);
             this.add(listScroll);
         }
@@ -216,23 +213,31 @@ public class ModifListePage  extends Default_Page implements ActionListener {
 				
 		modifButton.addActionListener(e -> {
 			try {
-				if(a_modifier.contentEquals(mySystem.COUPLE))
-					mySystem.mariaconnexion.modifyItem(null, choice_couple,  //La nouvelle valeur du boolean
-													sdf.format(oldDate).toString(), sdf.format(dateChooser.getDate()), 	 //Les dates initiales et modifi�es
-													mySystem.user.getId_User(), a_modifier); 							 //L'id et la table a update dans la db
-				else 
-					mySystem.mariaconnexion.modifyItem(selectlist.getSelectedValue().substring(13), profText.getText(),  //La nouvelle valeur du boolean
-							sdf.format(oldDate).toString(), sdf.format(dateChooser.getDate()), 	 //Les dates initiales et modifi�es
-							mySystem.user.getId_User(), a_modifier); 
-					
-					
-				mySystem.mariaconnexion.LogDB(mySystem.user.getEmail(), mySystem.user.getPassword()); //actualise les infos du client actuel
-			
-
-	            JOptionPane.showMessageDialog(null,"Modifie avec succes !");
-				//Supprime la liste, update et reaffiche 
-				list.removeAllElements();
-				choice(false);			
+				
+				if ((sdf.format(dateChooser.getDate())).compareTo(sdf.format(java.util.Calendar.getInstance().getTime())) > 0){
+				    JOptionPane.showMessageDialog(null, "Vous ne pouvez pas entrez une date future !.");
+				}
+				else {
+						
+					if(a_modifier.contentEquals(mySystem.COUPLE))
+						mySystem.mariaconnexion.modifyItem(null, choice_couple,  //La nouvelle valeur du boolean
+														sdf.format(oldDate).toString(), sdf.format(dateChooser.getDate()), 	 //Les dates initiales et modifi�es
+														mySystem.user.getId_User(), a_modifier); 							 //L'id et la table a update dans la db
+					else 
+						mySystem.mariaconnexion.modifyItem(selectlist.getSelectedValue().substring(13), profText.getText(),  //La nouvelle valeur du boolean
+								sdf.format(oldDate).toString(), sdf.format(dateChooser.getDate()), 	 //Les dates initiales et modifi�es
+								mySystem.user.getId_User(), a_modifier); 
+						
+						
+					mySystem.mariaconnexion.LogDB(mySystem.user.getEmail(), mySystem.user.getPassword()); //actualise les infos du client actuel
+				
+	
+		            JOptionPane.showMessageDialog(null,"Modifie avec succes !");
+					//Supprime la liste, update et reaffiche 
+					list.removeAllElements();
+					choice(false);	
+				}
+				
 			} catch (SQLIntegrityConstraintViolationException icve) {
 	            JOptionPane.showMessageDialog(null,"Vous avez deja rentre cette profession !");
 			}catch (SQLException e1) {
@@ -244,22 +249,26 @@ public class ModifListePage  extends Default_Page implements ActionListener {
 		
 		addButton.addActionListener(e -> {
 
-			try {
-				if(a_modifier.contentEquals(mySystem.COUPLE))
-					mySystem.mariaconnexion.addItem(mySystem.user.getId_User(), choice_couple ,sdf.format(dateChooser.getDate()).toString(), a_modifier);
-				else 
-					mySystem.mariaconnexion.addItem(mySystem.user.getId_User(), profText.getText() ,sdf.format(dateChooser.getDate()).toString(), a_modifier);
-
-				mySystem.mariaconnexion.LogDB(mySystem.user.getEmail(), mySystem.user.getPassword()); //actualise les infos du client actuel
-
-				//Supprime la liste, update et r�affiche 
-				list.removeAllElements();
-				choice(false);
-
-			
+			try {  
+				if ((sdf.format(dateChooser.getDate())).compareTo(sdf.format(java.util.Calendar.getInstance().getTime())) > 0){
+				    JOptionPane.showMessageDialog(null, "Vous ne pouvez pas entrez une date future !.");
+				}
 				
-				 JOptionPane.showMessageDialog(null, a_modifier+" "+profText.getText()+" ajoute.e avec succes !");
-		         profText.setText(" ");
+				else {
+					if(a_modifier.contentEquals(mySystem.COUPLE))					
+						mySystem.mariaconnexion.addItem(mySystem.user.getId_User(), choice_couple ,sdf.format(dateChooser.getDate()).toString(), a_modifier);
+					else 
+						mySystem.mariaconnexion.addItem(mySystem.user.getId_User(), profText.getText() ,sdf.format(dateChooser.getDate()).toString(), a_modifier);
+	
+					mySystem.mariaconnexion.LogDB(mySystem.user.getEmail(), mySystem.user.getPassword()); //actualise les infos du client actuel
+	
+					//Supprime la liste, update et r�affiche 
+					list.removeAllElements();
+					choice(false);			
+					
+					 JOptionPane.showMessageDialog(null, a_modifier+" "+profText.getText()+" ajoute.e avec succes !");
+			         profText.setText(" ");
+				}
 			} catch (SQLIntegrityConstraintViolationException icve) {
 	            JOptionPane.showMessageDialog(null,"Vous avez deja rentre cet element !");
 			}

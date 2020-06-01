@@ -99,7 +99,7 @@ public class RDVpsy_GUI extends Default_Page implements ActionListener {
         System.out.println(rdv_List.getSelectedIndex());
         if (rdv_List.getSelectedIndex() != -1) {
             if ((sdf.format(calendar.getDate())).compareTo(sdf.format(java.util.Calendar.getInstance().getTime())) < 0){
-                JOptionPane.showMessageDialog(null, "Vous ne pouvez pas supprimer un RDV passé.");
+                JOptionPane.showMessageDialog(null, "Vous ne pouvez pas supprimer un RDV passe.");
             }
             else {
                 String rdvsup = rdv_List.getModel().getElementAt(rdv_List.getSelectedIndex());
@@ -133,12 +133,12 @@ public class RDVpsy_GUI extends Default_Page implements ActionListener {
             }
 
             if (e.getSource() == CreateButton) {
-                if (mySystem.patients.size() == 1) {
+                if (mySystem.patients.size() == 0) {
                     JOptionPane.showMessageDialog(null, "Vous n'avez pas encore de patients.");
                 } else {
                     try {
                         if ((sdf.format(calendar.getDate())).compareTo(sdf.format(java.util.Calendar.getInstance().getTime())) < 0){
-                            JOptionPane.showMessageDialog(null, "Vous ne pouvez pas creer un RDV dans le passé.");
+                            JOptionPane.showMessageDialog(null, "Vous ne pouvez pas creer un RDV dans le passe.");
                         }
                         else if (calendar.getCalendar().get(Calendar.DAY_OF_WEEK) !=Calendar.SUNDAY){
                             new CreatRdv_GUI(sdf.format(calendar.getDate()));
@@ -146,6 +146,7 @@ public class RDVpsy_GUI extends Default_Page implements ActionListener {
                         else  JOptionPane.showMessageDialog(null, "Vous ne pouvez pas avoir de rendez-vous le dimanche.");
                     } catch (Exception ex) {
                         JOptionPane.showMessageDialog(null, "Impossible d'ouvrir cette page.");
+                        ex.printStackTrace();
                     }
                 }
             }
