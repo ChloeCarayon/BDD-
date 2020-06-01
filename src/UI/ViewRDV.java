@@ -19,10 +19,10 @@ public class ViewRDV extends Default_Page implements ActionListener {
     private final JLabel Rdv_Passe = new JLabel("RDV Passes : ");
     private final JLabel Rdv_Futurs = new JLabel("RDV Futurs : ");
     private final JLabel rdv_contenu = new JLabel("Selectionnez un RDV");
-    private boolean type;
+    private boolean type_v;
 
     public ViewRDV(boolean typ) {
-        type= typ;
+        type_v= typ;
         createWindow("Consulter les RDV", 500, 100, 600, 470);
         setList(true);
         setLocationAndSize();
@@ -35,9 +35,9 @@ public class ViewRDV extends Default_Page implements ActionListener {
         try {
             listpasse.clear(); listfutur.clear();
             for (int i = 0; i < mySystem.rdvListe.size(); i++) {//commence liste a 1 pour pas avoir la psy dans les clients
-                if(mySystem.patients.get(mySystem.current_client_id).getId_User() == mySystem.rdvListe.get(i).getClient1() ||
-                        mySystem.patients.get(mySystem.current_client_id).getId_User() == mySystem.rdvListe.get(i).getClient2() ||
-                mySystem.patients.get(mySystem.current_client_id).getId_User() == mySystem.rdvListe.get(i).getClient3()){
+                if(mySystem.user.getId_User() == mySystem.rdvListe.get(i).getClient1() ||
+                        mySystem.user.getId_User() == mySystem.rdvListe.get(i).getClient2() ||
+                        mySystem.user.getId_User() == mySystem.rdvListe.get(i).getClient3()){
                     if ((sdf.format(calendar.getDate())).compareTo(mySystem.rdvListe.get(i).getDate().toString()) >= 0){
                         Rdvpasse = String.valueOf(mySystem.rdvListe.get(i).getId()); Rdvpasse += "  ";
                         Rdvpasse += String.valueOf(mySystem.rdvListe.get(i).getDate()); Rdvpasse += "  ";
@@ -98,14 +98,14 @@ public class ViewRDV extends Default_Page implements ActionListener {
         this.add(SeeRdvButton);
         this.add(rdv_contenu);
         this.add(SeeRdvButton2);
+         this.add(ModifButton);
         SeeRdvButton.addActionListener(this);
         SeeRdvButton2.addActionListener(this);
+        ModifButton.addActionListener(this);
 
-        if(type){
-            this.add(ModifButton);
+        if(type_v){
             this.add(SupprButton);
             this.add(SeeConsButton);
-            ModifButton.addActionListener(this);
             SupprButton.addActionListener(this);
             SeeConsButton.addActionListener(this);
         }
@@ -140,7 +140,8 @@ public class ViewRDV extends Default_Page implements ActionListener {
             else {
                 String rdvmodif = rdv_List.getModel().getElementAt(rdv_List.getSelectedIndex());
                 String[] id_string = rdvmodif.split("  ", 2);
-                new ModifRdv_Patientpage(id_string[0], Calendar.getInstance().getTime(), true);
+                if(type_v) new ModifRdv_Patientpage(id_string[0], Calendar.getInstance().getTime(), true, true);
+                else new ModifRdv_Patientpage(id_string[0], Calendar.getInstance().getTime(), true, false);
             }
         }
     }
@@ -178,7 +179,7 @@ public class ViewRDV extends Default_Page implements ActionListener {
                         ModifRDV();
                         this.dispose();
                     } catch (SQLException throwables) {
-                        throwables.printStackTrace();
+                        JOptionPane.showMessageDialog(null, "Erreur SQL.");
                     }
                 }
                 if (e.getSource() == SeeRdvButton2){
@@ -193,7 +194,7 @@ public class ViewRDV extends Default_Page implements ActionListener {
                         try {
                             getCons();
                         } catch (SQLException throwables) {
-                            throwables.printStackTrace();
+                            JOptionPane.showMessageDialog(null, "Erreur SQL.");
                         }
                         this.dispose();
 
@@ -210,7 +211,7 @@ public class ViewRDV extends Default_Page implements ActionListener {
                 }
                 if (e.getSource() == exitButton) {
                     this.dispose();
-                    if (type) new MyPatientPage();
+                    if (type_v) new MyPatientPage();
                     else new Patient_GUI();
                 }
             }

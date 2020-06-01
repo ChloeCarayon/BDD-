@@ -12,7 +12,7 @@ public class Mariadb {
 
     //  Database credentials
     static final String USER = "root";
-    static final String PASS = "bdd";
+    static final String PASS = "new_password";
 
     private Connection conn = null;
     private Statement stmt = null;
@@ -95,6 +95,7 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
   		  Date type_date =  getlistes.getDate("Date_type");
   		 mySystem.user.addTypeList(type_date, type_name);
   	  }
+  	  mySystem.current_client_id = mySystem.user.getId_User();
     }
 
     public boolean Datecheck(String date,int rdv) throws SQLException {

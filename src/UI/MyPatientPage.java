@@ -25,7 +25,7 @@ public class MyPatientPage extends Default_Page implements ActionListener{
 	 
 	 public MyPatientPage() {
 		 	
-			createWindow("My Patients", 500, 100, 500, 500);
+			createWindow("Mes Patients", 500, 100, 500, 500);
 			setListClient();
 			
 			patientList.setSelectedIndex(0);
@@ -114,7 +114,6 @@ public class MyPatientPage extends Default_Page implements ActionListener{
 	    	
 	    	catch(Exception e) {
 	    		infos = "Impossible d'afficher le profile";
-	    		//e.printStackTrace();
 	    	}	    	
 	    	profile.setText(infos);
 	    }

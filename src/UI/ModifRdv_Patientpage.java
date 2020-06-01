@@ -28,8 +28,10 @@ public final class ModifRdv_Patientpage extends Default_Page implements ActionLi
     private JComboBox HeureComboBox =  new JComboBox<>();
     private JComboBox<String> PaymentComboBox = new JComboBox<>(ListPayment);
     JButton ModifButton = new JButton("Modifier");
+    boolean type;
 
-    public ModifRdv_Patientpage(String rdvString, Date date, boolean pass) throws SQLException {
+    public ModifRdv_Patientpage(String rdvString, Date date, boolean pass,boolean typ) throws SQLException {
+        type =typ;
         Optional<Rdv>  rdv = mySystem.rdvListe.stream().filter(r -> (r.getId()== Integer.parseInt(rdvString))).findFirst();
         rdv_actuel  = rdv.get();
         if (pass){
@@ -174,12 +176,16 @@ public final class ModifRdv_Patientpage extends Default_Page implements ActionLi
           }
         }
         else if(e.getSource()==backButton){
+            if(type )new ViewRDV(true);
+            else new ViewRDV(false);
             this.dispose();
-            new MyPatientPage();
+
         }
         else if(e.getSource()==exitButton){
+            if(type) new Psy_GUI();
+            else new Patient_GUI();
             this.dispose();
-            new Psy_GUI();
+
         }
     }
 
