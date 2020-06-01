@@ -47,12 +47,15 @@ public final class Registration extends Default_Page implements ActionListener {
             createWindow("Log In", 500, 100, 380, 250);
             emailLabel.setText("Identifiant");
         }else {
-        	createWindow("Creation", 500, 100, 380, 550);
         	  if(id>0) {
-              	modifPage();
+        	        createWindow("Modification", 500, 100, 380, 550);
+              	    modifPage();
               }
-              else 
-              	registerPage();
+              else {
+                  createWindow("Creation", 500, 100, 380, 550);
+                  registerPage();
+              }
+
         }        	     
         
         setLocationAndSize();
