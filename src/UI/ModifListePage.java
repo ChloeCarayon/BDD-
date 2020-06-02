@@ -213,7 +213,6 @@ public class ModifListePage  extends Default_Page implements ActionListener {
 				
 		modifButton.addActionListener(e -> {
 			try {
-				
 				if ((sdf.format(dateChooser.getDate())).compareTo(sdf.format(java.util.Calendar.getInstance().getTime())) > 0){
 				    JOptionPane.showMessageDialog(null, "Vous ne pouvez pas entrez une date future !.");
 				}
@@ -248,7 +247,6 @@ public class ModifListePage  extends Default_Page implements ActionListener {
 		
 		
 		addButton.addActionListener(e -> {
-
 			try {  
 				if ((sdf.format(dateChooser.getDate())).compareTo(sdf.format(java.util.Calendar.getInstance().getTime())) > 0){
 				    JOptionPane.showMessageDialog(null, "Vous ne pouvez pas entrez une date future !.");
@@ -281,12 +279,12 @@ public class ModifListePage  extends Default_Page implements ActionListener {
 		backButton.addActionListener(e -> {
 			this.dispose();
 			if(mySystem.backPage == 1) {
-				new MyPatientPage();
 				try {
 					mySystem.patients=mySystem.mariaconnexion.getPatient();
 				} catch (SQLException e1) {
 					e1.printStackTrace();
 				}
+				new MyPatientPage();
 			}
 				
 			else 

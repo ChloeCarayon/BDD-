@@ -162,8 +162,10 @@ public final class ModifRdv_Patientpage extends Default_Page implements ActionLi
                   rdv_actuel.setPrix(Float.parseFloat(PrixField.getText()));
                   rdv_actuel.setPayement(PaymentComboBox.getSelectedItem().toString());
                  mySystem.mariaconnexion.ModifRDV_sql(rdv_actuel, sdf.format(dateChooser.getDate()));
+                  if(type ) new MyPatientPage();
+                  else {new ViewRDV(false);}
                   this.dispose();
-                  new MyPatientPage();
+
               }
               catch (SQLException nfe) {
                   JOptionPane.showMessageDialog(null, "Erreur dans le sql.");

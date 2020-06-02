@@ -195,7 +195,7 @@ public final class Registration extends Default_Page implements ActionListener {
 				        emailText.getText(),PubComboBox.getSelectedItem().toString(),s);
 				JOptionPane.showMessageDialog(null, "Profile modifie avec succes");
 				this.dispose();
-				
+                mySystem.mariaconnexion.LogDB(mySystem.user.getEmail(), mySystem.user.getPassword());
 				if(mySystem.backPage == 1) {
 					new MyPatientPage();
 					try {
@@ -204,12 +204,13 @@ public final class Registration extends Default_Page implements ActionListener {
 						e1.printStackTrace();
 					}
 				}
-				else 
+				else {
 					new Patient_GUI();
-				mySystem.mariaconnexion.LogDB(mySystem.user.getEmail(), mySystem.user.getPassword()); //actualise les infos du client actuel
+				}
+				 //actualise les infos du client actuel
 				
 			}  catch (SQLException  throwables) {
-                JOptionPane.showMessageDialog(null, "Impossible de modififer le profile");
+                JOptionPane.showMessageDialog(null, "Impossible de modifier le profile");
                 throwables.printStackTrace();
              }
         });

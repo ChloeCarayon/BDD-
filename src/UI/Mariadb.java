@@ -78,8 +78,6 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
   		  String prof_name =  getlistes.getString("Nom_prof"); 
   		  Date prof_date =  getlistes.getDate("Prof_date");
   		  mySystem.user.addProfList(prof_date,prof_name);
-  		  System.out.println(prof_name);
-  		  System.out.println(mySystem.user.getProfList().size());
   	  }
   	  
   	  getlistes =  stmt.executeQuery("SELECT*FROM psy.Couple WHERE Id_Client = "+id);
@@ -95,7 +93,7 @@ public int readDBClient(String nom, String prenom, String mdp, String mail, Stri
   		  Date type_date =  getlistes.getDate("Date_type");
   		 mySystem.user.addTypeList(type_date, type_name);
   	  }
-  	  mySystem.current_client_id = mySystem.user.getId_User();
+
     }
 
     public boolean Datecheck(String date,int rdv) throws SQLException {
